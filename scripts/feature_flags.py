@@ -22,21 +22,21 @@ NATIONAL_MODE = False
 # --- LISTING DATA (costs RentCast API calls) ---
 # Fetches active for-sale listings per ZIP
 # Free tier: 50 calls/month total across all features
-FETCH_LISTINGS = True
+FETCH_LISTINGS = False
 
 # --- MARKET STATS (costs RentCast API calls) ---
 # Fetches median price, days on market per ZIP
-FETCH_MARKET_STATS = True
+FETCH_MARKET_STATS = False
 
 # --- CORPORATE OWNERSHIP ESTIMATION (costs RentCast API calls) ---
 # Pulls property records, counts org vs individual owners
 # Most expensive feature — up to 500 records per ZIP per call
-FETCH_OWNERSHIP_DATA = True
+FETCH_OWNERSHIP_DATA = False
 
 # --- CENSUS MAP BOUNDARIES (FREE — no API calls) ---
 # Downloads ZIP boundary shapes from Census Bureau (free, no key needed)
 # Safe to enable — costs nothing
-FETCH_CENSUS_BOUNDARIES = True
+FETCH_CENSUS_BOUNDARIES = False
 
 # --- ON-DEMAND MODE ---
 # When True: only fetches a ZIP when a real user searches it, then caches
@@ -55,7 +55,7 @@ CACHE_HOURS = 0
 # ============================================================
 ENABLED_ZIPS = [
     # Cleveland core 12 — add more as needed
-    # '44113',  # Ohio City
+     '44113',  # Ohio City
      '44102',  # Detroit-Shoreway
      '44109',  # Tremont
      '44105',  # Brooklyn Centre
@@ -63,7 +63,7 @@ ENABLED_ZIPS = [
      '44115',  # Midtown
      '44106',  # University Circle
      '44120',  # Shaker Square
-    # '44103',  # St. Clair-Superior
+     '44103',  # St. Clair-Superior
      '44111',  # Kamm's Corners
      '44107',  # Lakewood
      '44108',  # Glenville
