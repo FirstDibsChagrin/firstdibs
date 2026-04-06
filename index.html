@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>First Dibs · Cleveland</title>
+
+<!-- STEP 1: Replace these two values with your own from supabase.com -->
+<script>
+  const SUPABASE_URL = 'https://lhlmcvlyfyzpyzewlxdo.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxobG1jdmx5Znl6cHl6ZXdseGRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNDUyODIsImV4cCI6MjA4OTYyMTI4Mn0.mnP6GbwwoHe0L5DxGIXSKjW5pZhCwnoIBjWn6hXeElQ';
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Outfit:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --brand:#0f4c35;--brand2:#1a6b4a;--brand3:#24916a;--brand-light:#e6f4ee;--brand-xlight:#f0f9f4;
+  --accent:#d4500a;--accent-light:#fef0e8;
+  --warn:#b8820a;--warn-light:#fef8e6;
+  --blue:#1a56a0;--blue2:#2070c8;--blue-light:#eaf2fd;
+  --gold:#c49a1a;--gold-light:#fdf6e0;
+  --text:#1a1a1a;--muted:#666;
+  --border:#e5e5e5;--border2:#ccc;
+  --surf:#fff;--surf2:#f8f9fa;
+  --ff:'Outfit',sans-serif;--ffd:'Playfair Display',serif;
+}
+body{font-family:var(--ff);font-size:16px;color:var(--text);background:#fff;margin:0}
+#app{max-width:860px;margin:0 auto}
+
+.live-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;background:#e8f5ee;color:var(--brand);padding:3px 8px;border-radius:20px;border:.5px solid var(--brand3)}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--brand3);animation:pulse-dot 2s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.3}}
+
+.loading-overlay{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;font-size:13px;color:var(--muted);background:var(--surf2);border-radius:10px;margin-bottom:12px}
+.spinner{width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--brand3);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.hdr{padding:1.1rem 1.4rem;border-bottom:.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--surf)}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-mark{width:38px;height:38px;background:var(--brand);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-name{font-family:var(--ffd);font-size:22px;letter-spacing:-.5px;color:var(--text)}
+.logo-name em{color:var(--brand3);font-style:normal}
+.logo-sub{font-size:11px;color:var(--muted);font-weight:300;margin-top:2px}
+.zip-pill{font-size:12px;font-weight:500;background:var(--accent-light);color:var(--accent);padding:5px 11px;border-radius:20px;border:.5px solid var(--accent);white-space:nowrap;max-width:160px;overflow:hidden;text-overflow:ellipsis}
+
+.zip-bar{padding:.8rem 1.4rem;border-bottom:.5px solid var(--border);background:var(--surf2);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.zip-bar label{font-size:13px;font-weight:500;color:var(--muted);white-space:nowrap}
+.zip-select{flex:1;min-width:200px;padding:9px 12px;border:.5px solid var(--border2);border-radius:10px;font-family:var(--ff);font-size:15px;background:var(--surf);color:var(--text);cursor:pointer}
+.zip-select:focus{outline:none;border-color:var(--brand3)}
+.zip-in{padding:9px 12px;border:.5px solid var(--border2);border-radius:10px;font-family:var(--ff);font-size:15px;background:var(--surf);color:var(--text);width:110px}
+.zip-in:focus{outline:none;border-color:var(--brand3)}
+.go-btn{padding:9px 18px;border-radius:10px;font-family:var(--ff);font-size:15px;font-weight:500;cursor:pointer;border:none;background:var(--brand);color:#fff}
+.go-btn:hover{background:var(--brand2)}
+
+.tabs{display:flex;overflow-x:auto;padding:0 1.4rem;border-bottom:.5px solid var(--border);background:var(--surf);scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:12px 16px;border:none;background:none;cursor:pointer;font-family:var(--ff);font-size:14px;font-weight:400;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-.5px;white-space:nowrap;flex-shrink:0;transition:all .15s}
+.tab.on{color:var(--brand);border-bottom-color:var(--brand);font-weight:500}
+.tab .badge{background:var(--accent);color:#fff;font-size:10px;border-radius:10px;padding:1px 6px;margin-left:4px;vertical-align:middle}
+
+.pane{display:none;padding:1.2rem 1.4rem}
+.pane.on{display:block;animation:fadeUp .2s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+.kpi-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.2rem}
+.kpi{background:var(--surf2);border-radius:12px;padding:1rem 1.1rem;border:.5px solid var(--border)}
+.kpi-lbl{font-size:11px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.kpi-val{font-size:24px;font-weight:600;line-height:1;color:var(--text)}
+.kpi-val.red{color:var(--accent)}.kpi-val.amber{color:var(--warn)}.kpi-val.grn{color:var(--brand3)}
+.kpi-sub{font-size:12px;color:var(--muted);margin-top:4px;font-weight:300}
+.kpi-src{font-size:11px;color:var(--muted);margin-top:2px;font-weight:300;font-style:italic}
+
+.map-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.8rem;flex-wrap:wrap;gap:8px}
+.map-title{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.filters{display:flex;gap:5px;flex-wrap:wrap}
+.fil{font-size:13px;padding:6px 13px;border-radius:20px;border:.5px solid var(--border);cursor:pointer;background:var(--surf);color:var(--muted);font-family:var(--ff);transition:all .15s}
+.fil.on{border-color:var(--brand);color:var(--brand);background:var(--brand-xlight);font-weight:500}
+
+.map-box{border:.5px solid var(--border);border-radius:14px;overflow:hidden;position:relative;height:300px;margin-bottom:1rem;background:#dde8f0}
+.map-leg{position:absolute;bottom:10px;right:10px;background:var(--surf);border:.5px solid var(--border);border-radius:10px;padding:8px 11px}
+.leg-row{display:flex;align-items:center;gap:7px;margin-bottom:5px}
+.leg-row:last-child{margin-bottom:0}
+.leg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.leg-row span{font-size:13px}
+.mtt{position:absolute;background:var(--surf);border:.5px solid var(--border2);border-radius:10px;padding:9px 12px;pointer-events:none;display:none;min-width:180px;z-index:10;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.mtt-addr{font-weight:600;margin-bottom:3px;font-size:14px}
+.mtt-tag{display:inline-block;font-size:11px;font-weight:500;padding:3px 8px;border-radius:10px;margin-bottom:3px}
+.tc{background:var(--accent-light);color:var(--accent)}.to{background:var(--brand-xlight);color:var(--brand)}.tl{background:var(--blue-light);color:var(--blue)}
+
+.sec-lbl{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.8rem}
+.sat-row{display:flex;align-items:center;gap:10px;padding:11px 13px;border-radius:10px;border:.5px solid var(--border);margin-bottom:7px;background:var(--surf)}
+.sat-name{font-size:14px;font-weight:500;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sat-track{flex:2;height:7px;background:var(--surf2);border-radius:6px;overflow:hidden}
+.sat-fill{height:100%;border-radius:6px}
+.sat-pct{font-size:14px;font-weight:600;min-width:36px;text-align:right}
+
+.prop-card{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;border-radius:11px;border:.5px solid var(--border);margin-bottom:8px;background:var(--surf);cursor:pointer;transition:all .15s}
+.prop-card:hover,.prop-card.hl{border-color:var(--brand);background:var(--brand-xlight)}
+.prop-addr{font-weight:500;font-size:15px}
+.prop-meta{font-size:13px;color:var(--muted);margin-top:3px;font-weight:300}
+.prop-r{text-align:right;flex-shrink:0;margin-left:10px}
+.prop-price{font-weight:600;font-size:16px}
+.ptag{font-size:12px;font-weight:500;padding:3px 9px;border-radius:20px;margin-top:4px;display:inline-block}
+.ptag-c{background:var(--accent-light);color:var(--accent)}.ptag-l{background:var(--blue-light);color:var(--blue)}.ptag-o{background:var(--brand-xlight);color:var(--brand)}
+
+.dvd{border:none;border-top:.5px solid var(--border);margin:1.2rem 0}
+
+.alert-card{border:.5px solid var(--border);border-radius:12px;padding:14px 15px;margin-bottom:10px;background:var(--surf);display:flex;gap:13px;align-items:flex-start}
+.alert-card.hot{border-color:var(--blue2);background:var(--blue-light)}
+.alert-card.warn-c{border-color:var(--warn);background:var(--warn-light)}
+.alert-card.sig{border-color:var(--brand3);background:var(--brand-xlight)}
+.alert-ico{font-size:18px;flex-shrink:0;margin-top:1px}
+.ab{flex:1}
+.at{font-weight:600;font-size:15px;margin-bottom:4px}
+.ad{font-size:14px;color:var(--muted);line-height:1.6;font-weight:300}
+.atm{font-size:12px;color:var(--muted);margin-top:6px;font-weight:300}
+.aacts{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
+
+.btn{padding:8px 16px;border-radius:9px;font-family:var(--ff);font-size:14px;font-weight:500;cursor:pointer;border:.5px solid var(--border2);background:var(--surf);color:var(--text);transition:all .15s}
+.btn:hover{background:var(--surf2)}.btn-p{background:var(--brand);color:#fff;border-color:var(--brand)}.btn-p:hover{background:var(--brand2)}
+.btn-sm{padding:7px 13px;font-size:13px;border-radius:8px}
+
+.ns{background:var(--surf2);border-radius:12px;padding:16px;margin-bottom:1rem;border:.5px solid var(--border)}
+.ns-title{font-weight:600;font-size:16px;margin-bottom:12px}
+.sr{display:flex;align-items:center;gap:10px;margin-bottom:.9rem}
+.sr label{font-size:14px;color:var(--muted);min-width:85px;font-weight:500}
+.sr input{flex:1;padding:9px 12px;border:.5px solid var(--border2);border-radius:9px;font-family:var(--ff);font-size:15px;background:var(--surf);color:var(--text)}
+.tog-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:.5px solid var(--border);font-size:15px}
+.tog-row:last-child{border-bottom:none}
+.tgl{position:relative;width:38px;height:22px}.tgl input{opacity:0;width:0;height:0}
+.tgs{position:absolute;inset:0;background:var(--border2);border-radius:22px;cursor:pointer;transition:.2s}
+.tgs:before{content:'';position:absolute;left:3px;top:3px;width:16px;height:16px;background:#fff;border-radius:50%;transition:.2s}
+.tgl input:checked+.tgs{background:var(--brand3)}.tgl input:checked+.tgs:before{transform:translateX(16px)}
+
+.prog-bar{height:6px;background:var(--surf2);border-radius:6px;margin:4px 0 16px;overflow:hidden}
+.prog-fill{height:100%;border-radius:6px;background:var(--brand3);transition:width .4s}
+
+.kit-phase{margin-bottom:1.8rem}
+.phase-hdr{display:flex;align-items:center;gap:12px;margin-bottom:.9rem;padding-bottom:.6rem;border-bottom:.5px solid var(--border)}
+.phase-num{width:28px;height:28px;border-radius:50%;background:var(--brand);color:#fff;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.phase-title{font-size:16px;font-weight:600}.phase-sub{font-size:13px;color:var(--muted);margin-left:auto;font-weight:300}
+
+.ci{display:flex;align-items:flex-start;gap:12px;padding:13px 14px;border-radius:11px;border:.5px solid var(--border);margin-bottom:8px;background:var(--surf);cursor:pointer;transition:all .15s}
+.ci:hover{background:var(--surf2)}.ci.done{opacity:.5}
+.ci.done .cb{background:var(--brand3);border-color:var(--brand3)}
+.cb{width:20px;height:20px;border-radius:5px;border:1.5px solid var(--border2);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.ci-txt{font-size:15px;font-weight:500;line-height:1.4}
+.ci-sub{font-size:13px;color:var(--muted);margin-top:5px;font-weight:300;line-height:1.6}
+.ci-tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;margin-left:6px;vertical-align:middle;text-transform:uppercase;letter-spacing:.04em}
+.tag-key{background:var(--gold-light);color:var(--gold)}.tag-new{background:var(--blue-light);color:var(--blue)}
+
+.res-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:.6rem}
+.res-card{border:.5px solid var(--border);border-radius:11px;padding:13px 14px;background:var(--surf);cursor:pointer;transition:all .15s}
+.res-card:hover{border-color:var(--brand3);background:var(--brand-xlight)}
+.res-name{font-weight:600;font-size:15px}
+.res-desc{font-size:13px;color:var(--muted);margin-top:3px;font-weight:300;line-height:1.5}
+.res-amt{font-size:13px;color:var(--brand3);font-weight:600;margin-top:7px}
+
+.tip-box{padding:14px 15px;border-left:3px solid var(--brand3);background:var(--brand-xlight);font-size:14px;color:var(--brand);margin-top:1rem;line-height:1.7}
+.tip-box.amber{border-left-color:var(--warn);background:var(--warn-light);color:var(--warn)}
+.tip-box.blue{border-left-color:var(--blue2);background:var(--blue-light);color:var(--blue)}
+
+.expand-btn{width:100%;text-align:left;padding:12px 14px;border-radius:10px;border:.5px solid var(--border);background:var(--surf);font-family:var(--ff);font-size:15px;font-weight:500;color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+.expand-btn:hover{background:var(--surf2)}.expand-btn .arr{font-size:12px;color:var(--muted);transition:transform .2s}
+.expand-btn.open .arr{transform:rotate(180deg)}
+.expand-content{display:none;padding:13px 14px;border:.5px solid var(--border);border-top:none;border-radius:0 0 10px 10px;font-size:14px;color:var(--muted);line-height:1.7;font-weight:300}
+.expand-content.open{display:block}
+
+.src-hero{padding:1.2rem 0 1rem;border-bottom:.5px solid var(--border);margin-bottom:1rem}
+.src-eyebrow{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--brand3);margin-bottom:.5rem}
+.src-headline{font-size:22px;font-weight:600;line-height:1.2;margin-bottom:.5rem}
+.src-headline em{color:var(--accent);font-style:normal}
+.src-desc{font-size:15px;color:var(--muted);font-weight:300;line-height:1.7}
+.src-cite{font-size:13px;color:var(--muted);margin-top:.6rem;font-weight:300}
+.src-cite a{color:var(--brand3);text-decoration:none}
+
+.stat-strip{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:.5px solid var(--border);border-radius:11px;overflow:hidden;margin-bottom:1.2rem}
+.stat-cell{background:var(--surf);padding:1rem 1.1rem}
+.stat-cell-lbl{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.4rem}
+.stat-cell-val{font-size:21px;font-weight:600;color:var(--text)}
+.stat-cell-val.r{color:var(--accent)}.stat-cell-val.g{color:var(--brand3)}
+.stat-cell-sub{font-size:12px;color:var(--muted);margin-top:3px;font-weight:300}
+
+.hood-grid{display:grid;grid-template-columns:1fr;gap:9px;margin-bottom:1.2rem}
+.hood-card{border:.5px solid var(--border);border-radius:11px;padding:13px 14px;background:var(--surf)}
+.hood-name{font-size:15px;font-weight:600;margin-bottom:8px}
+.hood-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.hood-key{font-size:13px;color:var(--muted);font-weight:300}
+.hood-val{font-size:13px;font-weight:500}
+.hood-bar{height:5px;background:var(--surf2);border-radius:5px;overflow:hidden;margin-top:7px}
+.hood-fill{height:100%;border-radius:5px}
+.data-badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;margin-left:6px;text-transform:uppercase;letter-spacing:.04em;vertical-align:middle}
+.b-real{background:var(--brand-xlight);color:var(--brand)}.b-est{background:var(--warn-light);color:var(--warn)}
+
+.src-list{margin-bottom:1rem}
+.src-item{display:flex;gap:10px;padding:12px 14px;border-radius:10px;border:.5px solid var(--border);margin-bottom:7px;background:var(--surf);font-size:14px;line-height:1.6}
+.src-arrow{color:var(--brand3);flex-shrink:0;font-weight:600}
+.src-item a{color:var(--brand3);text-decoration:none;font-weight:500}
+.src-item span{color:var(--muted);font-weight:300}
+.note-box{padding:13px 15px;border-left:3px solid var(--warn);background:var(--warn-light);font-size:13px;color:var(--warn);line-height:1.7;font-weight:300}
+
+@keyframes pa{0%,100%{opacity:.85}50%{opacity:.25}}
+.pulse{animation:pa 2s ease-in-out infinite}
+
+.last-updated{font-size:11px;color:var(--muted);text-align:right;margin-bottom:.5rem;font-weight:300}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="hdr">
+    <div class="logo">
+      <div class="logo-mark"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5L11.8 7H17L12.8 10.8L14.5 16.5L9 13.2L3.5 16.5L5.2 10.8L1 7H6.2L9 1.5Z" fill="white" opacity=".95"/></svg></div>
+      <div><div class="logo-name">First<em>Dibs</em></div><div class="logo-sub">Beat corporate buyers · Cleveland, OH</div></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="live-badge"><div class="live-dot"></div>Live data</div>
+      <span class="zip-pill" id="hzip">ZIP 44113 · Ohio City</span>
+    </div>
+  </div>
+
+  <div class="zip-bar">
+    <label>Neighborhood</label>
+    <select class="zip-select" id="zip-select" onchange="qzSelect(this.value)">
+      <option value="44113">44113 — Ohio City</option>
+      <option value="44102">44102 — Detroit-Shoreway</option>
+      <option value="44109">44109 — Tremont / Old Brooklyn</option>
+      <option value="44105">44105 — Brooklyn Centre</option>
+      <option value="44114">44114 — Downtown / North Coast</option>
+      <option value="44115">44115 — Midtown / Central</option>
+      <option value="44106">44106 — University Circle</option>
+      <option value="44120">44120 — Shaker Square</option>
+      <option value="44103">44103 — St. Clair–Superior</option>
+      <option value="44111">44111 — Kamm's Corners</option>
+      <option value="44107">44107 — Lakewood (border)</option>
+      <option value="44108">44108 — Glenville / Superior</option>
+    </select>
+    <input class="zip-in" type="text" id="zf" placeholder="Other ZIP" maxlength="5">
+    <button class="go-btn" onclick="applyZip()">Go</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab on" onclick="showTab('map')">Map</button>
+    <button class="tab" onclick="showTab('alerts')">Alerts <span class="badge">3</span></button>
+    <button class="tab" onclick="showTab('toolkit')">Beat the Bid</button>
+    <button class="tab" onclick="showTab('sources')">Data Sources</button>
+  </div>
+
+  <div class="pane on" id="pane-map">
+    <div id="map-loading" class="loading-overlay" style="display:none">
+      <div class="spinner"></div> Loading live data...
+    </div>
+    <div class="last-updated" id="last-updated"></div>
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-lbl">Est. investor ownership</div><div class="kpi-val red" id="kv-corp">28–35%</div><div class="kpi-sub" id="kv-corp-s">↑ from 2020 baseline</div><div class="kpi-src" id="kv-corp-src">Fed Cleveland, 2025</div></div>
+      <div class="kpi"><div class="kpi-lbl">Median home price</div><div class="kpi-val" id="kv-med">$275K</div><div class="kpi-sub" id="kv-med-s">↑ 10.6% YoY</div><div class="kpi-src" id="kv-med-src">Redfin, 2025</div></div>
+      <div class="kpi"><div class="kpi-lbl">Listed now</div><div class="kpi-val" id="kv-lst">—</div><div class="kpi-sub">active in this ZIP</div><div class="kpi-src">RentCast live</div></div>
+      <div class="kpi"><div class="kpi-lbl">Days on market</div><div class="kpi-val amber" id="kv-dom">—</div><div class="kpi-sub" id="kv-dom-s">loading...</div><div class="kpi-src">RentCast live</div></div>
+    </div>
+    <div class="map-hdr">
+      <div class="map-title" id="mtitle">ZIP 44113 · Ohio City</div>
+      <div class="filters">
+        <button class="fil on" onclick="filt('all',this)">All</button>
+        <button class="fil" onclick="filt('corp',this)">Corporate</button>
+        <button class="fil" onclick="filt('listed',this)">Listed</button>
+        <button class="fil" onclick="filt('owner',this)">Owner-occ.</button>
+      </div>
+    </div>
+    <div class="map-box" id="mbox">
+      <canvas id="mc" style="width:100%;height:100%;display:block"></canvas>
+      <div class="map-leg">
+        <div class="leg-row"><div class="leg-dot" style="background:#d4500a"></div><span>Corporate</span></div>
+        <div class="leg-row"><div class="leg-dot" style="background:#1a56a0"></div><span>Listed now</span></div>
+        <div class="leg-row"><div class="leg-dot" style="background:#0f4c35"></div><span>Owner-occ.</span></div>
+      </div>
+      <div class="mtt" id="mtt"><div class="mtt-addr" id="tta"></div><div id="ttt"></div><div id="ttd" style="font-size:13px;color:#666;margin-top:3px;font-weight:300"></div></div>
+    </div>
+    <div class="sec-lbl">Investor saturation by block · estimated from Fed data</div>
+    <div id="sat"></div>
+    <div class="dvd"></div>
+    <div class="sec-lbl">Properties in this area</div>
+    <div id="props"></div>
+  </div>
+
+  <div class="pane" id="pane-alerts">
+    <div class="ns">
+      <div class="ns-title">Alert preferences</div>
+      <div class="sr"><label>Primary ZIP</label><input type="text" id="azd" value="44113" style="max-width:110px"><input type="text" value="44102, 44109" style="flex:1" placeholder="+ more ZIPs"></div>
+      <div class="sr"><label>Budget max</label><input type="text" value="$280,000"></div>
+      <div class="tog-row">New listings in target ZIPs<label class="tgl"><input type="checkbox" checked><span class="tgs"></span></label></div>
+      <div class="tog-row">Investor saturation warnings<label class="tgl"><input type="checkbox" checked><span class="tgs"></span></label></div>
+      <div class="tog-row">Pre-market permit signals<label class="tgl"><input type="checkbox" checked><span class="tgs"></span></label></div>
+      <div class="tog-row">Price drops on saved homes<label class="tgl"><input type="checkbox"><span class="tgs"></span></label></div>
+      <div class="tog-row">Weekly neighborhood report<label class="tgl"><input type="checkbox" checked><span class="tgs"></span></label></div>
+      <div style="margin-top:13px"><button class="btn btn-p btn-sm">Save preferences</button></div>
+    </div>
+    <div class="sec-lbl">Recent alerts</div>
+    <div id="alerts-list">
+      <div class="alert-card hot">
+        <div class="alert-ico">🏠</div>
+        <div class="ab"><div class="at">New listing alert active for ZIP 44113</div><div class="ad">You'll be notified as soon as a home lists in your target ZIP codes. Alerts are pulled from live RentCast data every morning at 8am.</div><div class="atm">Updated daily · Ohio City</div>
+          <div class="aacts"><button class="btn btn-p btn-sm" onclick="showTab('map')">View live listings</button></div>
+        </div>
+      </div>
+      <div class="alert-card warn-c">
+        <div class="alert-ico">⚠️</div>
+        <div class="ab"><div class="at">Investor surge — ZIP 44103 · St. Clair–Superior</div><div class="ad">Per Federal Reserve data, East Side neighborhoods see investor purchase rates above 46%. This area is a known hotspot — approach with a strong offer strategy.</div><div class="atm">Fed Cleveland, Sept 2025</div>
+          <div class="aacts"><button class="btn btn-sm" onclick="sendPrompt('What Cleveland neighborhoods near ZIP 44103 have lower corporate home ownership?')">Find alternatives ↗</button></div>
+        </div>
+      </div>
+      <div class="alert-card sig">
+        <div class="alert-ico">📋</div>
+        <div class="ab"><div class="at">Pre-market tip — check building permits</div><div class="ad">Building permits pulled for renovation often signal a home will list within 4–8 weeks. Search Cuyahoga County's permit database for your target streets to get ahead of listings.</div><div class="atm">Strategy tip · First Dibs</div>
+          <div class="aacts"><button class="btn btn-sm" onclick="sendPrompt('What financing steps should I complete before a Cleveland home I want hits the market?')">Prep checklist ↗</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pane" id="pane-toolkit">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem">
+      <div class="sec-lbl" style="margin:0">Your readiness score</div>
+      <span style="font-size:13px;color:var(--muted);font-weight:300" id="prog-lbl">3 of 12 complete</span>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:25%"></div></div>
+    <div class="kit-phase">
+      <div class="phase-hdr"><div class="phase-num">1</div><div class="phase-title">Before you start searching</div><div class="phase-sub">Foundation</div></div>
+      <div class="ci done" onclick="ck(this)"><div class="cb"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L4 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="ci-txt">Get pre-approved — not pre-qualified <span class="ci-tag tag-key">Most important</span></div><div class="ci-sub">Pre-approval means a lender has verified your income, credit, and assets. It carries far more weight and shows sellers you're serious.</div></div></div>
+      <div class="ci done" onclick="ck(this)"><div class="cb"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L4 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="ci-txt">Choose a buyer's agent who beats cash offers</div><div class="ci-sub">Ask: "How many clients have you helped beat investor or cash offers in the last year?"</div></div></div>
+      <div class="ci done" onclick="ck(this)"><div class="cb"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L4 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="ci-txt">Set up First Dibs alerts for your target ZIPs</div><div class="ci-sub">Add ZIP codes and budget in the Alerts tab for early notifications before investor bids arrive.</div></div></div>
+      <div class="ci" onclick="ck(this)"><div class="cb"></div><div><div class="ci-txt">Research down payment assistance programs <span class="ci-tag tag-new">Free money</span></div><div class="ci-sub">Ohio HFA, City of Cleveland, and Cuyahoga County each offer DPA programs many buyers don't know about.</div></div></div>
+      <div class="ci" onclick="ck(this)"><div class="cb"></div><div><div class="ci-txt">Set a firm budget ceiling before you start</div><div class="ci-sub">Decide your absolute maximum before seeing homes. Emotional attachment leads buyers to overbid against investors.</div></div></div>
+    </div>
+    <div class="kit-phase">
+      <div class="phase-hdr"><div class="phase-num">2</div><div class="phase-title">Evaluating a neighborhood</div><div class="phase-sub">Research</div></div>
+      <div class="ci" onclick="ck(this)"><div class="cb"></div><div><div class="ci-txt">Check corporate saturation before touring <span class="ci-tag tag-key">Use this app</span></div><div class="ci-sub">Per Federal Reserve data, Cleveland East Side hotspot tracts see investors making 46%+ of purchases. Know this before you fall in love with a home.</div></div></div>
+      <div class="ci" onclick="ck(this)"><div class="cb"></div><div><div class="ci-txt">Check days-on-market for the ZIP</div><div class="ci-sub">Under 5 days means you may have less than 48 hours to submit an offer after touring.</div></div></div>
+      <div class="ci" onclick="ck(this)"><div class="cb"></div><div><div class="ci-txt">Visit at different times of day</div><div class="ci-sub">High investor ownership often means more rentals and different community dynamics than you'd see in a listing photo.</div></div></div>
+      <button class="expand-btn" onclick="toggleExpand(this)">What does a healthy vs. high-risk neighborhood look like? <span class="arr">▼</span></button>
+      <div class="expand-content"><strong>Healthy signs:</strong> Mostly owner-occupied, well-maintained, rising but not spiking prices, days on market 7–20 days.<br><br><strong>High-risk signs:</strong> Investor ownership above 40%, multiple homes same LLC owner, days on market under 3, recent large portfolio purchases in county records.</div>
+    </div>
+    <div class="kit-phase">
+      <div class="phase-hdr"><div class="phase-num">3</div><div class="phase-title">Making a competitive offer</div><div class="phase-sub">Go time</div></div>
+      <div class="ci" onclick="ck(this)"><div class="cb"></div><div><div class="ci-txt">Write a personal letter to the seller <span class="ci-tag tag-key">Investors can't do this</span></div><div class="ci-sub">Investors offer cash but not a story. A sincere letter about why you want to live there can tip a close decision in your favor.</div></div></div>
+      <div class="ci" onclick="ck(this)"><div class="cb"></div><div><div class="ci-txt">Include an escalation clause</div><div class="ci-sub">Automatically beats competing offers by a set amount up to your max. Example: "I'll beat any offer by $2,000 up to $199,000."</div></div></div>
+      <div class="ci" onclick="ck(this)"><div class="cb"></div><div><div class="ci-txt">Offer a flexible closing date</div><div class="ci-sub">Ask what timeline works for the seller before submitting. Costs nothing and often beats a rigid cash offer.</div></div></div>
+      <div class="ci" onclick="ck(this)"><div class="cb"></div><div><div class="ci-txt">Increase earnest money to 2–3%</div><div class="ci-sub">On a $180,000 home that's $3,600–$5,400 vs the standard $1,800 — a meaningful signal of serious intent.</div></div></div>
+      <button class="expand-btn" onclick="toggleExpand(this)">What if I lose to a cash offer? <span class="arr">▼</span></button>
+      <div class="expand-content">Ask your agent for backup position — if the cash deal falls through you may be next. Ohio law requires all offers be presented to the seller, so you always have the right to be heard.</div>
+    </div>
+    <div class="dvd"></div>
+    <div class="sec-lbl">Down payment assistance · Greater Cleveland</div>
+    <div class="res-grid">
+      <div class="res-card" onclick="alert('Visit ohiohome.org for Ohio HFA Your Choice DPA program details')"><div class="res-name">Ohio HFA Your Choice!</div><div class="res-desc">State DPA grant, first-time buyers statewide.</div><div class="res-amt">Up to 2.5% of price ↗</div></div>
+      <div class="res-card" onclick="alert('Visit city.cleveland.oh.us for Cleveland DPA program details')"><div class="res-name">City of Cleveland DPA</div><div class="res-desc">Forgivable loan for income-qualified buyers.</div><div class="res-amt">Up to $10,000 ↗</div></div>
+      <div class="res-card" onclick="alert('Visit cuyahogacounty.us for County HAP program details')"><div class="res-name">Cuyahoga County HAP</div><div class="res-desc">County grant anywhere in Cuyahoga County.</div><div class="res-amt">Up to $5,000 ↗</div></div>
+      <div class="res-card" onclick="alert('Visit nhscleveland.org for NHS Cleveland DPA details')"><div class="res-name">NHS Cleveland</div><div class="res-desc">DPA plus free homebuyer education classes.</div><div class="res-amt">Up to $5,000 ↗</div></div>
+      <div class="res-card" onclick="alert('An escalation clause automatically beats competing offers up to your max. Ask your agent to include one in every offer.')"><div class="res-name">Escalation clause guide</div><div class="res-desc">How to write one and when to use it.</div><div class="res-amt">Strategy guide ↗</div></div>
+      <div class="res-card" onclick="alert('A personal seller letter explains who you are and why you want to live in their home. Investors cannot do this — use it to your advantage.')"><div class="res-name">Seller letter template</div><div class="res-desc">One of the most underused tools vs. investors.</div><div class="res-amt">Learn more ↗</div></div>
+    </div>
+    <div class="tip-box">Ohio law: Seller's agents must present all offers. Suspected preferential treatment? File with the Ohio Division of Real Estate.</div>
+    <div class="tip-box amber" style="margin-top:.6rem">Timing: In fast ZIPs, have your pre-approval updated before touring. You may have less than 48 hours when the right home appears.</div>
+    <div class="tip-box blue" style="margin-top:.6rem">Stack DPA programs: Ohio HFA + City of Cleveland + Cuyahoga County can potentially combine for $20,000+ in total assistance.</div>
+  </div>
+
+  <div class="pane" id="pane-sources">
+    <div class="src-hero">
+      <div class="src-eyebrow">Federal Reserve Bank of Cleveland · 2025</div>
+      <div class="src-headline">1 in 3 homes <em>investor-owned</em> in Cleveland hotspots</div>
+      <div class="src-desc">In low- and moderate-income Cleveland neighborhoods, investors made nearly half of all home purchases between 2018 and 2024. Cuyahoga County had among the highest investor concentration in Ohio, with out-of-state LLC activity remaining elevated through 2024.</div>
+      <div class="src-cite">Source: <a href="https://www.clevelandfed.org/publications/cd-reports/2025/20250904-investor-owned-home-trends-from-select-counties-in-oh-and-pa" target="_blank">Federal Reserve Bank of Cleveland, Klesta (Sept 2025) ↗</a></div>
+    </div>
+    <div class="stat-strip">
+      <div class="stat-cell"><div class="stat-cell-lbl">Investor buys in hotspots</div><div class="stat-cell-val r">~33%</div><div class="stat-cell-sub">of single family homes · Fed Cleveland</div></div>
+      <div class="stat-cell"><div class="stat-cell-lbl">Cash purchases</div><div class="stat-cell-val r">60%</div><div class="stat-cell-sub">of investor buys · Signal Ohio</div></div>
+      <div class="stat-cell"><div class="stat-cell-lbl">East Side investor rate</div><div class="stat-cell-val r">46%</div><div class="stat-cell-sub">of all purchases · Cleveland data</div></div>
+      <div class="stat-cell"><div class="stat-cell-lbl">Ohio City median</div><div class="stat-cell-val">$275K</div><div class="stat-cell-sub">↑ 10.6% YoY · Redfin</div></div>
+      <div class="stat-cell"><div class="stat-cell-lbl">Tremont median</div><div class="stat-cell-val">$375K</div><div class="stat-cell-sub">Homes.com 2025</div></div>
+      <div class="stat-cell"><div class="stat-cell-lbl">Detroit-Shoreway</div><div class="stat-cell-val g">$250K</div><div class="stat-cell-sub">more affordable · Homes.com</div></div>
+    </div>
+    <div class="sec-lbl">Live data sources</div>
+    <div class="src-list">
+      <div class="src-item"><span class="src-arrow">→</span><div><a href="https://rentcast.io" target="_blank">RentCast API — Active listings, prices, days on market (live, updated daily)</a><br><span>Powers the live property dots and listing counts on the map</span></div></div>
+      <div class="src-item"><span class="src-arrow">→</span><div><a href="https://www.clevelandfed.org/publications/cd-reports/2025/20250904-investor-owned-home-trends-from-select-counties-in-oh-and-pa" target="_blank">Federal Reserve Bank of Cleveland — Investor-Owned Home Trends in OH & PA (Sept 2025)</a><br><span>Primary source for all investor ownership estimates and East Side hotspot data</span></div></div>
+      <div class="src-item"><span class="src-arrow">→</span><div><a href="https://signalohio.org/investors-own-houses-poor-ohio/" target="_blank">Signal Ohio — Investors buy up homes in Ohio's poorest neighborhoods (Sept 2025)</a><br><span>60% cash purchase rate; reporting on Cuyahoga County LLC activity</span></div></div>
+      <div class="src-item"><span class="src-arrow">→</span><div><span>Redfin — Ohio City $275K median, up 10.6% YoY (2025)</span></div></div>
+      <div class="src-item"><span class="src-arrow">→</span><div><span>Homes.com — Tremont $375K, Detroit-Shoreway $250K median (2025)</span></div></div>
+      <div class="src-item"><span class="src-arrow">→</span><div><span>Cuyahoga County Auditor — parcel ownership records · integration in progress</span></div></div>
+    </div>
+    <div class="note-box"><strong>Transparency note:</strong> Active listings are pulled live from RentCast API and updated daily. Investor ownership percentages are estimates calibrated to Federal Reserve Bank of Cleveland research — exact ZIP-level figures require full Cuyahoga County Auditor parcel integration. Median prices for Ohio City, Tremont, and Detroit-Shoreway are sourced from Redfin and Homes.com (2025).</div>
+  </div>
+</div>
+
+<script>
+const FALLBACK_DATA = {
+  '44113':{n:'Ohio City',c:'28–35%',cv:32,m:'$275K',ms:'↑ 10.6% YoY',msrc:'Redfin, 2025',csrc:'Fed Cleveland, 2025',bg:'#dde8f0',water:[{pts:'0,270 100,255 200,250 340,255 480,250 600,255 680,258 680,340 0,340',col:'#a8c8e8',lbl:'Cuyahoga River',lx:80,ly:305}],parks:[{x:255,y:55,w:85,h:50,lbl:'Irishtown Bend',lx:298,ly:83}],roads:[{x1:0,y1:75,x2:680,y2:75,l:'Lorain Ave',lx:8,ly:71,w:2.5,h:1},{x1:0,y1:155,x2:680,y2:155,l:'Detroit Ave',lx:8,ly:151,w:2.5,h:1},{x1:95,y1:0,x2:95,y2:255,l:'W 44th',lx:97,ly:12,w:2,h:0},{x1:215,y1:0,x2:215,y2:255,l:'W 32nd',lx:217,ly:12,w:2,h:0},{x1:335,y1:0,x2:335,y2:255,l:'W 25th',lx:337,ly:12,w:2.5,h:0},{x1:455,y1:0,x2:455,y2:255,l:'W 14th',lx:457,ly:12,w:2,h:0},{x1:575,y1:0,x2:575,y2:255,l:'W 3rd',lx:577,ly:12,w:2,h:0}],sat:[{b:'W 25th–Bridge',p:62,c:'#d4500a'},{b:'W 30th–Lorain',p:45,c:'#b8820a'},{b:'Carroll–W 28th',p:35,c:'#b8820a'},{b:'W 44th–Lorain',p:22,c:'#0f4c35'},{b:'Clark–W 32nd',p:14,c:'#0f4c35'}],props:[{id:1,x:55,y:45,t:'corp',a:'4102 Lorain Ave',d:'Progress Residential · 2020',p:'$1,650/mo'},{id:2,x:160,y:42,t:'owner',a:'3812 Bridge Ave',d:'Owner-occupied since 2008',p:''},{id:3,x:280,y:48,t:'listed',a:'2214 W 30th St',d:'Listed 3h ago · $279,000 · 3bd/2ba',p:'$279,000'},{id:4,x:395,y:44,t:'corp',a:'2018 W 25th St',d:'Invitation Homes LLC · 2021',p:'$1,800/mo'},{id:5,x:515,y:48,t:'corp',a:'1641 W 14th St',d:'Blackstone RE LLC · 2019',p:'$1,700/mo'},{id:6,x:620,y:42,t:'owner',a:'412 W 3rd Pl',d:'Owner-occupied since 2015',p:''},{id:7,x:48,y:125,t:'listed',a:'4406 Detroit Ave',d:'Listed 1d ago · $259,000 · 2bd/1ba',p:'$259,000'},{id:8,x:175,y:120,t:'corp',a:'3302 Detroit Ave',d:'SFR3 Holdings LLC · 2022',p:'$1,550/mo'},{id:9,x:295,y:128,t:'owner',a:'2508 Carroll Ave',d:'Owner-occupied since 2011',p:''},{id:10,x:415,y:122,t:'corp',a:'1906 W 25th St',d:'American Homes 4 Rent',p:'$1,850/mo'},{id:11,x:535,y:118,t:'listed',a:'1420 W 11th St',d:'Listed 2d ago · $295,000 · 3bd/2ba',p:'$295,000'},{id:12,x:635,y:126,t:'corp',a:'220 W 2nd St',d:'Cerberus Capital LLC · 2021',p:'$1,600/mo'}]},
+  '44102':{n:'Detroit-Shoreway',c:'30–38%',cv:34,m:'$250K',ms:'Homes.com 2025',msrc:'Homes.com, 2025',csrc:'Fed Cleveland, 2025',bg:'#d8e8f2',water:[{pts:'0,0 680,0 680,60 0,60',col:'#a8c8e8',lbl:'Lake Erie',lx:290,ly:38}],parks:[{x:300,y:65,w:90,h:45,lbl:'Edgewater Park',lx:345,ly:90}],roads:[{x1:0,y1:110,x2:680,y2:110,l:'Detroit Ave',lx:8,ly:106,w:2.5,h:1},{x1:0,y1:190,x2:680,y2:190,l:'Lorain Ave',lx:8,ly:186,w:2,h:1},{x1:100,y1:60,x2:100,y2:340,l:'W 73rd',lx:102,ly:68,w:2,h:0},{x1:230,y1:60,x2:230,y2:340,l:'W 65th',lx:232,ly:68,w:2.5,h:0},{x1:355,y1:60,x2:355,y2:340,l:'W 58th',lx:357,ly:68,w:2,h:0},{x1:475,y1:60,x2:475,y2:340,l:'W 52nd',lx:477,ly:68,w:2,h:0}],sat:[{b:'W 65th–Lake',p:55,c:'#b8820a'},{b:'W 58th–Detroit',p:42,c:'#b8820a'},{b:'W 52nd–Lorain',p:34,c:'#b8820a'},{b:'W 73rd–Lake',p:21,c:'#0f4c35'},{b:'W 45th–Detroit',p:13,c:'#0f4c35'}],props:[{id:1,x:55,y:85,t:'corp',a:'7305 Lake Ave',d:'Progress Residential · 2020',p:'$1,500/mo'},{id:2,x:168,y:80,t:'owner',a:'7012 Lake Ave',d:'Owner-occupied since 2010',p:''},{id:3,x:295,y:88,t:'listed',a:'6508 Lake Ave',d:'Live data loading...',p:''}]},
+  '44103':{n:'St. Clair–Superior',c:'46–67%',cv:58,m:'~$79K',ms:'estimated',msrc:'Estimated',csrc:'Fed East Side data',bg:'#dce4ec',water:[],parks:[{x:530,y:175,w:80,h:60,lbl:'Rockefeller Park',lx:570,ly:207}],roads:[{x1:0,y1:78,x2:680,y2:78,l:'St Clair Ave NE',lx:8,ly:74,w:2.5,h:1},{x1:0,y1:172,x2:680,y2:172,l:'Superior Ave NE',lx:8,ly:168,w:2.5,h:1},{x1:80,y1:0,x2:80,y2:340,l:'E 40th',lx:82,ly:10,w:2,h:0},{x1:198,y1:0,x2:198,y2:340,l:'E 55th',lx:200,ly:10,w:2.5,h:0},{x1:318,y1:0,x2:318,y2:340,l:'E 65th',lx:320,ly:10,w:2,h:0},{x1:438,y1:0,x2:438,y2:340,l:'E 71st',lx:440,ly:10,w:2,h:0}],sat:[{b:'St Clair–E 55th (hotspot)',p:88,c:'#d4500a'},{b:'Superior–E 71st',p:72,c:'#d4500a'},{b:'E 65th–Hough',p:62,c:'#d4500a'},{b:'E 40th–Superior',p:46,c:'#b8820a'},{b:'E 79th–St Clair',p:32,c:'#b8820a'}],props:[{id:1,x:42,y:45,t:'corp',a:'4002 St Clair Ave',d:'Cerberus Capital · 2018',p:'$1,050/mo'},{id:2,x:142,y:48,t:'corp',a:'5112 St Clair Ave',d:'SFR3 Holdings · 2019',p:'$1,100/mo'},{id:3,x:262,y:44,t:'corp',a:'6004 St Clair Ave',d:'Blackstone RE · 2020',p:'$1,150/mo'},{id:4,x:382,y:48,t:'listed',a:'Live listing data loading...',d:'Check back after data sync',p:''}]}
+};
+
+const ZIP_NAMES = {'44113':'Ohio City','44102':'Detroit-Shoreway','44109':'Tremont / Old Brooklyn','44105':'Brooklyn Centre','44114':'Downtown / North Coast','44115':'Midtown / Central','44106':'University Circle','44120':'Shaker Square','44103':'St. Clair–Superior','44111':"Kamm's Corners",'44107':'Lakewood (border)','44108':'Glenville / Superior'};
+
+const MAP_CONFIGS = {
+  '44109':{bg:'#dce8e0',water:[{pts:'0,310 120,295 260,300 400,295 540,300 680,305 680,340 0,340',col:'#a8c8e8',lbl:'Cuyahoga River',lx:70,ly:328}],parks:[{x:340,y:85,w:90,h:60,lbl:'Lincoln Park',lx:385,ly:117}],roads:[{x1:0,y1:70,x2:680,y2:70,l:'Literary Rd',lx:8,ly:66,w:2,h:1},{x1:0,y1:155,x2:680,y2:155,l:'Starkweather Ave',lx:8,ly:151,w:2.5,h:1},{x1:90,y1:0,x2:90,y2:300,l:'W 17th',lx:92,ly:10,w:2,h:0},{x1:210,y1:0,x2:210,y2:300,l:'W 14th',lx:212,ly:10,w:2,h:0},{x1:330,y1:0,x2:330,y2:300,l:'W 10th',lx:332,ly:10,w:2,h:0}],sat:[{b:'Starkweather–W 14th',p:50,c:'#b8820a'},{b:'Kenilworth–W 10th',p:38,c:'#b8820a'},{b:'Literary–W 17th',p:28,c:'#b8820a'},{b:'Pearl–Broadview',p:18,c:'#0f4c35'},{b:'Memphis–W 25th',p:11,c:'#0f4c35'}]},
+  '44105':{bg:'#e0e8f0',water:[],parks:[{x:440,y:90,w:100,h:70,lbl:'Brookside Park',lx:490,ly:128}],roads:[{x1:0,y1:75,x2:680,y2:75,l:'Denison Ave',lx:8,ly:71,w:2.5,h:1},{x1:0,y1:165,x2:680,y2:165,l:'State Rd',lx:8,ly:161,w:2.5,h:1},{x1:100,y1:0,x2:100,y2:340,l:'W 65th',lx:102,ly:10,w:2,h:0},{x1:220,y1:0,x2:220,y2:340,l:'Jennings',lx:222,ly:10,w:2,h:0},{x1:340,y1:0,x2:340,y2:340,l:'Pearl Rd',lx:342,ly:10,w:2.5,h:0}],sat:[{b:'Denison–State (hotspot)',p:82,c:'#d4500a'},{b:'Pearl–Broadview',p:67,c:'#d4500a'},{b:'Jennings–Denison',p:55,c:'#b8820a'},{b:'State–W 65th',p:38,c:'#b8820a'},{b:'Broadview–W 54th',p:26,c:'#0f4c35'}]},
+  '44114':{bg:'#d5e2ee',water:[{pts:'0,0 680,0 680,55 0,55',col:'#a8c8e8',lbl:'Lake Erie',lx:275,ly:35}],parks:[{x:50,y:60,w:130,h:60,lbl:'Burke Lakefront',lx:115,ly:92}],roads:[{x1:0,y1:125,x2:680,y2:125,l:'Lakeside Ave',lx:8,ly:121,w:2,h:1},{x1:0,y1:200,x2:680,y2:200,l:'Superior Ave',lx:8,ly:196,w:2.5,h:1},{x1:90,y1:55,x2:90,y2:340,l:'W 9th',lx:92,ly:62,w:2,h:0},{x1:200,y1:55,x2:200,y2:340,l:'Ontario St',lx:202,ly:62,w:2.5,h:0},{x1:310,y1:55,x2:310,y2:340,l:'E 6th',lx:312,ly:62,w:2,h:0},{x1:420,y1:55,x2:420,y2:340,l:'E 9th',lx:422,ly:62,w:2.5,h:0}],sat:[{b:'Superior–E 9th',p:34,c:'#b8820a'},{b:'Lakeside–E 6th',p:24,c:'#0f4c35'},{b:'Ontario–W 3rd',p:18,c:'#0f4c35'},{b:'St Clair–E 12th',p:12,c:'#0f4c35'},{b:'Euclid–E 4th',p:8,c:'#0f4c35'}]},
+  '44115':{bg:'#dce4ec',water:[],parks:[{x:480,y:60,w:90,h:55,lbl:'Rockefeller Park',lx:525,ly:90}],roads:[{x1:0,y1:80,x2:680,y2:80,l:'Euclid Ave',lx:8,ly:76,w:2.5,h:1},{x1:0,y1:165,x2:680,y2:165,l:'Chester Ave',lx:8,ly:161,w:2.5,h:1},{x1:90,y1:0,x2:90,y2:340,l:'E 18th',lx:92,ly:10,w:2,h:0},{x1:205,y1:0,x2:205,y2:340,l:'E 22nd',lx:207,ly:10,w:2,h:0},{x1:325,y1:0,x2:325,y2:340,l:'E 30th',lx:327,ly:10,w:2.5,h:0},{x1:445,y1:0,x2:445,y2:340,l:'E 36th',lx:447,ly:10,w:2,h:0}],sat:[{b:'Euclid–E 30th (hotspot)',p:68,c:'#d4500a'},{b:'Chester–E 22nd',p:52,c:'#b8820a'},{b:'Carnegie–E 36th',p:44,c:'#b8820a'},{b:'Superior–E 40th',p:28,c:'#0f4c35'},{b:'Prospect–E 18th',p:18,c:'#0f4c35'}]},
+  '44106':{bg:'#dce8e2',water:[],parks:[{x:200,y:80,w:160,h:100,lbl:'Wade Oval',lx:280,ly:132}],roads:[{x1:0,y1:65,x2:680,y2:65,l:'Euclid Ave',lx:8,ly:61,w:2.5,h:1},{x1:0,y1:195,x2:680,y2:195,l:'Mayfield Rd',lx:8,ly:191,w:2,h:1},{x1:80,y1:0,x2:80,y2:340,l:'E 105th',lx:82,ly:10,w:2,h:0},{x1:360,y1:0,x2:360,y2:340,l:'E 115th',lx:362,ly:10,w:2.5,h:0},{x1:480,y1:0,x2:480,y2:340,l:'E 120th',lx:482,ly:10,w:2,h:0}],sat:[{b:'Euclid–E 115th',p:42,c:'#b8820a'},{b:'Wade Park–E 105th',p:30,c:'#b8820a'},{b:'Mayfield–E 120th',p:26,c:'#0f4c35'},{b:'Cornell–E 107th',p:16,c:'#0f4c35'},{b:'Bellflower–E 115th',p:10,c:'#0f4c35'}]},
+  '44120':{bg:'#e2ead8',water:[],parks:[{x:240,y:95,w:140,h:95,lbl:'Shaker Square',lx:310,ly:145}],roads:[{x1:0,y1:72,x2:680,y2:72,l:'Van Aken Blvd',lx:8,ly:68,w:2.5,h:1},{x1:0,y1:192,x2:680,y2:192,l:'Chagrin Blvd',lx:8,ly:188,w:2.5,h:1},{x1:88,y1:0,x2:88,y2:340,l:'Lee Rd',lx:90,ly:10,w:2.5,h:0},{x1:382,y1:0,x2:382,y2:340,l:'Shaker Blvd',lx:384,ly:10,w:2,h:0},{x1:488,y1:110,x2:488,y2:340,l:'Coventry Rd',lx:490,ly:118,w:2,h:0}],sat:[{b:'Chagrin–Lee Rd',p:38,c:'#b8820a'},{b:'Van Aken–Shaker',p:26,c:'#0f4c35'},{b:'Coventry–Lee',p:22,c:'#0f4c35'},{b:'S Moreland–Chagrin',p:15,c:'#0f4c35'},{b:'Avalon–Van Aken',p:8,c:'#0f4c35'}]},
+  '44111':{bg:'#e0e8d8',water:[],parks:[{x:380,y:80,w:110,h:75,lbl:'Big Creek Reservation',lx:435,ly:120}],roads:[{x1:0,y1:68,x2:680,y2:68,l:'Lorain Ave',lx:8,ly:64,w:2.5,h:1},{x1:0,y1:160,x2:680,y2:160,l:'Puritas Ave',lx:8,ly:156,w:2,h:1},{x1:90,y1:0,x2:90,y2:340,l:'W 117th',lx:92,ly:10,w:2.5,h:0},{x1:340,y1:0,x2:340,y2:340,l:'W 130th',lx:342,ly:10,w:2,h:0},{x1:460,y1:0,x2:460,y2:340,l:'W 140th',lx:462,ly:10,w:2,h:0}],sat:[{b:'Lorain–W 117th',p:32,c:'#b8820a'},{b:'W 130th–Puritas',p:24,c:'#0f4c35'},{b:'Berea–W 117th',p:18,c:'#0f4c35'},{b:'W 140th–Lorain',p:12,c:'#0f4c35'},{b:'Puritas–W 130th',p:7,c:'#0f4c35'}]},
+  '44107':{bg:'#d8e4f0',water:[{pts:'0,0 680,0 680,50 0,50',col:'#a8c8e8',lbl:'Lake Erie',lx:280,ly:32}],parks:[{x:60,y:55,w:90,h:55,lbl:'Lakewood Park',lx:105,ly:85}],roads:[{x1:0,y1:115,x2:680,y2:115,l:'Lake Ave',lx:8,ly:111,w:2,h:1},{x1:0,y1:195,x2:680,y2:195,l:'Detroit Ave',lx:8,ly:191,w:2.5,h:1},{x1:88,y1:50,x2:88,y2:340,l:'Bunts Rd',lx:90,ly:58,w:2,h:0},{x1:208,y1:50,x2:208,y2:340,l:'Clifton Blvd',lx:210,ly:58,w:2,h:0},{x1:328,y1:50,x2:328,y2:340,l:'Sloane Ave',lx:330,ly:58,w:2,h:0}],sat:[{b:'Detroit–Sloane',p:26,c:'#0f4c35'},{b:'Madison–Mars',p:20,c:'#0f4c35'},{b:'Clifton–Bunts',p:15,c:'#0f4c35'},{b:'Lake–Elmwood',p:9,c:'#0f4c35'},{b:'Warren–Arthur',p:6,c:'#0f4c35'}]},
+  '44108':{bg:'#dce0e8',water:[],parks:[{x:440,y:55,w:120,h:80,lbl:'Rockefeller Greenhouse',lx:500,ly:97}],roads:[{x1:0,y1:72,x2:680,y2:72,l:'St Clair Ave NE',lx:8,ly:68,w:2.5,h:1},{x1:0,y1:162,x2:680,y2:162,l:'Superior Ave NE',lx:8,ly:158,w:2.5,h:1},{x1:78,y1:0,x2:78,y2:340,l:'E 93rd',lx:80,ly:10,w:2,h:0},{x1:315,y1:0,x2:315,y2:340,l:'E 105th',lx:317,ly:10,w:2.5,h:0},{x1:435,y1:0,x2:435,y2:340,l:'E 113th',lx:437,ly:10,w:2,h:0},{x1:558,y1:0,x2:558,y2:340,l:'E 120th',lx:560,ly:10,w:2,h:0}],sat:[{b:'Superior–E 105th (hotspot)',p:76,c:'#d4500a'},{b:'St Clair–E 113th',p:62,c:'#d4500a'},{b:'Lakeview–E 99th',p:50,c:'#b8820a'},{b:'Parkwood–E 120th',p:34,c:'#b8820a'},{b:'Wade Park–E 93rd',p:20,c:'#0f4c35'}]}
+};
+
+const CORP_STATS = {
+  '44113':{c:'28–35%',cv:32,ct:'↑ from 2020 baseline',csrc:'Fed Cleveland, 2025'},
+  '44102':{c:'30–38%',cv:34,ct:'↑ from 2020 baseline',csrc:'Fed Cleveland, 2025'},
+  '44109':{c:'25–32%',cv:28,ct:'↑ from 2020 baseline',csrc:'Fed Cleveland, 2025'},
+  '44105':{c:'45–63%',cv:55,ct:'↑ significantly from 2020',csrc:'Fed East Side data'},
+  '44114':{c:'18–26%',cv:22,ct:'↑ slightly from 2020',csrc:'Fed Cleveland, 2025'},
+  '44115':{c:'38–50%',cv:44,ct:'↑ from 2020 baseline',csrc:'Fed Cleveland, 2025'},
+  '44106':{c:'22–30%',cv:26,ct:'↑ slightly from 2020',csrc:'Fed Cleveland, 2025'},
+  '44120':{c:'20–28%',cv:24,ct:'↑ slightly from 2020',csrc:'Fed Cleveland, 2025'},
+  '44103':{c:'46–67%',cv:58,ct:'↑ nearly tripled since 2004',csrc:'Fed East Side data'},
+  '44111':{c:'18–25%',cv:21,ct:'~ stable from 2020',csrc:'Fed Cleveland, 2025'},
+  '44107':{c:'15–22%',cv:18,ct:'↓ stable / slight decrease',csrc:'Fed Cleveland, 2025'},
+  '44108':{c:'46–55%',cv:50,ct:'↑ sharply from 2020',csrc:'Fed East Side data'}
+};
+
+let cZ='44113', af='all', animF=null, pt=0, hov=null;
+let liveProps=[], mapConfig=null;
+const cv=document.getElementById('mc'), ctx=cv.getContext('2d');
+
+async function fetchFromSupabase(table, params='') {
+  try {
+    const resp = await fetch(
+      `${SUPABASE_URL}/rest/v1/${table}?${params}`,
+      { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` } }
+    );
+    if (resp.ok) return await resp.json();
+    return null;
+  } catch(e) {
+    return null;
+  }
+}
+
+function latLngToXY(lat, lng, zip) {
+  const bounds = {
+    '44113':{minLat:41.474,maxLat:41.492,minLng:-81.720,maxLng:-81.685},
+    '44102':{minLat:41.476,maxLat:41.496,minLng:-81.755,maxLng:-81.718},
+    '44109':{minLat:41.458,maxLat:41.478,minLng:-81.718,maxLng:-81.678},
+    '44105':{minLat:41.438,maxLat:41.458,minLng:-81.728,maxLng:-81.688},
+    '44114':{minLat:41.496,maxLat:41.514,minLng:-81.700,maxLng:-81.660},
+    '44115':{minLat:41.480,maxLat:41.498,minLng:-81.678,maxLng:-81.638},
+    '44106':{minLat:41.504,maxLat:41.522,minLng:-81.620,maxLng:-81.580},
+    '44120':{minLat:41.472,maxLat:41.490,minLng:-81.600,maxLng:-81.558},
+    '44103':{minLat:41.518,maxLat:41.536,minLng:-81.650,maxLng:-81.608},
+    '44111':{minLat:41.432,maxLat:41.452,minLng:-81.800,maxLng:-81.758},
+    '44107':{minLat:41.476,maxLat:41.496,minLng:-81.808,maxLng:-81.768},
+    '44108':{minLat:41.530,maxLat:41.548,minLng:-81.630,maxLng:-81.588}
+  };
+  const b = bounds[zip];
+  if (!b) return {x:Math.random()*600+40, y:Math.random()*280+30};
+  const x = Math.round((lng - b.minLng) / (b.maxLng - b.minLng) * 680);
+  const y = Math.round((b.maxLat - lat) / (b.maxLat - b.minLat) * 340);
+  return {x: Math.max(20, Math.min(660, x)), y: Math.max(20, Math.min(320, y))};
+}
+
+async function loadZ(z) {
+  cZ = z;
+  const name = ZIP_NAMES[z] || z;
+  document.getElementById('hzip').textContent = `ZIP ${z} · ${name}`;
+  document.getElementById('mtitle').textContent = `ZIP ${z} · ${name}`;
+  const sel = document.getElementById('zip-select');
+  if (ZIP_NAMES[z]) sel.value = z;
+
+  const cs = CORP_STATS[z] || {c:'—',cv:30,ct:'',csrc:'Fed Cleveland, 2025'};
+  const cc = cs.cv > 50 ? 'red' : cs.cv > 30 ? 'amber' : 'grn';
+  document.getElementById('kv-corp').className = 'kpi-val ' + cc;
+  document.getElementById('kv-corp').textContent = cs.c;
+  document.getElementById('kv-corp-s').textContent = cs.ct;
+  document.getElementById('kv-corp-src').textContent = cs.csrc;
+
+  const fb = FALLBACK_DATA[z];
+  if (fb) {
+    document.getElementById('kv-med').textContent = fb.m;
+    document.getElementById('kv-med-s').textContent = fb.ms;
+    document.getElementById('kv-med-src').textContent = fb.msrc;
+  }
+
+  document.getElementById('kv-lst').textContent = '...';
+  document.getElementById('kv-dom').textContent = '...';
+  document.getElementById('kv-dom-s').textContent = 'loading live data';
+
+  const mc = MAP_CONFIGS[z] || fb;
+  mapConfig = mc || fb;
+
+  if (mc && mc.sat) renderSat(mc.sat);
+  else if (fb && fb.sat) renderSat(fb.sat);
+
+  af = 'all';
+  document.querySelectorAll('.fil').forEach((p,i) => p.classList.toggle('on', i===0));
+  hov = null;
+
+  document.getElementById('map-loading').style.display = 'flex';
+
+  if (SUPABASE_URL !== 'YOUR_SUPABASE_URL_HERE') {
+    const [props, stats] = await Promise.all([
+      fetchFromSupabase('properties', `zip=eq.${z}&select=*&order=type`),
+      fetchFromSupabase('market_stats', `zip=eq.${z}&select=*&limit=1`)
+    ]);
+
+    if (stats && stats.length > 0) {
+      const s = stats[0];
+      if (s.median_price) {
+        document.getElementById('kv-med').textContent = '$' + (s.median_price/1000).toFixed(0) + 'K';
+        document.getElementById('kv-med-src').textContent = 'RentCast live';
+      }
+      if (s.active_listings !== null) document.getElementById('kv-lst').textContent = s.active_listings;
+      if (s.avg_days_on_market !== null) {
+        const dom = Math.round(s.avg_days_on_market * 10) / 10;
+        document.getElementById('kv-dom').textContent = dom;
+        document.getElementById('kv-dom-s').textContent = dom < 5 ? '↓ fast market' : '~ steady pace';
+        document.getElementById('kv-dom').className = 'kpi-val ' + (dom < 5 ? 'amber' : 'grn');
+      }
+      if (s.updated_at) {
+        const d = new Date(s.updated_at);
+        document.getElementById('last-updated').textContent = `Live data · updated ${d.toLocaleDateString('en-US', {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})}`;
+      }
+    } else {
+      if (fb) {
+        document.getElementById('kv-lst').textContent = fb.l || '—';
+        document.getElementById('kv-dom').textContent = fb.d || '—';
+      }
+    }
+
+    if (props && props.length > 0) {
+      liveProps = props.map((p, i) => {
+        const xy = (p.lat && p.lng) ? latLngToXY(p.lat, p.lng, z) : {x:50+i*40, y:50+i*30};
+        return {
+          id: p.id || i,
+          x: xy.x, y: xy.y,
+          t: p.type || 'listed',
+          a: p.address || 'Address loading',
+          d: p.detail || `$${(p.price||0).toLocaleString()} · ${p.beds||'?'}bd/${p.baths||'?'}ba`,
+          p: p.price ? '$' + p.price.toLocaleString() : ''
+        };
+      });
+    } else {
+      liveProps = (fb && fb.props) ? fb.props : [];
+      document.getElementById('kv-lst').textContent = liveProps.filter(p=>p.t==='listed').length;
+    }
+  } else {
+    liveProps = (fb && fb.props) ? fb.props : [];
+    document.getElementById('kv-lst').textContent = liveProps.filter(p=>p.t==='listed').length;
+    document.getElementById('kv-dom').textContent = fb ? fb.d : '—';
+    document.getElementById('kv-dom-s').textContent = fb ? fb.dt || '' : '';
+    document.getElementById('kv-dom').className = 'kpi-val ' + (fb && fb.d < 4 ? 'amber' : 'grn');
+    document.getElementById('last-updated').textContent = 'Demo mode · connect Supabase for live data';
+  }
+
+  document.getElementById('map-loading').style.display = 'none';
+  renderProps(liveProps);
+}
+
+function qzSelect(z){loadZ(z);}
+function applyZip(){
+  const v=document.getElementById('zf').value.trim();
+  if(v.length===5&&/^\d+$/.test(v)) loadZ(v);
+}
+
+function resize(){
+  const w=document.getElementById('mbox');
+  cv.width=w.clientWidth*devicePixelRatio;
+  cv.height=w.clientHeight*devicePixelRatio;
+  cv.style.width=w.clientWidth+'px';
+  cv.style.height=w.clientHeight+'px';
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(devicePixelRatio,devicePixelRatio);
+}
+
+function gsc(){
+  const w=document.getElementById('mbox');
+  return{sx:w.clientWidth/680,sy:w.clientHeight/340,W:w.clientWidth,H:w.clientHeight};
+}
+
+function rr(x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);
+  ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);
+  ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();
+}
+
+function draw(t){
+  pt=t||pt;
+  const cfg = mapConfig || FALLBACK_DATA[cZ];
+  if(!cfg) return;
+  const{sx,sy,W,H}=gsc();
+  const dk=matchMedia('(prefers-color-scheme: dark)').matches;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle=dk?'#1a2530':cfg.bg||'#dde8f0';
+  ctx.fillRect(0,0,W,H);
+  (cfg.water||[]).forEach(w=>{
+    const pts=w.pts.split(' ').map(p=>{const[a,b]=p.split(',');return[+a*sx,+b*sy]});
+    ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);pts.slice(1).forEach(p=>ctx.lineTo(p[0],p[1]));ctx.closePath();
+    ctx.fillStyle=dk?'#1e3a52':'#a8c8e8';ctx.fill();
+    if(w.lbl){ctx.fillStyle=dk?'#4a8ab0':'#1a5080';ctx.font=`italic ${Math.round(9*Math.min(sx,sy))}px Outfit,sans-serif`;ctx.textAlign='left';ctx.fillText(w.lbl,w.lx*sx,w.ly*sy);}
+  });
+  (cfg.parks||[]).forEach(pk=>{
+    ctx.fillStyle=dk?'#1a3020':'#b8dba8';rr(pk.x*sx,pk.y*sy,pk.w*sx,pk.h*sy,4);ctx.fill();
+    ctx.fillStyle=dk?'#3a6040':'#1a5030';ctx.font=`${Math.round(8.5*Math.min(sx,sy))}px Outfit,sans-serif`;ctx.textAlign='center';ctx.fillText(pk.lbl,pk.lx*sx,pk.ly*sy);
+  });
+  (cfg.roads||[]).forEach(r=>{
+    ctx.strokeStyle=dk?'#2e3d4a':'#ffffff';ctx.lineWidth=(r.w||2)*Math.min(sx,sy)*1.8;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(r.x1*sx,r.y1*sy);ctx.lineTo(r.x2*sx,r.y2*sy);ctx.stroke();
+    ctx.strokeStyle=dk?'#3a4e5a':'#e0e0e0';ctx.lineWidth=(r.w||2)*Math.min(sx,sy)*0.32;
+    ctx.beginPath();ctx.moveTo(r.x1*sx,r.y1*sy);ctx.lineTo(r.x2*sx,r.y2*sy);ctx.stroke();
+    if(r.l){ctx.save();ctx.font=`500 ${Math.round(8.5*Math.min(sx,sy))}px Outfit,sans-serif`;ctx.fillStyle=dk?'#7a9aaa':'#445566';
+      if(r.h){ctx.textAlign='left';ctx.fillText(r.l,r.lx*sx,r.ly*sy);}
+      else{ctx.translate(r.lx*sx,r.ly*sy);ctx.rotate(-Math.PI/2);ctx.textAlign='center';ctx.fillText(r.l,0,0);}
+      ctx.restore();}
+  });
+  const props=liveProps.filter(p=>af==='all'||p.t===af);
+  const pf=(Math.sin(pt/800)+1)/2;
+  props.forEach(p=>{
+    const px=p.x*sx,py=p.y*sy;
+    const col={corp:'#d4500a',listed:'#1a56a0',owner:'#0f4c35'}[p.t]||'#888';
+    const r=p.t==='listed'?7*Math.min(sx,sy):5.5*Math.min(sx,sy);
+    if(p.t==='listed'){ctx.beginPath();ctx.arc(px,py,r*(1.7+pf*0.5),0,Math.PI*2);const a=Math.round((0.1+pf*0.12)*255).toString(16).padStart(2,'0');ctx.fillStyle=col+a;ctx.fill();}
+    ctx.beginPath();ctx.arc(px,py,r,0,Math.PI*2);ctx.fillStyle=col;ctx.fill();
+    ctx.strokeStyle='#fff';ctx.lineWidth=1.5*Math.min(sx,sy);ctx.stroke();
+    if(hov&&hov.id===p.id){ctx.beginPath();ctx.arc(px,py,r+3.5,0,Math.PI*2);ctx.strokeStyle=col;ctx.lineWidth=2*Math.min(sx,sy);ctx.stroke();}
+  });
+}
+
+function animate(t){draw(t);animF=requestAnimationFrame(animate);}
+
+cv.addEventListener('mousemove',e=>{
+  const rect=cv.getBoundingClientRect();
+  const mx=e.clientX-rect.left,my=e.clientY-rect.top;
+  const{sx,sy}=gsc();
+  const props=liveProps.filter(p=>af==='all'||p.t===af);
+  let found=null;
+  for(const p of props){const r=p.t==='listed'?7*Math.min(sx,sy):5.5*Math.min(sx,sy);if(Math.hypot(p.x*sx-mx,p.y*sy-my)<r+5){found=p;break;}}
+  hov=found;
+  const tt=document.getElementById('mtt');
+  if(found){
+    let l=mx+12,t2=my+8;if(l+185>rect.width)l=mx-190;
+    tt.style.left=l+'px';tt.style.top=t2+'px';tt.style.display='block';
+    document.getElementById('tta').textContent=found.a;
+    const tm={corp:'tc',listed:'tl',owner:'to'};
+    const tl={corp:'Corporate owned',listed:'Listed now',owner:'Owner-occupied'};
+    document.getElementById('ttt').innerHTML=`<span class="mtt-tag ${tm[found.t]||'to'}">${tl[found.t]||'Property'}</span>`;
+    document.getElementById('ttd').textContent=found.d;
+    cv.style.cursor='pointer';
+  } else {tt.style.display='none';cv.style.cursor='default';}
+});
+cv.addEventListener('mouseleave',()=>{hov=null;document.getElementById('mtt').style.display='none';});
+cv.addEventListener('click',()=>{if(hov)hlP(hov.id);});
+
+function filt(f,b){af=f;document.querySelectorAll('.fil').forEach(p=>p.classList.remove('on'));b.classList.add('on');}
+
+function renderSat(sat){
+  document.getElementById('sat').innerHTML=sat.map(s=>`
+    <div class="sat-row"><div class="sat-name">${s.b}</div>
+    <div class="sat-track"><div class="sat-fill" style="width:${s.p}%;background:${s.c}"></div></div>
+    <div class="sat-pct" style="color:${s.c}">${s.p}%</div></div>`).join('');
+}
+
+function renderProps(props){
+  const ls=props.filter(p=>p.t==='listed');
+  const ot=props.filter(p=>p.t!=='listed').slice(0,3);
+  const tl={corp:'Corporate',listed:'Listed now',owner:'Owner-occ.'};
+  const tc={corp:'ptag-c',listed:'ptag-l',owner:'ptag-o'};
+  document.getElementById('props').innerHTML=[...ls,...ot].map(p=>`
+    <div class="prop-card" data-id="${p.id}" onclick="hlP(${p.id})">
+      <div><div class="prop-addr">${p.a}</div><div class="prop-meta">${p.d}</div></div>
+      <div class="prop-r"><div class="prop-price">${p.p||'–'}</div><span class="ptag ${tc[p.t]||'ptag-o'}">${tl[p.t]||'Property'}</span></div>
+    </div>`).join('') || '<div style="font-size:14px;color:#888;padding:8px 0">No listings found. Data updates daily at 8am.</div>';
+}
+
+function hlP(id){
+  document.querySelectorAll('.prop-card').forEach(r=>{
+    r.classList.toggle('hl',r.dataset.id==id);
+    if(r.dataset.id==id) r.scrollIntoView({behavior:'smooth',block:'nearest'});
+  });
+}
+
+let ckCount=3,ckTotal=12;
+function ck(el){
+  el.classList.toggle('done');
+  ckCount=document.querySelectorAll('.ci.done').length;
+  document.getElementById('prog-lbl').textContent=`${ckCount} of ${ckTotal} complete`;
+  document.getElementById('prog-fill').style.width=Math.round((ckCount/ckTotal)*100)+'%';
+}
+
+function toggleExpand(btn){btn.classList.toggle('open');btn.nextElementSibling.classList.toggle('open');}
+
+function showTab(t){
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.getElementById('pane-'+t).classList.add('on');
+  ['map','alerts','toolkit','sources'].forEach((n,i)=>{if(n===t)document.querySelectorAll('.tab')[i].classList.add('on');});
+  if(t==='map'){if(!animF)animF=requestAnimationFrame(animate);}
+  else{if(animF){cancelAnimationFrame(animF);animF=null;}}
+}
+
+window.addEventListener('resize',resize);
+resize();
+loadZ('44113');
+animF=requestAnimationFrame(animate);
+</script>
+</body>
+</html>
