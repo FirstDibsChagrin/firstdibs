@@ -55,8 +55,8 @@ CACHE_HOURS = 24
 # ============================================================
 ENABLED_ZIPS = [
     # Cleveland core 12 — add more as needed
-    # '44113',  # Ohio City
-    # '44103',  # St. Clair-Superior
+     '44113',  # Ohio City
+     '44103',  # St. Clair-Superior
 ]
 
 # ============================================================
