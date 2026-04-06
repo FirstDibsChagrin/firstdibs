@@ -323,38 +323,46 @@ def fetch_census_boundary(zip_code):
         return None
 
     try:
+        # Census TIGERweb ZCTA layer — correct 2020 ZIP Code Tabulation Areas layer
         url = (
             "https://tigerweb.geo.census.gov/arcgis/rest/services/"
-            "TIGERweb/tigerWMS_Census2020/MapServer/2/query"
+            "TIGERweb/PUMA_TAD_TAZ_UGA_ZCTA/MapServer/1/query"
         )
 
         r = requests.get(
             url,
             params={
-                'where': f"GEOID='{zip_code}'",
-                'outFields': 'GEOID,NAME',
-                'outSR': '4326',
-                'f': 'geojson'
+                "where": f"GEOID='{zip_code}'",
+                "outFields": "GEOID,BASENAME,NAME",
+                "outSR": "4326",
+                "f": "geojson"
             },
             timeout=25
         )
 
-        if r.ok:
-            data = r.json()
-            features = data.get('features', [])
+        if not r.ok:
+            print(f"  [{zip_code}] Boundary fetch error: {r.status_code} — {r.text[:200]}")
+            return None
 
-            if features:
-                geometry = features[0].get('geometry', {})
-                boundary = {
-                    'zip': zip_code,
-                    'geojson': json.dumps(geometry),
-                    'updated_at': datetime.utcnow().isoformat()
-                }
-                mark_cache(zip_code, 'boundary')
-                return boundary
+        data = r.json()
+        features = data.get("features", [])
+        if not features:
+            print(f"  [{zip_code}] No boundary found from Census")
+            return None
 
-        print(f"  [{zip_code}] Boundary fetch error: {r.status_code} — {r.text[:200]}")
-        return None
+        geometry = features[0].get("geometry", {})
+        if not geometry:
+            print(f"  [{zip_code}] Boundary returned no geometry")
+            return None
+
+        boundary = {
+            "zip": zip_code,
+            "geojson": json.dumps(geometry),
+            "updated_at": datetime.utcnow().isoformat()
+        }
+
+        mark_cache(zip_code, "boundary")
+        return boundary
 
     except Exception as e:
         print(f"  [{zip_code}] Census boundary exception: {e}")
