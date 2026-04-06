@@ -36,38 +36,38 @@ def safety_check():
         print("=" * 50)
         sys.exit(0)
 
-    print(f"Features enabled:")
-    print(f"  FETCH_LISTINGS:        {FETCH_LISTINGS}")
-    print(f"  FETCH_MARKET_STATS:    {FETCH_MARKET_STATS}")
-    print(f"  FETCH_OWNERSHIP_DATA:  {FETCH_OWNERSHIP_DATA}")
-    print(f"  FETCH_CENSUS_BOUNDARIES: {FETCH_CENSUS_BOUNDARIES}")
-    print(f"  NATIONAL_MODE:         {NATIONAL_MODE}")
-    print(f"  ON_DEMAND_ONLY:        {ON_DEMAND_ONLY}")
-    print(f"  ZIPs to process:       {len(ENABLED_ZIPS)}")
+    print("Features enabled:")
+    print(f"  FETCH_LISTINGS:         {FETCH_LISTINGS}")
+    print(f"  FETCH_MARKET_STATS:     {FETCH_MARKET_STATS}")
+    print(f"  FETCH_OWNERSHIP_DATA:   {FETCH_OWNERSHIP_DATA}")
+    print(f"  FETCH_CENSUS_BOUNDARIES:{FETCH_CENSUS_BOUNDARIES}")
+    print(f"  NATIONAL_MODE:          {NATIONAL_MODE}")
+    print(f"  ON_DEMAND_ONLY:         {ON_DEMAND_ONLY}")
+    print(f"  ZIPs to process:        {len(ENABLED_ZIPS)}")
     print()
 
 # ============================================================
 # API CREDENTIALS
 # ============================================================
-RENTCAST_KEY  = os.environ.get("RENTCAST_KEY", "")
-SUPABASE_URL  = os.environ.get("SUPABASE_URL", "")
-SUPABASE_KEY  = os.environ.get("SUPABASE_KEY", "")
+RENTCAST_KEY = os.environ.get("RENTCAST_KEY", "")
+SUPABASE_URL = os.environ.get("SUPABASE_URL", "")
+SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "")
 
 CORPORATE_KEYWORDS = [
-    'LLC','L.L.C','Holdings','Residential','Partners','Capital',
-    'Trust','Investments','Realty','Properties','Group','Homes',
-    'Assets','Ventures','Acquisitions','Management','Real Estate',
-    'Rental','Rentals','Fund','Equity','Investment','REIT',
-    'Blackstone','Invitation','Progress','SFR','Cerberus',
-    'Tricon','Pretium','American Homes','Amherst','Roofstock'
+    'LLC', 'L.L.C', 'Holdings', 'Residential', 'Partners', 'Capital',
+    'Trust', 'Investments', 'Realty', 'Properties', 'Group', 'Homes',
+    'Assets', 'Ventures', 'Acquisitions', 'Management', 'Real Estate',
+    'Rental', 'Rentals', 'Fund', 'Equity', 'Investment', 'REIT',
+    'Blackstone', 'Invitation', 'Progress', 'SFR', 'Cerberus',
+    'Tricon', 'Pretium', 'American Homes', 'Amherst', 'Roofstock'
 ]
 
 def is_corporate(owner_name, owner_type=None):
-    if owner_type and owner_type.lower() == 'organization':
+    if owner_type and str(owner_type).lower() == 'organization':
         return True
     if not owner_name:
         return False
-    name_upper = owner_name.upper()
+    name_upper = str(owner_name).upper()
     return any(k.upper() in name_upper for k in CORPORATE_KEYWORDS)
 
 # ============================================================
@@ -79,7 +79,7 @@ def supabase_get(table, params=''):
         "apikey": SUPABASE_KEY,
         "Authorization": f"Bearer {SUPABASE_KEY}"
     }
-    r = requests.get(url, headers=headers, timeout=10)
+    r = requests.get(url, headers=headers, timeout=15)
     return r.json() if r.ok else []
 
 def supabase_upsert(table, data, on_conflict=None):
@@ -101,8 +101,8 @@ def supabase_upsert(table, data, on_conflict=None):
     all_ok = True
 
     for i in range(0, len(data), batch_size):
-        batch = data[i:i+batch_size]
-        r = requests.post(url, headers=headers, json=batch, timeout=15)
+        batch = data[i:i + batch_size]
+        r = requests.post(url, headers=headers, json=batch, timeout=20)
         if not r.ok:
             all_ok = False
             print(f"  Supabase error: {r.status_code} — {r.text[:300]}")
@@ -116,24 +116,34 @@ def supabase_delete(table, condition):
         "Authorization": f"Bearer {SUPABASE_KEY}",
         "Prefer": "return=minimal"
     }
-    requests.delete(url, headers=headers, timeout=10)
+    r = requests.delete(url, headers=headers, timeout=15)
+    return r.ok
 
 def is_cache_fresh(zip_code, data_type):
-    rows = supabase_get('cache_status',
-        f"zip=eq.{zip_code}&data_type=eq.{data_type}&select=updated_at")
+    rows = supabase_get(
+        'cache_status',
+        f"zip=eq.{zip_code}&data_type=eq.{data_type}&select=updated_at"
+    )
     if not rows:
         return False
-    updated = datetime.fromisoformat(rows[0]['updated_at'].replace('Z', '+00:00'))
-    age = datetime.now(updated.tzinfo) - updated
-    return age < timedelta(hours=CACHE_HOURS)
+
+    try:
+        updated = datetime.fromisoformat(rows[0]['updated_at'].replace('Z', '+00:00'))
+        age = datetime.now(updated.tzinfo) - updated
+        return age < timedelta(hours=CACHE_HOURS)
+    except Exception:
+        return False
 
 def mark_cache(zip_code, data_type):
-  supabase_upsert('cache_status', [{
-    'zip': zip_code,
-    'data_type': data_type,
-    'updated_at': datetime.utcnow().isoformat()
-}], on_conflict='zip,data_type')
-    }])
+    return supabase_upsert(
+        'cache_status',
+        [{
+            'zip': zip_code,
+            'data_type': data_type,
+            'updated_at': datetime.utcnow().isoformat()
+        }],
+        on_conflict='zip,data_type'
+    )
 
 # ============================================================
 # RENTCAST — LISTINGS
@@ -141,28 +151,33 @@ def mark_cache(zip_code, data_type):
 def fetch_listings(zip_code):
     if not FETCH_LISTINGS:
         return []
+
     if is_cache_fresh(zip_code, 'listings'):
         print(f"  [{zip_code}] Listings cache fresh, skipping")
         return []
+
     try:
         r = requests.get(
             "https://api.rentcast.io/v1/listings/sale",
             params={"zipCode": zip_code, "status": "Active", "limit": 50},
             headers={"X-Api-Key": RENTCAST_KEY},
-            timeout=15
+            timeout=20
         )
+
         if r.status_code == 200:
             data = r.json()
             listings = data if isinstance(data, list) else data.get("listings", [])
             mark_cache(zip_code, 'listings')
             return listings
-        elif r.status_code == 429:
+
+        if r.status_code == 429:
             print(f"  [{zip_code}] Rate limited — waiting 60s")
             time.sleep(60)
             return []
-        else:
-            print(f"  [{zip_code}] Listings error: {r.status_code}")
-            return []
+
+        print(f"  [{zip_code}] Listings error: {r.status_code} — {r.text[:200]}")
+        return []
+
     except Exception as e:
         print(f"  [{zip_code}] Listings exception: {e}")
         return []
@@ -173,25 +188,31 @@ def fetch_listings(zip_code):
 def fetch_market_stats(zip_code):
     if not FETCH_MARKET_STATS:
         return {}
+
     if is_cache_fresh(zip_code, 'market_stats'):
         print(f"  [{zip_code}] Market stats cache fresh, skipping")
         return {}
+
     try:
         r = requests.get(
             "https://api.rentcast.io/v1/markets",
             params={"zipCode": zip_code},
             headers={"X-Api-Key": RENTCAST_KEY},
-            timeout=15
+            timeout=20
         )
+
         if r.status_code == 200:
             mark_cache(zip_code, 'market_stats')
             return r.json()
-        elif r.status_code == 429:
+
+        if r.status_code == 429:
             print(f"  [{zip_code}] Rate limited — waiting 60s")
             time.sleep(60)
             return {}
-        else:
-            return {}
+
+        print(f"  [{zip_code}] Market stats error: {r.status_code} — {r.text[:200]}")
+        return {}
+
     except Exception as e:
         print(f"  [{zip_code}] Market stats exception: {e}")
         return {}
@@ -204,9 +225,11 @@ def fetch_market_stats(zip_code):
 def fetch_ownership_data(zip_code):
     if not FETCH_OWNERSHIP_DATA:
         return None
+
     if is_cache_fresh(zip_code, 'ownership'):
         print(f"  [{zip_code}] Ownership cache fresh, skipping")
         return None
+
     try:
         all_records = []
         offset = 0
@@ -223,23 +246,31 @@ def fetch_ownership_data(zip_code):
                     "offset": offset
                 },
                 headers={"X-Api-Key": RENTCAST_KEY},
-                timeout=20
+                timeout=25
             )
+
             if r.status_code == 200:
                 data = r.json()
                 records = data if isinstance(data, list) else data.get("properties", [])
+
                 if not records:
                     break
+
                 all_records.extend(records)
+
                 if len(records) < limit:
                     break
+
                 offset += limit
-                time.sleep(0.5)  # be polite to the API
+                time.sleep(0.5)
+
             elif r.status_code == 429:
                 print(f"  [{zip_code}] Rate limited during ownership fetch")
                 time.sleep(60)
                 break
+
             else:
+                print(f"  [{zip_code}] Ownership fetch error: {r.status_code} — {r.text[:200]}")
                 break
 
         if not all_records:
@@ -260,7 +291,7 @@ def fetch_ownership_data(zip_code):
                     corporate_owners.append(owner_name)
 
         pct = round((corporate_count / total) * 100, 1) if total > 0 else 0
-        pct_range = f"{max(0, pct-5):.0f}–{pct+5:.0f}%"
+        pct_range = f"{max(0, pct - 5):.0f}–{pct + 5:.0f}%"
 
         result = {
             'zip': zip_code,
@@ -286,31 +317,45 @@ def fetch_ownership_data(zip_code):
 def fetch_census_boundary(zip_code):
     if not FETCH_CENSUS_BOUNDARIES:
         return None
+
     if is_cache_fresh(zip_code, 'boundary'):
+        print(f"  [{zip_code}] Boundary cache fresh, skipping")
         return None
+
     try:
-        # Census TIGER/Line WFS — free, no key needed
         url = (
             "https://tigerweb.geo.census.gov/arcgis/rest/services/"
             "TIGERweb/tigerWMS_Census2020/MapServer/2/query"
         )
-        r = requests.get(url, params={
-            'where': f"GEOID='{zip_code}'",
-            'outFields': 'GEOID,NAME',
-            'outSR': '4326',
-            'f': 'geojson'
-        }, timeout=20)
+
+        r = requests.get(
+            url,
+            params={
+                'where': f"GEOID='{zip_code}'",
+                'outFields': 'GEOID,NAME',
+                'outSR': '4326',
+                'f': 'geojson'
+            },
+            timeout=25
+        )
+
         if r.ok:
             data = r.json()
             features = data.get('features', [])
+
             if features:
-                mark_cache(zip_code, 'boundary')
-                return {
+                geometry = features[0].get('geometry', {})
+                boundary = {
                     'zip': zip_code,
-                    'geojson': json.dumps(features[0].get('geometry', {})),
+                    'geojson': json.dumps(geometry),
                     'updated_at': datetime.utcnow().isoformat()
                 }
+                mark_cache(zip_code, 'boundary')
+                return boundary
+
+        print(f"  [{zip_code}] Boundary fetch error: {r.status_code} — {r.text[:200]}")
         return None
+
     except Exception as e:
         print(f"  [{zip_code}] Census boundary exception: {e}")
         return None
@@ -321,15 +366,21 @@ def fetch_census_boundary(zip_code):
 # ============================================================
 def get_on_demand_queue():
     try:
-        rows = supabase_get('search_queue',
-            'processed=eq.false&select=zip&order=created_at.asc&limit=20')
+        rows = supabase_get(
+            'search_queue',
+            'processed=eq.false&select=zip&order=created_at.asc&limit=20'
+        )
         return [r['zip'] for r in rows] if rows else []
-    except:
+    except Exception:
         return []
 
 def clear_queue(zip_codes):
     for z in zip_codes:
-        supabase_upsert('search_queue', [{'zip': z, 'processed': True}])
+        supabase_upsert(
+            'search_queue',
+            [{'zip': z, 'processed': True}],
+            on_conflict='zip'
+        )
 
 # ============================================================
 # PROCESS A SINGLE ZIP
@@ -339,25 +390,31 @@ def process_zip(zip_code):
     properties = []
     market_row = None
     ownership_row = None
+    boundary_row = None
 
     # Listings
     listings = fetch_listings(zip_code)
     for l in listings:
         lat = l.get('latitude')
         lng = l.get('longitude')
-        if not lat or not lng:
+        if lat is None or lng is None:
             continue
+
+        price = l.get('price')
+        beds = l.get('bedrooms')
+        baths = l.get('bathrooms')
+
         properties.append({
             'zip': zip_code,
             'address': l.get('formattedAddress', ''),
-            'price': l.get('price'),
-            'beds': l.get('bedrooms'),
-            'baths': l.get('bathrooms'),
+            'price': price,
+            'beds': beds,
+            'baths': baths,
             'days_on_market': l.get('daysOnMarket', 0),
             'lat': lat,
             'lng': lng,
             'type': 'listed',
-            'detail': f"Listed · ${l.get('price', 0):,} · {l.get('bedrooms','?')}bd/{l.get('bathrooms','?')}ba",
+            'detail': f"Listed · ${price or 0:,} · {beds or '?'}bd/{baths or '?'}ba",
             'updated_at': datetime.utcnow().isoformat()
         })
 
@@ -376,25 +433,29 @@ def process_zip(zip_code):
     ownership_row = fetch_ownership_data(zip_code)
 
     # Census boundary
-    boundary = fetch_census_boundary(zip_code)
+    boundary_row = fetch_census_boundary(zip_code)
 
     # Write to Supabase
     if properties:
         supabase_delete('properties', f'zip=eq.{zip_code}&type=eq.listed')
-        supabase_upsert('properties', properties)
-        print(f"  Saved {len(properties)} listings")
+        ok = supabase_upsert('properties', properties)
+        if ok:
+            print(f"  Saved {len(properties)} listings")
 
     if market_row:
-       supabase_upsert('market_stats', [market_row], on_conflict='zip')
-        print(f"  Saved market stats")
+        ok = supabase_upsert('market_stats', [market_row], on_conflict='zip')
+        if ok:
+            print("  Saved market stats")
 
     if ownership_row:
-        supabase_upsert('ownership_stats', [ownership_row], on_conflict='zip')
-        print(f"  Saved ownership data: {ownership_row['corporate_pct_range']} corporate")
+        ok = supabase_upsert('ownership_stats', [ownership_row], on_conflict='zip')
+        if ok:
+            print(f"  Saved ownership data: {ownership_row['corporate_pct_range']} corporate")
 
-    if boundary:
-        supabase_upsert('zip_boundaries', [boundary], on_conflict='zip')
-        print(f"  Saved census boundary")
+    if boundary_row:
+        ok = supabase_upsert('zip_boundaries', [boundary_row], on_conflict='zip')
+        if ok:
+            print("  Saved census boundary")
 
     print(f"  Done with {zip_code}")
 
@@ -426,7 +487,7 @@ def main():
 
     for zip_code in zips_to_process:
         process_zip(zip_code)
-        time.sleep(1)  # be polite between ZIPs
+        time.sleep(1)
 
     if ON_DEMAND_ONLY and zips_to_process:
         clear_queue(zips_to_process)
