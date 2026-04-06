@@ -26,7 +26,7 @@ FETCH_LISTINGS = False
 
 # --- MARKET STATS (costs RentCast API calls) ---
 # Fetches median price, days on market per ZIP
-FETCH_MARKET_STATS = False
+FETCH_MARKET_STATS = True
 
 # --- CORPORATE OWNERSHIP ESTIMATION (costs RentCast API calls) ---
 # Pulls property records, counts org vs individual owners
@@ -55,18 +55,18 @@ CACHE_HOURS = 0
 # ============================================================
 ENABLED_ZIPS = [
     # Cleveland core 12 — add more as needed
-     '44113',  # Ohio City
-    # '44102',  # Detroit-Shoreway
-    # '44109',  # Tremont
-    # '44105',  # Brooklyn Centre
-    # '44114',  # Downtown
-    # '44115',  # Midtown
-    # '44106',  # University Circle
-    # '44120',  # Shaker Square
-     '44103',  # St. Clair-Superior
-    # '44111',  # Kamm's Corners
-    # '44107',  # Lakewood
-    # '44108',  # Glenville
+    # '44113',  # Ohio City
+     '44102',  # Detroit-Shoreway
+     '44109',  # Tremont
+     '44105',  # Brooklyn Centre
+     '44114',  # Downtown
+     '44115',  # Midtown
+     '44106',  # University Circle
+     '44120',  # Shaker Square
+    # '44103',  # St. Clair-Superior
+     '44111',  # Kamm's Corners
+     '44107',  # Lakewood
+     '44108',  # Glenville
     # ALL COMMENTED OUT — uncomment individual ZIPs to enable them
 ]
 
