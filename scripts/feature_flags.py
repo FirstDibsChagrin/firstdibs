@@ -22,7 +22,7 @@ NATIONAL_MODE = False
 # --- LISTING DATA (costs RentCast API calls) ---
 # Fetches active for-sale listings per ZIP
 # Free tier: 50 calls/month total across all features
-FETCH_LISTINGS = False
+FETCH_LISTINGS = True
 
 # --- MARKET STATS (costs RentCast API calls) ---
 # Fetches median price, days on market per ZIP
@@ -67,6 +67,7 @@ ENABLED_ZIPS = [
      '44111',  # Kamm's Corners
      '44107',  # Lakewood
      '44108',  # Glenville
+     '44104',
     # ALL COMMENTED OUT — uncomment individual ZIPs to enable them
 ]
 
