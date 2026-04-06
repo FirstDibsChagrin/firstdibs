@@ -36,7 +36,7 @@ FETCH_OWNERSHIP_DATA = True
 # --- CENSUS MAP BOUNDARIES (FREE — no API calls) ---
 # Downloads ZIP boundary shapes from Census Bureau (free, no key needed)
 # Safe to enable — costs nothing
-FETCH_CENSUS_BOUNDARIES = False
+FETCH_CENSUS_BOUNDARIES = True
 
 # --- ON-DEMAND MODE ---
 # When True: only fetches a ZIP when a real user searches it, then caches
