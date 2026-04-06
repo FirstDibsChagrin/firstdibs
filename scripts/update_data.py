@@ -82,22 +82,32 @@ def supabase_get(table, params=''):
     r = requests.get(url, headers=headers, timeout=10)
     return r.json() if r.ok else []
 
-def supabase_upsert(table, data):
+def supabase_upsert(table, data, on_conflict=None):
     if not data:
-        return
+        return True
+
     url = f"{SUPABASE_URL}/rest/v1/{table}"
+    if on_conflict:
+        url += f"?on_conflict={on_conflict}"
+
     headers = {
         "apikey": SUPABASE_KEY,
         "Authorization": f"Bearer {SUPABASE_KEY}",
         "Content-Type": "application/json",
         "Prefer": "resolution=merge-duplicates,return=minimal"
     }
+
     batch_size = 100
+    all_ok = True
+
     for i in range(0, len(data), batch_size):
         batch = data[i:i+batch_size]
         r = requests.post(url, headers=headers, json=batch, timeout=15)
         if not r.ok:
-            print(f"  Supabase error: {r.status_code} — {r.text[:200]}")
+            all_ok = False
+            print(f"  Supabase error: {r.status_code} — {r.text[:300]}")
+
+    return all_ok
 
 def supabase_delete(table, condition):
     url = f"{SUPABASE_URL}/rest/v1/{table}?{condition}"
@@ -118,10 +128,11 @@ def is_cache_fresh(zip_code, data_type):
     return age < timedelta(hours=CACHE_HOURS)
 
 def mark_cache(zip_code, data_type):
-    supabase_upsert('cache_status', [{
-        'zip': zip_code,
-        'data_type': data_type,
-        'updated_at': datetime.utcnow().isoformat()
+  supabase_upsert('cache_status', [{
+    'zip': zip_code,
+    'data_type': data_type,
+    'updated_at': datetime.utcnow().isoformat()
+}], on_conflict='zip,data_type')
     }])
 
 # ============================================================
@@ -374,15 +385,15 @@ def process_zip(zip_code):
         print(f"  Saved {len(properties)} listings")
 
     if market_row:
-        supabase_upsert('market_stats', [market_row])
+       supabase_upsert('market_stats', [market_row], on_conflict='zip')
         print(f"  Saved market stats")
 
     if ownership_row:
-        supabase_upsert('ownership_stats', [ownership_row])
+        supabase_upsert('ownership_stats', [ownership_row], on_conflict='zip')
         print(f"  Saved ownership data: {ownership_row['corporate_pct_range']} corporate")
 
     if boundary:
-        supabase_upsert('zip_boundaries', [boundary])
+        supabase_upsert('zip_boundaries', [boundary], on_conflict='zip')
         print(f"  Saved census boundary")
 
     print(f"  Done with {zip_code}")
