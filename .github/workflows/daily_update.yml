@@ -2,8 +2,8 @@ name: Daily Data Update
 
 on:
   schedule:
-    - cron: '0 8 * * *'
-  workflow_dispatch:
+    - cron: '0 8 * * *'   # 8am UTC every day
+  workflow_dispatch:        # lets you trigger manually from GitHub
 
 jobs:
   update-data:
@@ -19,15 +19,17 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: |
-          pip install requests
+        run: pip install requests
 
-      - name: Run daily update
+      - name: Run data update
+        # Script reads feature_flags.py first and exits safely if all flags are off
+        # No API calls are made unless you explicitly enable flags
         env:
           RENTCAST_KEY: ${{ secrets.RENTCAST_KEY }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-        run: python scripts/update_data.py
+        working-directory: scripts
+        run: python update_data.py
 
-      - name: Log completion
-        run: echo "Daily update completed at $(date)"
+      - name: Log result
+        run: echo "Completed at $(date)"
