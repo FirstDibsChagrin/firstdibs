@@ -1,78 +1,427 @@
-# ============================================================
-# FIRST DIBS — FEATURE FLAGS
-# ============================================================
-# This file controls what runs. Nothing costs money unless
-# you explicitly set a flag to True here.
-#
-# TO ENABLE A FEATURE:
-#   1. Change False to True for that feature
-#   2. Commit and push to GitHub
-#   3. That's it — the next scheduled run will use it
-#
-# TO DISABLE (and stop spending API calls):
-#   1. Change True back to False
-#   2. Commit and push
-# ============================================================
-
-# --- NATIONAL COVERAGE ---
-# When False: only fetches data for ENABLED_ZIPS below (your 12 Cleveland ZIPs)
-# When True: fetches data for ALL ZIPs a user has ever searched
-NATIONAL_MODE = False
-
-# --- LISTING DATA (costs RentCast API calls) ---
-# Fetches active for-sale listings per ZIP
-# Free tier: 50 calls/month total across all features
-FETCH_LISTINGS = False
-
-# --- MARKET STATS (costs RentCast API calls) ---
-# Fetches median price, days on market per ZIP
-FETCH_MARKET_STATS = False
-
-# --- CORPORATE OWNERSHIP ESTIMATION (costs RentCast API calls) ---
-# Pulls property records, counts org vs individual owners
-# Most expensive feature — up to 500 records per ZIP per call
-FETCH_OWNERSHIP_DATA = True
-
-# --- CENSUS MAP BOUNDARIES (FREE — no API calls) ---
-# Downloads ZIP boundary shapes from Census Bureau (free, no key needed)
-# Safe to enable — costs nothing
-FETCH_CENSUS_BOUNDARIES = True
-
-# --- ON-DEMAND MODE ---
-# When True: only fetches a ZIP when a real user searches it, then caches
-# When False: pre-fetches all ENABLED_ZIPS on every run
-# Recommended to set True before enabling national mode
-ON_DEMAND_ONLY = False
-
-# --- CACHE DURATION ---
-# How many hours before re-fetching a ZIP's data
-# 24 = once per day, 168 = once per week
-CACHE_HOURS = 24
+import os
+import sys
+import time
+import json
+import requests
+from datetime import datetime, timedelta
+from feature_flags import (
+    NATIONAL_MODE, FETCH_LISTINGS, FETCH_MARKET_STATS,
+    FETCH_OWNERSHIP_DATA, FETCH_CENSUS_BOUNDARIES,
+    ON_DEMAND_ONLY, CACHE_HOURS, ENABLED_ZIPS
+)
 
 # ============================================================
-# WHICH ZIPS TO PRE-FETCH (only used when NATIONAL_MODE=False)
-# Add or remove ZIPs here to control exactly what gets fetched
+# SAFETY CHECK — runs first, before anything else
+# If all features are off, script exits immediately (no API calls)
 # ============================================================
-ENABLED_ZIPS = [
-    # Cleveland core 12 — add more as needed
-     '44113',  # Ohio City
-     '44103',  # St. Clair-Superior
+def safety_check():
+    any_enabled = any([
+        FETCH_LISTINGS,
+        FETCH_MARKET_STATS,
+        FETCH_OWNERSHIP_DATA,
+        FETCH_CENSUS_BOUNDARIES
+    ])
+    if not any_enabled:
+        print("=" * 50)
+        print("All features are OFF in feature_flags.py")
+        print("No API calls made. No charges incurred.")
+        print("To enable features, edit scripts/feature_flags.py")
+        print("=" * 50)
+        sys.exit(0)
+
+    if len(ENABLED_ZIPS) == 0 and not NATIONAL_MODE:
+        print("=" * 50)
+        print("No ZIPs enabled in ENABLED_ZIPS and NATIONAL_MODE=False")
+        print("Nothing to fetch. Exiting.")
+        print("=" * 50)
+        sys.exit(0)
+
+    print(f"Features enabled:")
+    print(f"  FETCH_LISTINGS:        {FETCH_LISTINGS}")
+    print(f"  FETCH_MARKET_STATS:    {FETCH_MARKET_STATS}")
+    print(f"  FETCH_OWNERSHIP_DATA:  {FETCH_OWNERSHIP_DATA}")
+    print(f"  FETCH_CENSUS_BOUNDARIES: {FETCH_CENSUS_BOUNDARIES}")
+    print(f"  NATIONAL_MODE:         {NATIONAL_MODE}")
+    print(f"  ON_DEMAND_ONLY:        {ON_DEMAND_ONLY}")
+    print(f"  ZIPs to process:       {len(ENABLED_ZIPS)}")
+    print()
+
+# ============================================================
+# API CREDENTIALS
+# ============================================================
+RENTCAST_KEY  = os.environ.get("RENTCAST_KEY", "")
+SUPABASE_URL  = os.environ.get("SUPABASE_URL", "")
+SUPABASE_KEY  = os.environ.get("SUPABASE_KEY", "")
+
+CORPORATE_KEYWORDS = [
+    'LLC','L.L.C','Holdings','Residential','Partners','Capital',
+    'Trust','Investments','Realty','Properties','Group','Homes',
+    'Assets','Ventures','Acquisitions','Management','Real Estate',
+    'Rental','Rentals','Fund','Equity','Investment','REIT',
+    'Blackstone','Invitation','Progress','SFR','Cerberus',
+    'Tricon','Pretium','American Homes','Amherst','Roofstock'
 ]
 
+def is_corporate(owner_name, owner_type=None):
+    if owner_type and owner_type.lower() == 'organization':
+        return True
+    if not owner_name:
+        return False
+    name_upper = owner_name.upper()
+    return any(k.upper() in name_upper for k in CORPORATE_KEYWORDS)
+
 # ============================================================
-# COST ESTIMATOR (read-only, for reference)
+# SUPABASE HELPERS
 # ============================================================
-# At current RentCast free tier (50 calls/month):
-#
-# FETCH_LISTINGS only, 12 ZIPs, daily:       360 calls/month  (over limit)
-# FETCH_LISTINGS only, 12 ZIPs, weekly:       48 calls/month  (within limit)
-# FETCH_MARKET_STATS only, 12 ZIPs, daily:   360 calls/month  (over limit)
-# FETCH_MARKET_STATS only, 12 ZIPs, weekly:   48 calls/month  (within limit)
-# FETCH_OWNERSHIP_DATA, 12 ZIPs:             ~12 calls/run    (use sparingly)
-#
-# RECOMMENDATION for free tier:
-#   - Enable FETCH_LISTINGS weekly (not daily)
-#   - Enable FETCH_MARKET_STATS weekly
-#   - Enable FETCH_OWNERSHIP_DATA once a month manually
-#   - Keep NATIONAL_MODE = False until you have a paid plan
+def supabase_get(table, params=''):
+    url = f"{SUPABASE_URL}/rest/v1/{table}?{params}"
+    headers = {
+        "apikey": SUPABASE_KEY,
+        "Authorization": f"Bearer {SUPABASE_KEY}"
+    }
+    r = requests.get(url, headers=headers, timeout=10)
+    return r.json() if r.ok else []
+
+def supabase_upsert(table, data):
+    if not data:
+        return
+    url = f"{SUPABASE_URL}/rest/v1/{table}"
+    headers = {
+        "apikey": SUPABASE_KEY,
+        "Authorization": f"Bearer {SUPABASE_KEY}",
+        "Content-Type": "application/json",
+        "Prefer": "resolution=merge-duplicates,return=minimal"
+    }
+    batch_size = 100
+    for i in range(0, len(data), batch_size):
+        batch = data[i:i+batch_size]
+        r = requests.post(url, headers=headers, json=batch, timeout=15)
+        if not r.ok:
+            print(f"  Supabase error: {r.status_code} — {r.text[:200]}")
+
+def supabase_delete(table, condition):
+    url = f"{SUPABASE_URL}/rest/v1/{table}?{condition}"
+    headers = {
+        "apikey": SUPABASE_KEY,
+        "Authorization": f"Bearer {SUPABASE_KEY}",
+        "Prefer": "return=minimal"
+    }
+    requests.delete(url, headers=headers, timeout=10)
+
+def is_cache_fresh(zip_code, data_type):
+    rows = supabase_get('cache_status',
+        f"zip=eq.{zip_code}&data_type=eq.{data_type}&select=updated_at")
+    if not rows:
+        return False
+    updated = datetime.fromisoformat(rows[0]['updated_at'].replace('Z', '+00:00'))
+    age = datetime.now(updated.tzinfo) - updated
+    return age < timedelta(hours=CACHE_HOURS)
+
+def mark_cache(zip_code, data_type):
+    supabase_upsert('cache_status', [{
+        'zip': zip_code,
+        'data_type': data_type,
+        'updated_at': datetime.utcnow().isoformat()
+    }])
+
 # ============================================================
+# RENTCAST — LISTINGS
+# ============================================================
+def fetch_listings(zip_code):
+    if not FETCH_LISTINGS:
+        return []
+    if is_cache_fresh(zip_code, 'listings'):
+        print(f"  [{zip_code}] Listings cache fresh, skipping")
+        return []
+    try:
+        r = requests.get(
+            "https://api.rentcast.io/v1/listings/sale",
+            params={"zipCode": zip_code, "status": "Active", "limit": 50},
+            headers={"X-Api-Key": RENTCAST_KEY},
+            timeout=15
+        )
+        if r.status_code == 200:
+            data = r.json()
+            listings = data if isinstance(data, list) else data.get("listings", [])
+            mark_cache(zip_code, 'listings')
+            return listings
+        elif r.status_code == 429:
+            print(f"  [{zip_code}] Rate limited — waiting 60s")
+            time.sleep(60)
+            return []
+        else:
+            print(f"  [{zip_code}] Listings error: {r.status_code}")
+            return []
+    except Exception as e:
+        print(f"  [{zip_code}] Listings exception: {e}")
+        return []
+
+# ============================================================
+# RENTCAST — MARKET STATS
+# ============================================================
+def fetch_market_stats(zip_code):
+    if not FETCH_MARKET_STATS:
+        return {}
+    if is_cache_fresh(zip_code, 'market_stats'):
+        print(f"  [{zip_code}] Market stats cache fresh, skipping")
+        return {}
+    try:
+        r = requests.get(
+            "https://api.rentcast.io/v1/markets",
+            params={"zipCode": zip_code},
+            headers={"X-Api-Key": RENTCAST_KEY},
+            timeout=15
+        )
+        if r.status_code == 200:
+            mark_cache(zip_code, 'market_stats')
+            return r.json()
+        elif r.status_code == 429:
+            print(f"  [{zip_code}] Rate limited — waiting 60s")
+            time.sleep(60)
+            return {}
+        else:
+            return {}
+    except Exception as e:
+        print(f"  [{zip_code}] Market stats exception: {e}")
+        return {}
+
+# ============================================================
+# RENTCAST — OWNERSHIP DATA
+# Fetches property records and derives corporate ownership %
+# Uses owner.type = "Organization" as primary signal
+# ============================================================
+def fetch_ownership_data(zip_code):
+    if not FETCH_OWNERSHIP_DATA:
+        return None
+    if is_cache_fresh(zip_code, 'ownership'):
+        print(f"  [{zip_code}] Ownership cache fresh, skipping")
+        return None
+    try:
+        all_records = []
+        offset = 0
+        limit = 500
+        max_pages = 4  # cap at 2000 records per ZIP to control cost
+
+        while offset < limit * max_pages:
+            r = requests.get(
+                "https://api.rentcast.io/v1/properties",
+                params={
+                    "zipCode": zip_code,
+                    "propertyType": "Single Family",
+                    "limit": limit,
+                    "offset": offset
+                },
+                headers={"X-Api-Key": RENTCAST_KEY},
+                timeout=20
+            )
+            if r.status_code == 200:
+                data = r.json()
+                records = data if isinstance(data, list) else data.get("properties", [])
+                if not records:
+                    break
+                all_records.extend(records)
+                if len(records) < limit:
+                    break
+                offset += limit
+                time.sleep(0.5)  # be polite to the API
+            elif r.status_code == 429:
+                print(f"  [{zip_code}] Rate limited during ownership fetch")
+                time.sleep(60)
+                break
+            else:
+                break
+
+        if not all_records:
+            return None
+
+        total = len(all_records)
+        corporate_count = 0
+        corporate_owners = []
+
+        for record in all_records:
+            owner = record.get('owner', {}) or {}
+            owner_name = owner.get('name', '') or record.get('ownerName', '')
+            owner_type = owner.get('type', '')
+
+            if is_corporate(owner_name, owner_type):
+                corporate_count += 1
+                if owner_name and owner_name not in corporate_owners:
+                    corporate_owners.append(owner_name)
+
+        pct = round((corporate_count / total) * 100, 1) if total > 0 else 0
+        pct_range = f"{max(0, pct-5):.0f}–{pct+5:.0f}%"
+
+        result = {
+            'zip': zip_code,
+            'total_sampled': total,
+            'corporate_count': corporate_count,
+            'corporate_pct': pct,
+            'corporate_pct_range': pct_range,
+            'top_corporate_owners': json.dumps(corporate_owners[:10]),
+            'updated_at': datetime.utcnow().isoformat()
+        }
+
+        mark_cache(zip_code, 'ownership')
+        return result
+
+    except Exception as e:
+        print(f"  [{zip_code}] Ownership exception: {e}")
+        return None
+
+# ============================================================
+# CENSUS — ZIP BOUNDARIES (completely free, no API key)
+# Downloads GeoJSON boundaries for any ZIP from Census Bureau
+# ============================================================
+def fetch_census_boundary(zip_code):
+    if not FETCH_CENSUS_BOUNDARIES:
+        return None
+    if is_cache_fresh(zip_code, 'boundary'):
+        return None
+    try:
+        # Census TIGER/Line WFS — free, no key needed
+        url = (
+            "https://tigerweb.geo.census.gov/arcgis/rest/services/"
+            "TIGERweb/tigerWMS_Census2020/MapServer/2/query"
+        )
+        r = requests.get(url, params={
+            'where': f"GEOID='{zip_code}'",
+            'outFields': 'GEOID,NAME',
+            'outSR': '4326',
+            'f': 'geojson'
+        }, timeout=20)
+        if r.ok:
+            data = r.json()
+            features = data.get('features', [])
+            if features:
+                mark_cache(zip_code, 'boundary')
+                return {
+                    'zip': zip_code,
+                    'geojson': json.dumps(features[0].get('geometry', {})),
+                    'updated_at': datetime.utcnow().isoformat()
+                }
+        return None
+    except Exception as e:
+        print(f"  [{zip_code}] Census boundary exception: {e}")
+        return None
+
+# ============================================================
+# ON-DEMAND QUEUE
+# Reads which ZIPs users have searched but don't have fresh data
+# ============================================================
+def get_on_demand_queue():
+    try:
+        rows = supabase_get('search_queue',
+            'processed=eq.false&select=zip&order=created_at.asc&limit=20')
+        return [r['zip'] for r in rows] if rows else []
+    except:
+        return []
+
+def clear_queue(zip_codes):
+    for z in zip_codes:
+        supabase_upsert('search_queue', [{'zip': z, 'processed': True}])
+
+# ============================================================
+# PROCESS A SINGLE ZIP
+# ============================================================
+def process_zip(zip_code):
+    print(f"Processing {zip_code}...")
+    properties = []
+    market_row = None
+    ownership_row = None
+
+    # Listings
+    listings = fetch_listings(zip_code)
+    for l in listings:
+        lat = l.get('latitude')
+        lng = l.get('longitude')
+        if not lat or not lng:
+            continue
+        properties.append({
+            'zip': zip_code,
+            'address': l.get('formattedAddress', ''),
+            'price': l.get('price'),
+            'beds': l.get('bedrooms'),
+            'baths': l.get('bathrooms'),
+            'days_on_market': l.get('daysOnMarket', 0),
+            'lat': lat,
+            'lng': lng,
+            'type': 'listed',
+            'detail': f"Listed · ${l.get('price', 0):,} · {l.get('bedrooms','?')}bd/{l.get('bathrooms','?')}ba",
+            'updated_at': datetime.utcnow().isoformat()
+        })
+
+    # Market stats
+    stats = fetch_market_stats(zip_code)
+    if stats:
+        market_row = {
+            'zip': zip_code,
+            'median_price': stats.get('averageSalePrice') or stats.get('medianSalePrice'),
+            'avg_days_on_market': stats.get('averageDaysOnMarket'),
+            'active_listings': len(listings) if listings else None,
+            'updated_at': datetime.utcnow().isoformat()
+        }
+
+    # Ownership
+    ownership_row = fetch_ownership_data(zip_code)
+
+    # Census boundary
+    boundary = fetch_census_boundary(zip_code)
+
+    # Write to Supabase
+    if properties:
+        supabase_delete('properties', f'zip=eq.{zip_code}&type=eq.listed')
+        supabase_upsert('properties', properties)
+        print(f"  Saved {len(properties)} listings")
+
+    if market_row:
+        supabase_upsert('market_stats', [market_row])
+        print(f"  Saved market stats")
+
+    if ownership_row:
+        supabase_upsert('ownership_stats', [ownership_row])
+        print(f"  Saved ownership data: {ownership_row['corporate_pct_range']} corporate")
+
+    if boundary:
+        supabase_upsert('zip_boundaries', [boundary])
+        print(f"  Saved census boundary")
+
+    print(f"  Done with {zip_code}")
+
+# ============================================================
+# MAIN
+# ============================================================
+def main():
+    print(f"\nFirst Dibs data update — {datetime.now()}")
+    print("=" * 50)
+
+    safety_check()
+
+    zips_to_process = []
+
+    if ON_DEMAND_ONLY:
+        queue = get_on_demand_queue()
+        if queue:
+            print(f"On-demand queue: {queue}")
+            zips_to_process = queue
+        else:
+            print("On-demand queue empty — nothing to fetch")
+    else:
+        zips_to_process = ENABLED_ZIPS
+        print(f"Pre-fetch mode: {len(zips_to_process)} ZIPs")
+
+    if not zips_to_process:
+        print("No ZIPs to process. Done.")
+        return
+
+    for zip_code in zips_to_process:
+        process_zip(zip_code)
+        time.sleep(1)  # be polite between ZIPs
+
+    if ON_DEMAND_ONLY and zips_to_process:
+        clear_queue(zips_to_process)
+
+    print(f"\nUpdate complete — {datetime.now()}")
+    print(f"Processed {len(zips_to_process)} ZIPs")
+
+if __name__ == "__main__":
+    main()
