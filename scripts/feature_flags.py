@@ -31,7 +31,7 @@ FETCH_MARKET_STATS = False
 # --- CORPORATE OWNERSHIP ESTIMATION (costs RentCast API calls) ---
 # Pulls property records, counts org vs individual owners
 # Most expensive feature — up to 500 records per ZIP per call
-FETCH_OWNERSHIP_DATA = False
+FETCH_OWNERSHIP_DATA = True
 
 # --- CENSUS MAP BOUNDARIES (FREE — no API calls) ---
 # Downloads ZIP boundary shapes from Census Bureau (free, no key needed)
