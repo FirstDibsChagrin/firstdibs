@@ -47,7 +47,7 @@ ON_DEMAND_ONLY = False
 # --- CACHE DURATION ---
 # How many hours before re-fetching a ZIP's data
 # 24 = once per day, 168 = once per week
-CACHE_HOURS = 24
+CACHE_HOURS = 0
 
 # ============================================================
 # WHICH ZIPS TO PRE-FETCH (only used when NATIONAL_MODE=False)
