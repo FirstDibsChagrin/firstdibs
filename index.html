@@ -1,115 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>First Dibs — Beat the Bid Risk Map</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>First Dibs — Beat the Bid</title>
 
+<!-- SUPABASE -->
 <script>
 const SUPABASE_URL = 'https://lhlmcvlyfyzpyzewlxdo.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxobG1jdmx5Znl6cHl6ZXdseGRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNDUyODIsImV4cCI6MjA4OTYyMTI4Mn0.mnP6GbwwoHe0L5DxGIXSKjW5pZhCwnoIBjWn6hXeElQ';
 </script>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<!-- GOOGLE ANALYTICS -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-QRRLPRDVWP');
+</script>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Outfit:wght@300;400;500;600;700&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
-:root{--brand:#0f4c35;--brand2:#1a6b4a;--brand3:#24916a;--brandx:#f0f9f4;--warn:#b8820a;--text:#1a1a1a;--muted:#666;--border:#e5e5e5;--border2:#ccc;--surf:#fff;--surf2:#f8f9fa;--verylow:#1a9850;--low:#91cf60;--moderate:#fee08b;--high:#fc8d59;--veryhigh:#d7301f;--severe:#8b0000;--ff:'Outfit',sans-serif;--ffd:'Playfair Display',serif}
-body{font-family:var(--ff);color:var(--text);background:#fff}#app{max-width:1180px;margin:0 auto;min-height:100vh;background:#fff}.hdr{padding:1.1rem 1.4rem;border-bottom:.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.logo{display:flex;align-items:center;gap:12px}.logo-mark{width:40px;height:40px;background:var(--brand);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}.logo-name{font-family:var(--ffd);font-size:26px;letter-spacing:-.5px}.logo-name em{color:var(--brand3);font-style:normal}.logo-sub{font-size:12px;color:var(--muted);font-weight:300;margin-top:2px}.badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;background:#e8f5ee;color:var(--brand);padding:4px 9px;border-radius:20px;border:.5px solid var(--brand3);white-space:nowrap}.dot{width:6px;height:6px;border-radius:50%;background:var(--brand3);animation:pulse 2s ease-in-out infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}.toolbar{padding:.95rem 1.4rem;border-bottom:.5px solid var(--border);background:var(--surf2);display:flex;gap:10px;align-items:center;flex-wrap:wrap}.toolbar label{font-size:13px;font-weight:600;color:var(--muted)}.zip-select,.zip-in{padding:10px 12px;border:.5px solid var(--border2);border-radius:10px;font-family:var(--ff);font-size:15px;background:var(--surf);color:var(--text)}.zip-select{flex:1;min-width:260px;cursor:pointer}.zip-in{width:120px}.zip-select:focus,.zip-in:focus{outline:none;border-color:var(--brand3)}.btn,.link-btn{padding:10px 16px;border-radius:10px;font-family:var(--ff);font-size:14px;font-weight:600;cursor:pointer;border:none;text-decoration:none;display:inline-block}.btn.primary,.link-btn{background:var(--brand);color:#fff}.btn.primary:hover,.link-btn:hover{background:var(--brand2)}.btn.secondary{background:#fff;color:var(--text);border:.5px solid var(--border2)}.btn.secondary:hover{background:var(--surf2)}.content{padding:1.2rem 1.4rem 1.8rem}.loading{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;font-size:13px;color:var(--muted);background:var(--surf2);border-radius:10px;margin-bottom:12px}.spinner{width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--brand3);border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin-bottom:14px}.card{border:.5px solid var(--border);border-radius:14px;background:var(--surf);overflow:hidden}.card-top{padding:12px 14px;border-bottom:.5px solid var(--border);background:var(--surf2)}.card-top h2{font-size:15px;font-weight:700}.sub{font-size:12px;color:var(--muted);margin-top:3px;font-weight:300;line-height:1.4}.body{padding:14px}.map-shell{position:relative}#leaflet-map{width:100%;height:620px}.legend{position:absolute;bottom:12px;right:12px;z-index:500;background:rgba(255,255,255,.96);border:.5px solid var(--border);border-radius:10px;padding:9px 11px;box-shadow:0 2px 12px rgba(0,0,0,.08)}.leg-row{display:flex;align-items:center;gap:7px;margin-bottom:5px;font-size:13px}.leg-row:last-child{margin-bottom:0}.leg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}.selected-zip-line{font-size:13px;color:var(--muted);margin-bottom:10px}.risk-score{display:flex;align-items:flex-end;gap:10px;margin-bottom:10px}.risk-big{font-size:56px;line-height:1;font-weight:700;letter-spacing:-1.5px}.risk-meta{padding-bottom:4px}.risk-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}.risk-band{font-size:16px;font-weight:700;margin-top:2px}.risk-explainer{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:14px}.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}.kpi{background:var(--surf2);border-radius:12px;padding:12px 13px;border:.5px solid var(--border)}.kpi-lbl{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}.kpi-val{font-size:24px;font-weight:700;line-height:1}.kpi-sub{font-size:12px;color:var(--muted);margin-top:5px;font-weight:300;line-height:1.45}.section-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:14px 0 8px}.detail-card,.empty-state,.zip-list-item,.tool-card,.expand-wrap{border:.5px solid var(--border);border-radius:11px;background:var(--surf)}.detail-card{padding:13px 14px;margin-bottom:10px}.detail-row{display:flex;justify-content:space-between;gap:12px;margin-bottom:8px;align-items:flex-start}.detail-row:last-child{margin-bottom:0}.detail-key{color:var(--muted);font-size:13px;font-weight:300}.detail-val{font-size:13px;font-weight:600;text-align:right;max-width:60%}.risk-bar{height:8px;border-radius:999px;background:var(--surf2);overflow:hidden;margin-top:10px}.risk-fill{height:100%;border-radius:999px}.map-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}.zip-list-item{padding:12px 13px;cursor:pointer;transition:.15s}.zip-list-item:hover{border-color:var(--brand3);background:var(--brandx)}.zip-list-item.selected{border-color:var(--brand3);background:var(--brandx);box-shadow:inset 0 0 0 1px var(--brand3)}.zip-line1{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:4px}.zip-code{font-weight:700;font-size:14px}.zip-risk{font-size:12px;font-weight:700;border-radius:999px;padding:2px 8px;color:#fff}.zip-line2{font-size:13px;color:var(--muted);font-weight:300;line-height:1.4}.warning-box{padding:13px 15px;border-left:3px solid var(--warn);background:#fef8e6;font-size:13px;color:var(--warn);line-height:1.7;font-weight:300;border-radius:8px;margin-bottom:12px}.toolkit-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.tool-card{padding:13px 14px}.tool-title{font-size:15px;font-weight:700;margin-bottom:4px}.tool-desc{font-size:13px;color:var(--muted);font-weight:300;line-height:1.5;margin-bottom:10px}.tool-actions{display:flex;flex-wrap:wrap;gap:8px}.expand-wrap{overflow:hidden}.expand-head{width:100%;text-align:left;padding:12px 14px;border:none;background:#fff;font:inherit;cursor:pointer;font-weight:600;display:flex;justify-content:space-between;align-items:center}.expand-head:hover{background:var(--surf2)}.expand-body{display:none;padding:0 14px 14px;font-size:13px;line-height:1.65;color:var(--muted);white-space:pre-wrap}.expand-wrap.open .expand-body{display:block}.empty-state{padding:18px;color:var(--muted);font-size:14px;background:var(--surf2)}.leaflet-popup-content-wrapper{border-radius:10px}@media (max-width:980px){.hero{grid-template-columns:1fr}#leaflet-map{height:430px}.map-list,.toolkit-grid{grid-template-columns:1fr}}@media (max-width:700px){.kpi-grid{grid-template-columns:1fr}.risk-big{font-size:46px}}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont;background:#f5f7fa}
+header{padding:20px;background:#0f4c35;color:white;font-size:22px;font-weight:600}
+
+.hero{padding:50px;text-align:center;background:white}
+.hero h1{font-size:42px;margin-bottom:10px}
+.hero p{color:#555;font-size:18px}
+
+#map{height:600px;width:100%}
+
+.container{max-width:1100px;margin:auto;padding:20px}
+
+.card{background:white;padding:20px;border-radius:14px;margin-top:20px}
+
+.risk{font-size:40px;font-weight:700}
+
+.low{color:#1a9850}
+.mid{color:#fee08b}
+.high{color:#d7301f}
+
+.button{background:#0f4c35;color:white;padding:10px 15px;border:none;border-radius:8px;cursor:pointer}
+input{padding:10px;border-radius:8px;border:1px solid #ccc}
 </style>
 </head>
+
 <body>
-<div id="app">
-  <div class="hdr">
-    <div class="logo"><div class="logo-mark"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5L11.8 7H17L12.8 10.8L14.5 16.5L9 13.2L3.5 16.5L5.2 10.8L1 7H6.2L9 1.5Z" fill="white" opacity=".95"></path></svg></div><div><div class="logo-name">First<em>Dibs</em></div><div class="logo-sub">Beat the Bid — Cleveland risk map</div></div></div>
-    <div class="badge"><div class="dot"></div>Stored data · manual refresh only</div>
-  </div>
-  <div class="toolbar">
-    <label for="zip-select">ZIP code</label>
-    <select class="zip-select" id="zip-select"></select>
-    <input class="zip-in" type="text" id="zf" placeholder="Other ZIP" maxlength="5" />
-    <button class="btn primary" id="go-btn">Show ZIP</button>
-    <button class="btn secondary" id="reset-btn">Reset view</button>
-  </div>
-  <div class="content">
-    <div id="loading" class="loading" style="display:none;"><div class="spinner"></div> Loading risk map...</div>
-    <div class="hero">
-      <div class="card"><div class="card-top"><h2>Outbid Risk Map</h2><div class="sub">All loaded ZIP codes are color-coded by risk. Select one ZIP to highlight it while keeping the rest visible.</div></div><div class="map-shell"><div id="leaflet-map"></div><div class="legend"><div class="leg-row"><div class="leg-dot" style="background:#1a9850"></div><span>Very low</span></div><div class="leg-row"><div class="leg-dot" style="background:#91cf60"></div><span>Low</span></div><div class="leg-row"><div class="leg-dot" style="background:#fee08b"></div><span>Moderate</span></div><div class="leg-row"><div class="leg-dot" style="background:#fc8d59"></div><span>High</span></div><div class="leg-row"><div class="leg-dot" style="background:#d7301f"></div><span>Very high</span></div><div class="leg-row"><div class="leg-dot" style="background:#8b0000"></div><span>Severe</span></div></div></div></div>
-      <div class="card"><div class="card-top"><h2>Selected ZIP</h2><div class="sub">Risk score is based on investor ownership and average days on market. If DOM is missing, the score leans on investor share only.</div></div><div class="body"><div class="selected-zip-line" id="selectedZipLine">Select a ZIP to focus it on the map.</div><div class="risk-score"><div class="risk-big" id="riskScore">—</div><div class="risk-meta"><div class="risk-label">Risk score</div><div class="risk-band" id="riskLabel">No data</div></div></div><div class="risk-explainer" id="riskExplainer">Choose a ZIP to see investor pressure, market speed, and why that area may be easier or harder to win.</div><div class="kpi-grid"><div class="kpi"><div class="kpi-lbl">Investor share</div><div class="kpi-val" id="investorPct">—</div><div class="kpi-sub" id="investorSub">No data yet</div></div><div class="kpi"><div class="kpi-lbl">Days on market</div><div class="kpi-val" id="domVal">—</div><div class="kpi-sub" id="domSub">No data yet</div></div><div class="kpi"><div class="kpi-lbl">Median price</div><div class="kpi-val" id="priceVal">—</div><div class="kpi-sub" id="priceSub">Context only</div></div><div class="kpi"><div class="kpi-lbl">Active listings</div><div class="kpi-val" id="listingsVal">—</div><div class="kpi-sub" id="listingsSub">Stored market stats</div></div></div><div class="section-title">Risk details</div><div id="riskDetails"></div></div></div>
-    </div>
-    <div class="card"><div class="card-top"><h2>Beat the Bid Toolkit</h2><div class="sub">Practical steps, templates, and assistance links for buyers trying to compete in tougher ZIP codes.</div></div><div class="body"><div class="warning-box">These templates are educational starting points only. Final offer language should always be reviewed by your real estate agent or attorney before use.</div><div class="toolkit-grid">
-      <div class="tool-card"><div class="tool-title">1) Personal letter template</div><div class="tool-desc">A short letter can help a seller remember you, especially when offers are close.</div><div class="expand-wrap"><button class="expand-head" type="button"><span>Open template</span><span>▾</span></button><div class="expand-body">Dear [Seller Name],
 
-My name is [Your Name], and I’m excited to submit an offer on your home at [Address]. What stood out to me most was [specific feature].
+<header>First Dibs</header>
 
-I’m looking for a place where I can [brief personal reason]. Your home feels like the kind of place where that could happen.
+<div class="hero">
+<h1>Beat the Bid Before It Starts</h1>
+<p>See where you're most likely to get outbid — and how to win anyway.</p>
 
-I know selling a home is both a financial and emotional decision. If chosen, I would truly value the opportunity to care for this home and make it my own.
-
-Thank you for considering my offer.
-
-Sincerely,
-[Your Name]</div></div></div>
-      <div class="tool-card"><div class="tool-title">2) Escalation clause template</div><div class="tool-desc">Use this when you want to stay competitive without automatically jumping to your max price.</div><div class="expand-wrap"><button class="expand-head" type="button"><span>Open template</span><span>▾</span></button><div class="expand-body">Escalation Clause Template
-
-Buyer agrees to increase the purchase price to $[X] above any bona fide competing offer, not to exceed a maximum purchase price of $[MAX], provided Seller furnishes a complete copy of the competing offer as proof of the triggering offer terms.
-
-Notes:
-- Ask your agent to confirm whether escalation clauses are common in your market.
-- Pair this with a strong preapproval and clean terms.
-- Do not use this without understanding your true walk-away price.</div></div></div>
-      <div class="tool-card"><div class="tool-title">3) Appraisal-gap script</div><div class="tool-desc">Helpful when the market is moving fast and sellers worry a financed deal may fall apart.</div><div class="expand-wrap"><button class="expand-head" type="button"><span>Open template</span><span>▾</span></button><div class="expand-body">Appraisal Gap Language Starter
-
-Buyer agrees to cover up to $[AMOUNT] of any appraisal gap between the contract price and appraised value, subject to lender approval and all other contract terms.
-
-Use this carefully:
-- Pick a hard dollar amount you can actually afford.
-- Confirm with your lender that your cash-to-close still works.</div></div></div>
-      <div class="tool-card"><div class="tool-title">4) Clean-offer checklist</div><div class="tool-desc">In many competitive situations, strong presentation matters almost as much as price.</div><div class="expand-wrap"><button class="expand-head" type="button"><span>Open checklist</span><span>▾</span></button><div class="expand-body">Before you submit:
-- Current lender preapproval letter ready
-- Proof of funds attached if needed
-- Earnest money amount confirmed
-- Closing timeline discussed with your lender
-- Inspection strategy decided in advance
-- Appraisal-gap plan decided in advance
-- Personal letter reviewed and optional
-- Escalation clause reviewed by your agent if using one</div></div></div>
-      <div class="tool-card"><div class="tool-title">5) Down payment assistance</div><div class="tool-desc">Official programs that can help with down payment or closing costs.</div><div class="tool-actions"><a class="link-btn" target="_blank" rel="noopener noreferrer" href="https://ohiohome.org/homebuyers.aspx">OHFA homebuyer programs</a><a class="link-btn" target="_blank" rel="noopener noreferrer" href="https://ohiohome.org/lenders/default.aspx">OHFA lender finder</a><a class="link-btn" target="_blank" rel="noopener noreferrer" href="https://cuyahogacounty.gov/development/residents/down-payment-assistance-program">Cuyahoga County DPA</a><a class="link-btn" target="_blank" rel="noopener noreferrer" href="https://www.hud.gov/hud-partners/single-family-lender-list">HUD lender search</a></div></div>
-      <div class="tool-card"><div class="tool-title">6) Other high-value steps</div><div class="tool-desc">These are often the highest-leverage moves in higher-risk ZIP codes.</div><div class="expand-wrap"><button class="expand-head" type="button"><span>Open tips</span><span>▾</span></button><div class="expand-body">- Ask your lender for an updated preapproval letter customized to the exact offer price.
-- Increase earnest money if your agent says it is normal for the area.
-- Shorten inspection periods where reasonable, but do not waive inspection blindly.
-- Have proof of funds ready before you tour.
-- Know your maximum walk-away number before you bid.
-- If competition is intense, decide ahead of time whether you would use an appraisal-gap commitment.
-- In lower-risk ZIPs, patience may beat overbidding.</div></div></div>
-    </div></div></div>
-    <div class="section-title">Loaded ZIPs</div>
-    <div id="zipList" class="map-list"></div>
-  </div>
+<input id="zipInput" placeholder="Enter ZIP">
+<button class="button" onclick="searchZip()">Check</button>
 </div>
+
+<div id="map"></div>
+
+<div class="container">
+
+<div class="card" id="info">
+Select a ZIP to see risk
+</div>
+
+<div class="card">
+<h3>What This Means</h3>
+<p>
+Homebuyers today are competing with investors and fast-moving markets.
+In some areas, over 25% of purchases are by investors, and homes sell in under 10 days.
+</p>
+
+<p>
+This tool combines:
+<br>• Investor ownership %
+<br>• Days on market
+</p>
+
+<p>
+Higher scores = more competition and higher chance of being outbid.
+</p>
+</div>
+
+<div class="card">
+<h3>Beat the Bid Toolkit</h3>
+
+<p><strong>Escalation Clause</strong></p>
+<p>Automatically outbid others up to your max.</p>
+
+<p><strong>Appraisal Gap</strong></p>
+<p>Cover differences between price and appraisal.</p>
+
+<p><strong>Strong Preapproval</strong></p>
+<p>Get fully underwritten before offering.</p>
+
+<p><a href="https://ohiohome.org/homebuyers.aspx" target="_blank">Down Payment Help (OHFA)</a></p>
+
+</div>
+
+</div>
+
 <script>
-const ZIP_NAMES={'44113':'Ohio City','44102':'Detroit-Shoreway','44109':'Tremont / Old Brooklyn','44105':'Brooklyn Centre','44114':'Downtown / North Coast','44115':'Midtown / Central','44106':'University Circle','44120':'Shaker Square','44103':'St. Clair–Superior','44111':"Kamm's Corners",'44107':'Lakewood (border)','44108':'Glenville / Superior','44104':'Buckeye / Central-East'};
-let map,allZipData={},allLayers={},selectedZip=null;
-function fetchFromSupabase(table,query=''){const qs=query?`?${query}`:'';return fetch(`${SUPABASE_URL}/rest/v1/${table}${qs}`,{headers:{apikey:SUPABASE_ANON_KEY,Authorization:`Bearer ${SUPABASE_ANON_KEY}`}}).then(async r=>{if(!r.ok){const txt=await r.text();throw new Error(`${table}: ${r.status} ${txt}`)}return r.json()})}
-function domScore(dom){const n=Number(dom);if(dom===null||dom===undefined||Number.isNaN(n))return 20;if(n<=5)return 100;if(n<=10)return 80;if(n<=20)return 55;if(n<=30)return 35;return 20}
-function calculateRiskScore(investorPct,dom){const investor=Number(investorPct)||0;const domPts=domScore(dom);let score=(0.7*investor)+(0.3*domPts);if(investor>=25)score+=10;if(investor>=35)score+=10;if(!Number.isNaN(Number(dom))&&Number(dom)<=10)score+=5;return Math.max(0,Math.min(100,Math.round(score)))}
-function getRiskBand(score){if(score>=80)return{label:'SEVERE',color:'#8b0000',fill:'#8b0000'};if(score>=65)return{label:'VERY HIGH',color:'#d7301f',fill:'#d7301f'};if(score>=50)return{label:'HIGH',color:'#fc8d59',fill:'#fc8d59'};if(score>=35)return{label:'MODERATE',color:'#fee08b',fill:'#fee08b'};if(score>=20)return{label:'LOW',color:'#91cf60',fill:'#91cf60'};return{label:'VERY LOW',color:'#1a9850',fill:'#1a9850'}}
-function fmtMoney(n){if(n===null||n===undefined||Number.isNaN(Number(n)))return '—';const num=Number(n);if(num>=1000)return `$${Math.round(num/1000)}K`;return `$${num.toLocaleString()}`}
-function explainRisk(score,investorPct,dom){const inv=Number(investorPct)||0;const domNum=Number(dom);if(score>=80)return 'Severe risk: investor pressure is extremely high and homes move fast enough that you should expect very strong competition.';if(score>=65)return 'Very high risk: this ZIP is one of the harder places to win without very strong offer terms.';if(score>=50)return 'High risk: expect meaningful investor competition and a tougher bidding environment.';if(score>=35)return 'Moderate risk: competition exists, but buyers may still have room to win with a clean offer.';if(inv<20&&(Number.isNaN(domNum)||domNum>20))return 'Very low risk: investor activity is relatively low and the market appears slower.';return 'Low risk: this ZIP looks more buyer-friendly than the higher-risk areas on the map.'}
-function setupMap(){map=L.map('leaflet-map',{zoomControl:true,attributionControl:true}).setView([41.48,-81.69],11);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap'}).addTo(map)}
-function buildPopup(zip,zipData){const score=zipData.score,band=zipData.band,ownership=zipData.ownership,market=zipData.market;return `<div style="min-width:205px;"><div style="font-weight:700;font-size:14px;margin-bottom:4px;">ZIP ${zip}</div><div style="font-size:13px;margin-bottom:4px;">Risk: <strong>${score}/100</strong> (${band.label})</div><div style="font-size:12px;color:#666;">Investor share: ${ownership?(ownership.corporate_pct_range||(ownership.corporate_pct+'%')):'No data'}</div><div style="font-size:12px;color:#666;">DOM: ${market&&market.avg_days_on_market!=null?market.avg_days_on_market:'No data'}</div><div style="font-size:12px;color:#666;">Median price: ${market?fmtMoney(market.median_price):'No data'}</div></div>`}
-function renderMap(){Object.values(allLayers).forEach(layer=>map.removeLayer(layer));allLayers={};const bounds=[];Object.entries(allZipData).forEach(([zip,data])=>{if(!data.boundary||!data.boundary.geojson)return;let geometry;try{geometry=JSON.parse(data.boundary.geojson)}catch{return}const feature={type:'Feature',properties:{zip},geometry};const band=data.band;const layer=L.geoJSON(feature,{style:{color:band.color,weight:selectedZip===zip?4:2,opacity:1,fillColor:band.fill,fillOpacity:selectedZip===zip?.48:.30}}).addTo(map);layer.bindPopup(buildPopup(zip,data));layer.on('click',()=>selectZip(zip,true));allLayers[zip]=layer;const b=layer.getBounds();if(b.isValid())bounds.push(b)});if(selectedZip&&allLayers[selectedZip]){map.fitBounds(allLayers[selectedZip].getBounds().pad(0.2))}else if(bounds.length>0){const group=bounds.reduce((acc,b)=>acc.extend(b),bounds[0]);map.fitBounds(group.pad(0.08))}}
-function renderZipList(){const wrap=document.getElementById('zipList');const zips=Object.keys(allZipData).sort((a,b)=>allZipData[b].score-allZipData[a].score);wrap.innerHTML=zips.map(zip=>{const data=allZipData[zip];return `<div class="zip-list-item ${selectedZip===zip?'selected':''}" data-zip="${zip}"><div class="zip-line1"><div class="zip-code">${zip}</div><div class="zip-risk" style="background:${data.band.fill};">${data.band.label}</div></div><div class="zip-line2">${ZIP_NAMES[zip]||'Loaded ZIP'} · ${data.score}/100 risk</div></div>`}).join('');wrap.querySelectorAll('.zip-list-item').forEach(el=>el.addEventListener('click',()=>selectZip(el.dataset.zip,true)))}
-function renderSelected(zip,hasFocus=true){const line=document.getElementById('selectedZipLine'),riskScore=document.getElementById('riskScore'),riskLabel=document.getElementById('riskLabel'),riskExplainer=document.getElementById('riskExplainer'),investorPct=document.getElementById('investorPct'),investorSub=document.getElementById('investorSub'),domVal=document.getElementById('domVal'),domSub=document.getElementById('domSub'),priceVal=document.getElementById('priceVal'),priceSub=document.getElementById('priceSub'),listingsVal=document.getElementById('listingsVal'),listingsSub=document.getElementById('listingsSub'),riskDetails=document.getElementById('riskDetails');if(!zip||!allZipData[zip]){line.textContent='Select a ZIP to focus it on the map.';riskScore.textContent='—';riskScore.style.color='#1a1a1a';riskLabel.textContent='No data';riskLabel.style.color='#1a1a1a';riskExplainer.textContent='Choose a ZIP to see investor pressure, market speed, and why that area may be easier or harder to win.';investorPct.textContent='—';investorSub.textContent='No data yet';domVal.textContent='—';domSub.textContent='No data yet';priceVal.textContent='—';priceSub.textContent='Context only';listingsVal.textContent='—';listingsSub.textContent='Stored market stats';riskDetails.innerHTML='<div class="empty-state">No ZIP selected.</div>';return}const data=allZipData[zip],own=data.ownership,market=data.market,band=data.band;line.textContent=`ZIP ${zip} · ${ZIP_NAMES[zip]||'Loaded ZIP'}${hasFocus?' · focused on map':''}`;riskScore.textContent=data.score;riskScore.style.color=band.color;riskLabel.textContent=band.label;riskLabel.style.color=band.color;riskExplainer.textContent=explainRisk(data.score,own?.corporate_pct,market?.avg_days_on_market);investorPct.textContent=own?(own.corporate_pct_range||`${own.corporate_pct}%`):'No data';investorSub.textContent=own&&own.total_sampled?`${own.corporate_count} of ${own.total_sampled} sampled`:'Ownership data unavailable';domVal.textContent=market&&market.avg_days_on_market!=null?market.avg_days_on_market:'No data';domSub.textContent=market&&market.avg_days_on_market!=null?'Average DOM from stored market snapshot':'Using ownership-only fallback in score';priceVal.textContent=market?fmtMoney(market.median_price):'—';priceSub.textContent=market?'Stored market snapshot':'No data';listingsVal.textContent=market&&market.active_listings!=null?market.active_listings:'—';listingsSub.textContent=market&&market.active_listings!=null?'Stored market stats':'No listings count stored';let owners='No top owner names stored';if(own&&own.top_corporate_owners){try{const arr=JSON.parse(own.top_corporate_owners);if(Array.isArray(arr)&&arr.length)owners=arr.slice(0,5).join(', ')}catch{}}riskDetails.innerHTML=`<div class="detail-card"><div class="detail-row"><div class="detail-key">ZIP</div><div class="detail-val">${zip}</div></div><div class="detail-row"><div class="detail-key">Neighborhood label</div><div class="detail-val">${ZIP_NAMES[zip]||'Loaded ZIP'}</div></div><div class="detail-row"><div class="detail-key">Risk band</div><div class="detail-val" style="color:${band.color};">${band.label}</div></div><div class="detail-row"><div class="detail-key">Investor ownership</div><div class="detail-val">${own?(own.corporate_pct_range||`${own.corporate_pct}%`):'No data'}</div></div><div class="detail-row"><div class="detail-key">Days on market</div><div class="detail-val">${market&&market.avg_days_on_market!=null?market.avg_days_on_market:'No data'}</div></div><div class="detail-row"><div class="detail-key">Top owners</div><div class="detail-val">${owners}</div></div><div class="risk-bar"><div class="risk-fill" style="width:${data.score}%;background:${band.fill};"></div></div></div>`}
-function selectZip(zip,focusMap=false){if(!zip||!allZipData[zip]){renderSelected(null,false);return}selectedZip=zip;renderMap();renderZipList();renderSelected(zip,focusMap);if(document.getElementById('zip-select').querySelector(`option[value="${zip}"]`)){document.getElementById('zip-select').value=zip}if(focusMap&&allLayers[zip]){map.fitBounds(allLayers[zip].getBounds().pad(0.2));allLayers[zip].openPopup()}}
-function setupToolkitToggles(){document.querySelectorAll('.expand-head').forEach(btn=>btn.addEventListener('click',()=>btn.closest('.expand-wrap').classList.toggle('open')))}
-async function loadData(){document.getElementById('loading').style.display='flex';try{const [ownershipRows,marketRows,boundaryRows]=await Promise.all([fetchFromSupabase('ownership_stats','select=*'),fetchFromSupabase('market_stats','select=*'),fetchFromSupabase('zip_boundaries','select=*')]);const ownershipMap=Object.fromEntries((ownershipRows||[]).map(r=>[r.zip,r]));const marketMap=Object.fromEntries((marketRows||[]).map(r=>[r.zip,r]));const boundaryMap=Object.fromEntries((boundaryRows||[]).map(r=>[r.zip,r]));const allZips=Array.from(new Set([...Object.keys(ownershipMap),...Object.keys(marketMap),...Object.keys(boundaryMap)])).sort();allZipData={};allZips.forEach(zip=>{const ownership=ownershipMap[zip]||null,market=marketMap[zip]||null,boundary=boundaryMap[zip]||null,score=calculateRiskScore(ownership?.corporate_pct||0,market?.avg_days_on_market),band=getRiskBand(score);allZipData[zip]={ownership,market,boundary,score,band}});buildZipSelect(allZips);renderMap();renderZipList();if(allZips.length)selectZip(allZips[0],false);else renderSelected(null,false)}catch(err){console.error(err);document.getElementById('zipList').innerHTML='<div class="empty-state">Could not load Supabase data. Check your anon key and tables.</div>';renderSelected(null,false)}finally{document.getElementById('loading').style.display='none'}}
-function buildZipSelect(zips){const select=document.getElementById('zip-select');select.innerHTML=zips.map(zip=>`<option value="${zip}">${zip} — ${ZIP_NAMES[zip]||'Loaded ZIP'}</option>`).join('');select.addEventListener('change',e=>selectZip(e.target.value,true))}
-function handleTypedZip(){const raw=document.getElementById('zf').value.trim();if(!/^\d{5}$/.test(raw))return;if(allZipData[raw]){selectZip(raw,true);return}document.getElementById('selectedZipLine').textContent=`ZIP ${raw}`;document.getElementById('riskScore').textContent='—';document.getElementById('riskScore').style.color='#1a1a1a';document.getElementById('riskLabel').textContent='No data available yet';document.getElementById('riskLabel').style.color='#1a1a1a';document.getElementById('riskExplainer').textContent='This ZIP is not loaded in Supabase yet. Add it to your refresh list later to populate ownership, DOM, and map data.';document.getElementById('investorPct').textContent='—';document.getElementById('investorSub').textContent='No data available yet';document.getElementById('domVal').textContent='—';document.getElementById('domSub').textContent='No data available yet';document.getElementById('priceVal').textContent='—';document.getElementById('priceSub').textContent='No data available yet';document.getElementById('listingsVal').textContent='—';document.getElementById('listingsSub').textContent='No data available yet';document.getElementById('riskDetails').innerHTML='<div class="empty-state">No data available yet for this ZIP.</div>'}
-function initActions(){document.getElementById('go-btn').addEventListener('click',handleTypedZip);document.getElementById('zf').addEventListener('keydown',e=>{if(e.key==='Enter')handleTypedZip()});document.getElementById('reset-btn').addEventListener('click',()=>{selectedZip=null;renderMap();renderZipList();renderSelected(null,false)});setupToolkitToggles()}
-window.addEventListener('DOMContentLoaded',()=>{setupMap();initActions();loadData()});
+
+let map = L.map('map').setView([41.48,-81.69],11);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+let zipData = {};
+
+function riskScore(investor, dom){
+if(!dom) dom = 20;
+
+let score = (investor * 0.7) + ((30 - dom) * 1.5);
+return Math.max(0, Math.min(100, Math.round(score)));
+}
+
+function getColor(score){
+if(score > 75) return '#8b0000';
+if(score > 60) return '#d7301f';
+if(score > 45) return '#fc8d59';
+if(score > 30) return '#fee08b';
+if(score > 15) return '#91cf60';
+return '#1a9850';
+}
+
+function loadData(){
+
+Promise.all([
+fetch(`${SUPABASE_URL}/rest/v1/ownership_stats`,{headers:{apikey:SUPABASE_ANON_KEY}}).then(r=>r.json()),
+fetch(`${SUPABASE_URL}/rest/v1/market_stats`,{headers:{apikey:SUPABASE_ANON_KEY}}).then(r=>r.json()),
+fetch(`${SUPABASE_URL}/rest/v1/zip_boundaries`,{headers:{apikey:SUPABASE_ANON_KEY}}).then(r=>r.json())
+])
+.then(([own, market, boundaries])=>{
+
+own.forEach(o=>{
+zipData[o.zip] = {investor:o.corporate_pct};
+});
+
+market.forEach(m=>{
+if(!zipData[m.zip]) zipData[m.zip] = {};
+zipData[m.zip].dom = m.avg_days_on_market;
+});
+
+boundaries.forEach(b=>{
+if(!zipData[b.zip]) zipData[b.zip] = {};
+zipData[b.zip].geo = JSON.parse(b.geojson);
+});
+
+drawMap();
+
+});
+
+}
+
+function drawMap(){
+
+Object.keys(zipData).forEach(zip=>{
+
+let z = zipData[zip];
+if(!z.geo) return;
+
+let score = riskScore(z.investor || 0, z.dom);
+z.score = score;
+
+let layer = L.geoJSON(z.geo,{
+style:{
+color:getColor(score),
+fillOpacity:0.4
+}
+}).addTo(map);
+
+layer.on('click',()=>{
+selectZip(zip);
+});
+
+});
+
+}
+
+function selectZip(zip){
+
+let z = zipData[zip];
+
+document.getElementById('info').innerHTML = `
+<h2>ZIP ${zip}</h2>
+<div class="risk">${z.score}/100</div>
+<p>Investor: ${z.investor || 'N/A'}%</p>
+<p>DOM: ${z.dom || 'N/A'}</p>
+`;
+
+}
+
+function searchZip(){
+
+let zip = document.getElementById('zipInput').value;
+
+if(zipData[zip]){
+selectZip(zip);
+
+gtag('event','zip_search',{zip:zip});
+}else{
+alert('No data yet');
+}
+
+}
+
+loadData();
+
 </script>
+
 </body>
 </html>
