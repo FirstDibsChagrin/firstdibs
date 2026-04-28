@@ -5,11 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>First Dibs — Beat the Bid</title>
 
-<!-- SUPABASE -->
-<script>
-const SUPABASE_URL = 'https://lhlmcvlyfyzpyzewlxdo.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxobG1jdmx5Znl6cHl6ZXdseGRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNDUyODIsImV4cCI6MjA4OTYyMTI4Mn0.mnP6GbwwoHe0L5DxGIXSKjW5pZhCwnoIBjWn6hXeElQ';
-</script>
+<!-- Data files loaded via fetch below -->
 
 <!-- GOOGLE ANALYTICS -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
@@ -76,9 +72,11 @@ In some areas, over 25% of purchases are by investors, and homes sell in under 1
 </p>
 
 <p>
-This tool combines:
-<br>• Investor ownership %
-<br>• Days on market
+This tool combines four risk factors:
+<br>• Corporate/LLC ownership % (35% weight)
+<br>• Median days on market (30% weight)
+<br>• Sale-to-list ratio (20% weight)
+<br>• Cash sale share (15% weight)
 </p>
 
 <p>
@@ -107,106 +105,131 @@ Higher scores = more competition and higher chance of being outbid.
 <script>
 
 let map = L.map('map').setView([41.48,-81.69],11);
-
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
 let zipData = {};
+let zipMetrics = {};
+let zipMetadataVintage = {};
 
-function riskScore(investor, dom){
-if(!dom) dom = 20;
+function clamp01(x) { return Math.max(0, Math.min(1, x)); }
 
-let score = (investor * 0.7) + ((30 - dom) * 1.5);
-return Math.max(0, Math.min(100, Math.round(score)));
+function riskScore(d) {
+  // Normalize each factor to 0..1 (1 = highest risk for buyer)
+  const factors = [];
+  if (d.corporate_pct != null)
+    factors.push({ v: clamp01(d.corporate_pct / 40),       w: 0.35 });
+  if (d.median_dom != null)
+    factors.push({ v: clamp01((30 - d.median_dom) / 30),   w: 0.30 });
+  if (d.sale_to_list != null)
+    factors.push({ v: clamp01((d.sale_to_list - 0.95) / 0.10), w: 0.20 });
+  if (d.cash_share != null)
+    factors.push({ v: clamp01(d.cash_share / 50),          w: 0.15 });
+
+  const totalW = factors.reduce((s, f) => s + f.w, 0);
+  if (totalW === 0) return null;
+  const weighted = factors.reduce((s, f) => s + f.v * f.w, 0);
+  return Math.round((weighted / totalW) * 100);
 }
 
 function getColor(score){
-if(score > 75) return '#8b0000';
-if(score > 60) return '#d7301f';
-if(score > 45) return '#fc8d59';
-if(score > 30) return '#fee08b';
-if(score > 15) return '#91cf60';
-return '#1a9850';
+  if(score > 75) return '#8b0000';
+  if(score > 60) return '#d7301f';
+  if(score > 45) return '#fc8d59';
+  if(score > 30) return '#fee08b';
+  if(score > 15) return '#91cf60';
+  return '#1a9850';
 }
 
 function loadData(){
+  Promise.all([
+    fetch('data/cuyahoga_zip_boundaries.json').then(r=>r.json()),
+    fetch('data/cuyahoga_zip_metrics.json').then(r=>r.json())
+  ])
+  .then(([boundaries, metrics])=>{
 
-Promise.all([
-fetch(`${SUPABASE_URL}/rest/v1/ownership_stats`,{headers:{apikey:SUPABASE_ANON_KEY}}).then(r=>r.json()),
-fetch(`${SUPABASE_URL}/rest/v1/market_stats`,{headers:{apikey:SUPABASE_ANON_KEY}}).then(r=>r.json()),
-fetch(`${SUPABASE_URL}/rest/v1/zip_boundaries`,{headers:{apikey:SUPABASE_ANON_KEY}}).then(r=>r.json())
-])
-.then(([own, market, boundaries])=>{
+    zipMetadataVintage = metrics.vintage;
 
-own.forEach(o=>{
-zipData[o.zip] = {investor:o.corporate_pct};
-});
+    boundaries.features.forEach(f => {
+      const zip = f.properties.zip;
+      const m = metrics.zips[zip] || {};
 
-market.forEach(m=>{
-if(!zipData[m.zip]) zipData[m.zip] = {};
-zipData[m.zip].dom = m.avg_days_on_market;
-});
+      zipData[zip] = {
+        geo: f,
+        corporate_pct: m.corporate_pct,
+        median_dom: m.median_dom,
+        sale_to_list: m.sale_to_list,
+        cash_share: m.cash_share,
+        low_sample: m.low_sample,
+        homes_sold: m.homes_sold
+      };
+    });
 
-boundaries.forEach(b=>{
-if(!zipData[b.zip]) zipData[b.zip] = {};
-zipData[b.zip].geo = JSON.parse(b.geojson);
-});
-
-drawMap();
-
-});
-
+    drawMap();
+  })
+  .catch(err => {
+    console.error('Error loading data:', err);
+    alert('Error loading zip data. Check browser console.');
+  });
 }
 
 function drawMap(){
+  Object.keys(zipData).forEach(zip=>{
+    let z = zipData[zip];
+    if(!z.geo) return;
 
-Object.keys(zipData).forEach(zip=>{
+    let score = riskScore(z);
+    z.score = score;
 
-let z = zipData[zip];
-if(!z.geo) return;
+    let layer = L.geoJSON(z.geo,{
+      style:{
+        color:getColor(score),
+        fillOpacity:0.4
+      }
+    }).addTo(map);
 
-let score = riskScore(z.investor || 0, z.dom);
-z.score = score;
-
-let layer = L.geoJSON(z.geo,{
-style:{
-color:getColor(score),
-fillOpacity:0.4
-}
-}).addTo(map);
-
-layer.on('click',()=>{
-selectZip(zip);
-});
-
-});
-
+    layer.on('click',()=>{
+      selectZip(zip);
+    });
+  });
 }
 
 function selectZip(zip){
+  let z = zipData[zip];
 
-let z = zipData[zip];
+  const corpPct = z.corporate_pct != null ? z.corporate_pct.toFixed(1) : 'N/A';
+  const dom = z.median_dom != null ? z.median_dom : 'N/A';
+  const stl = z.sale_to_list != null ? (z.sale_to_list * 100).toFixed(1) : 'N/A';
+  const cash = z.cash_share != null ? z.cash_share.toFixed(1) : '—';
 
-document.getElementById('info').innerHTML = `
-<h2>ZIP ${zip}</h2>
-<div class="risk">${z.score}/100</div>
-<p>Investor: ${z.investor || 'N/A'}%</p>
-<p>DOM: ${z.dom || 'N/A'}</p>
-`;
+  const sourcesText = `
+    <div style="margin-top:16px; padding-top:12px; border-top:1px solid #ddd; font-size:12px; color:#666;">
+      <strong>Sources:</strong><br>
+      Boundaries: ${zipMetadataVintage.boundaries}<br>
+      Ownership: ${zipMetadataVintage.ownership}<br>
+      Market: ${zipMetadataVintage.market}
+    </div>
+  `;
 
+  document.getElementById('info').innerHTML = `
+    <h2>ZIP ${zip}</h2>
+    <div class="risk">${z.score}/100</div>
+    <p><strong>Corporate Ownership:</strong> ${corpPct}%</p>
+    <p><strong>Median Days on Market:</strong> ${dom}</p>
+    <p><strong>Sale-to-List:</strong> ${stl}%</p>
+    <p><strong>Cash Sales:</strong> ${cash}%</p>
+    ${sourcesText}
+  `;
 }
 
 function searchZip(){
+  let zip = document.getElementById('zipInput').value;
 
-let zip = document.getElementById('zipInput').value;
-
-if(zipData[zip]){
-selectZip(zip);
-
-gtag('event','zip_search',{zip:zip});
-}else{
-alert('No data yet');
-}
-
+  if(zipData[zip]){
+    selectZip(zip);
+    gtag('event','zip_search',{zip:zip});
+  }else{
+    alert('No data for that ZIP code');
+  }
 }
 
 loadData();
