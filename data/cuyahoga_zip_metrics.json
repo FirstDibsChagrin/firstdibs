@@ -1,0 +1,417 @@
+{
+  "vintage": {
+    "boundaries": "Census TIGER 2023 ZCTA520 (from OpenDataDE)",
+    "ownership": "Synthetic realistic data (Cuyahoga County Fiscal Officer schema)",
+    "market": "Synthetic realistic data (Redfin Data Center schema, April 2026)"
+  },
+  "zips": {
+    "44017": {
+      "corporate_pct": 20.0,
+      "median_dom": 16,
+      "sale_to_list": 1.01,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 50
+    },
+    "44022": {
+      "corporate_pct": 13.0,
+      "median_dom": 29,
+      "sale_to_list": 1.019,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 99
+    },
+    "44040": {
+      "corporate_pct": 15.0,
+      "median_dom": 28,
+      "sale_to_list": 1.013,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 193
+    },
+    "44070": {
+      "corporate_pct": 11.0,
+      "median_dom": 24,
+      "sale_to_list": 1.009,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 189
+    },
+    "44102": {
+      "corporate_pct": 30.0,
+      "median_dom": 22,
+      "sale_to_list": 0.99,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 160
+    },
+    "44103": {
+      "corporate_pct": 23.0,
+      "median_dom": 19,
+      "sale_to_list": 0.993,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 113
+    },
+    "44104": {
+      "corporate_pct": 37.0,
+      "median_dom": 17,
+      "sale_to_list": 1.027,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 107
+    },
+    "44105": {
+      "corporate_pct": 48.0,
+      "median_dom": 10,
+      "sale_to_list": 1.058,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 188
+    },
+    "44106": {
+      "corporate_pct": 40.0,
+      "median_dom": 11,
+      "sale_to_list": 1.035,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 165
+    },
+    "44107": {
+      "corporate_pct": 43.0,
+      "median_dom": 14,
+      "sale_to_list": 1.118,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 248
+    },
+    "44108": {
+      "corporate_pct": 29.0,
+      "median_dom": 21,
+      "sale_to_list": 1.029,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 59
+    },
+    "44109": {
+      "corporate_pct": 36.0,
+      "median_dom": 12,
+      "sale_to_list": 0.996,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 146
+    },
+    "44110": {
+      "corporate_pct": 45.0,
+      "median_dom": 12,
+      "sale_to_list": 1.06,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 190
+    },
+    "44111": {
+      "corporate_pct": 38.0,
+      "median_dom": 22,
+      "sale_to_list": 1.048,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 128
+    },
+    "44112": {
+      "corporate_pct": 48.0,
+      "median_dom": 13,
+      "sale_to_list": 1.033,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 63
+    },
+    "44113": {
+      "corporate_pct": 37.0,
+      "median_dom": 17,
+      "sale_to_list": 1.057,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 127
+    },
+    "44114": {
+      "corporate_pct": 29.0,
+      "median_dom": 17,
+      "sale_to_list": 0.999,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 159
+    },
+    "44115": {
+      "corporate_pct": 23.0,
+      "median_dom": 15,
+      "sale_to_list": 1.033,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 173
+    },
+    "44116": {
+      "corporate_pct": 31.0,
+      "median_dom": 23,
+      "sale_to_list": 1.011,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 81
+    },
+    "44117": {
+      "corporate_pct": 20.0,
+      "median_dom": 20,
+      "sale_to_list": 1.02,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 130
+    },
+    "44118": {
+      "corporate_pct": 32.0,
+      "median_dom": 16,
+      "sale_to_list": 1.052,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 122
+    },
+    "44119": {
+      "corporate_pct": 35.0,
+      "median_dom": 19,
+      "sale_to_list": 1.035,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 225
+    },
+    "44120": {
+      "corporate_pct": 35.0,
+      "median_dom": 14,
+      "sale_to_list": 1.03,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 160
+    },
+    "44121": {
+      "corporate_pct": 27.0,
+      "median_dom": 19,
+      "sale_to_list": 1.007,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 197
+    },
+    "44122": {
+      "corporate_pct": 38.0,
+      "median_dom": 9,
+      "sale_to_list": 1.033,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 163
+    },
+    "44123": {
+      "corporate_pct": 35.0,
+      "median_dom": 15,
+      "sale_to_list": 1.035,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 205
+    },
+    "44124": {
+      "corporate_pct": 23.0,
+      "median_dom": 19,
+      "sale_to_list": 1.013,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 53
+    },
+    "44125": {
+      "corporate_pct": 34.0,
+      "median_dom": 14,
+      "sale_to_list": 1.044,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 84
+    },
+    "44126": {
+      "corporate_pct": 31.0,
+      "median_dom": 19,
+      "sale_to_list": 1.051,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 221
+    },
+    "44127": {
+      "corporate_pct": 31.0,
+      "median_dom": 23,
+      "sale_to_list": 1.021,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 81
+    },
+    "44128": {
+      "corporate_pct": 24.0,
+      "median_dom": 16,
+      "sale_to_list": 1.034,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 134
+    },
+    "44129": {
+      "corporate_pct": 20.0,
+      "median_dom": 16,
+      "sale_to_list": 1.03,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 150
+    },
+    "44130": {
+      "corporate_pct": 30.0,
+      "median_dom": 18,
+      "sale_to_list": 1.01,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 180
+    },
+    "44131": {
+      "corporate_pct": 20.0,
+      "median_dom": 16,
+      "sale_to_list": 1.03,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 130
+    },
+    "44132": {
+      "corporate_pct": 39.0,
+      "median_dom": 19,
+      "sale_to_list": 1.029,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 89
+    },
+    "44133": {
+      "corporate_pct": 20.0,
+      "median_dom": 12,
+      "sale_to_list": 1.01,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 110
+    },
+    "44134": {
+      "corporate_pct": 37.0,
+      "median_dom": 21,
+      "sale_to_list": 1.037,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 207
+    },
+    "44135": {
+      "corporate_pct": 20.0,
+      "median_dom": 16,
+      "sale_to_list": 0.99,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 150
+    },
+    "44136": {
+      "corporate_pct": 25.0,
+      "median_dom": 21,
+      "sale_to_list": 1.035,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 55
+    },
+    "44137": {
+      "corporate_pct": 32.0,
+      "median_dom": 16,
+      "sale_to_list": 1.052,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 182
+    },
+    "44138": {
+      "corporate_pct": 37.0,
+      "median_dom": 13,
+      "sale_to_list": 1.007,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 227
+    },
+    "44139": {
+      "corporate_pct": 22.0,
+      "median_dom": 22,
+      "sale_to_list": 1.052,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 132
+    },
+    "44140": {
+      "corporate_pct": 33.0,
+      "median_dom": 21,
+      "sale_to_list": 1.003,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 223
+    },
+    "44141": {
+      "corporate_pct": 35.0,
+      "median_dom": 23,
+      "sale_to_list": 1.025,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 145
+    },
+    "44142": {
+      "corporate_pct": 35.0,
+      "median_dom": 23,
+      "sale_to_list": 1.025,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 205
+    },
+    "44143": {
+      "corporate_pct": 11.0,
+      "median_dom": 15,
+      "sale_to_list": 1.015,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 145
+    },
+    "44144": {
+      "corporate_pct": 9.0,
+      "median_dom": 25,
+      "sale_to_list": 0.975,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 55
+    },
+    "44145": {
+      "corporate_pct": 19.0,
+      "median_dom": 17,
+      "sale_to_list": 0.987,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 217
+    },
+    "44146": {
+      "corporate_pct": 11.0,
+      "median_dom": 27,
+      "sale_to_list": 0.977,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 157
+    },
+    "44147": {
+      "corporate_pct": 13.0,
+      "median_dom": 17,
+      "sale_to_list": 0.977,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 107
+    },
+    "44149": {
+      "corporate_pct": 17.0,
+      "median_dom": 18,
+      "sale_to_list": 0.983,
+      "cash_share": null,
+      "low_sample": false,
+      "homes_sold": 163
+    }
+  }
+}
