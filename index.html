@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>First Dibs — Beat the Bid</title>
 
-<!-- Data files loaded via fetch below -->
-
 <!-- GOOGLE ANALYTICS -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
 <script>
@@ -18,41 +16,68 @@ gtag('config', 'G-QRRLPRDVWP');
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <style>
+/* ── Design system tokens ─────────────────────────────────── */
 :root {
-  --primary:       #0f4c35;
-  --primary-dark:  #0a3526;
-  --primary-light: #1a6b4a;
-  --accent:        #16a34a;
-  --accent-bright: #22c55e;
-  --bg:            #f0f4f2;
+  /* Brand */
+  --primary:       #1a3a2a;
+  --primary-dark:  #0f2419;
+  --primary-light: #2d5a3d;
+  --accent:        #2e7d4f;
+  --accent-bright: #3d9c65;
+
+  /* Surfaces */
+  --bg:            #f5f7f5;
   --surface:       #ffffff;
-  --surface-2:     #f8faf9;
-  --text:          #111827;
-  --text-muted:    #6b7280;
-  --text-light:    #9ca3af;
-  --border:        #e5e7eb;
-  --shadow:        0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -1px rgba(0,0,0,0.05);
-  --shadow-lg:     0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -2px rgba(0,0,0,0.04);
-  --radius:        12px;
-  --radius-lg:     20px;
+  --surface-2:     #f0f4f1;
+
+  /* Text */
+  --text:          #1a1f1a;
+  --text-muted:    #4a5568;
+  --text-light:    #718096;
+
+  /* Structure */
+  --border:        #d1dbd4;
+  --shadow-1:      0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-2:      0 4px 12px rgba(0,0,0,0.08);
+  --shadow-3:      0 8px 24px rgba(0,0,0,0.12);
+  --radius-sm:     6px;
+  --radius:        10px;
+  --radius-lg:     16px;
+  --radius-xl:     24px;
+
+  /* Risk palette — teal→amber→dark-red, accessible for deuteranopia */
+  --risk-low:       #2c7bb6;
+  --risk-moderate:  #5aae61;
+  --risk-elevated:  #d4a017;
+  --risk-high:      #f0a500;
+  --risk-very-high: #d4522a;
+  --risk-extreme:   #8c1c13;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: var(--bg);
   color: var(--text);
-  line-height: 1.6;
+  font-size: 15px;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
 
+/* ── Focus rings (all interactive elements) ──────────────── */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ── Nav ─────────────────────────────────────────────────── */
 nav {
   position: sticky;
   top: 0;
@@ -60,7 +85,7 @@ nav {
   background: var(--primary);
   border-bottom: 1px solid rgba(255,255,255,0.08);
   padding: 0 24px;
-  height: 64px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -71,6 +96,12 @@ nav {
   align-items: center;
   gap: 10px;
   text-decoration: none;
+}
+
+.nav-brand:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
 }
 
 .nav-logo-icon {
@@ -92,25 +123,19 @@ nav {
 }
 
 .nav-tagline {
-  font-size: 11px;
-  color: rgba(255,255,255,0.45);
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
 
+/* ── Hero ────────────────────────────────────────────────── */
 .hero {
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 60%, #2d6a4f 100%);
-  padding: 72px 24px 80px;
+  padding: 60px 24px 60px;
   text-align: center;
   position: relative;
   overflow: hidden;
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
 
 .hero-content {
@@ -135,29 +160,30 @@ nav {
 }
 
 .hero h1 {
-  font-size: clamp(32px, 5vw, 52px);
+  font-size: clamp(28px, 5vw, 48px);
   font-weight: 800;
   color: white;
   line-height: 1.15;
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
   margin-bottom: 16px;
 }
 
-.hero h1 span { color: var(--accent-bright); }
+.hero h1 span { color: #7dd3a8; }
 
 .hero p {
-  font-size: 18px;
-  color: rgba(255,255,255,0.72);
+  font-size: 17px;
+  color: rgba(255,255,255,0.75);
   margin-bottom: 36px;
+  line-height: 1.6;
 }
 
 .search-bar {
   display: flex;
   align-items: center;
   background: white;
-  border-radius: 14px;
+  border-radius: var(--radius-xl);
   padding: 6px 6px 6px 18px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+  box-shadow: var(--shadow-3);
   max-width: 400px;
   margin: 0 auto;
   gap: 8px;
@@ -177,24 +203,36 @@ nav {
 
 .search-bar input::placeholder { color: var(--text-light); }
 
+.search-error {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #fecdd3;
+  min-height: 20px;
+}
+
 .btn-primary {
   background: var(--primary);
   color: white;
   border: none;
-  padding: 12px 22px;
-  border-radius: 10px;
+  padding: 0 20px;
+  height: 44px;
+  border-radius: var(--radius);
   font-family: inherit;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s, transform 0.1s;
+  transition: background 0.15s;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 .btn-primary:hover  { background: var(--primary-dark); }
-.btn-primary:active { transform: scale(0.97); }
+.btn-primary:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
 
+/* ── Main layout ─────────────────────────────────────────── */
 .main {
   max-width: 1200px;
   margin: 0 auto;
@@ -209,26 +247,26 @@ nav {
   background: var(--surface);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-2);
   position: relative;
 }
 
 #map { height: 560px; width: 100%; }
 
+/* ── Map legend ──────────────────────────────────────────── */
 .map-legend {
   position: absolute;
   bottom: 16px;
   left: 16px;
-  background: rgba(255,255,255,0.95);
-  backdrop-filter: blur(8px);
-  border-radius: 10px;
+  background: rgba(255,255,255,0.96);
+  border-radius: var(--radius);
   padding: 12px 14px;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-1);
   z-index: 500;
 }
 
 .map-legend-title {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.6px;
@@ -239,11 +277,11 @@ nav {
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
   font-size: 12px;
   font-weight: 500;
   color: var(--text);
-  margin-bottom: 4px;
+  margin-bottom: 5px;
 }
 
 .legend-item:last-child { margin-bottom: 0; }
@@ -255,6 +293,7 @@ nav {
   flex-shrink: 0;
 }
 
+/* ── Sidebar ─────────────────────────────────────────────── */
 .sidebar {
   display: flex;
   flex-direction: column;
@@ -264,29 +303,30 @@ nav {
 .card {
   background: var(--surface);
   border-radius: var(--radius-lg);
-  padding: 24px;
-  box-shadow: var(--shadow);
+  padding: 20px;
+  box-shadow: var(--shadow-1);
   border: 1px solid var(--border);
 }
 
 .card-label {
-  font-size: 10px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.8px;
   color: var(--text-muted);
   margin-bottom: 14px;
 }
 
+/* ── Info card — empty state ─────────────────────────────── */
 .info-empty {
   text-align: center;
   padding: 16px 0;
 }
 
 .info-empty-icon {
-  font-size: 36px;
+  font-size: 32px;
   margin-bottom: 12px;
-  opacity: 0.45;
+  opacity: 0.4;
 }
 
 .info-empty p {
@@ -295,17 +335,19 @@ nav {
   line-height: 1.7;
 }
 
+/* ── Info card — ZIP selected state ─────────────────────── */
 .zip-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .zip-title {
   font-size: 22px;
   font-weight: 800;
   letter-spacing: -0.5px;
+  font-family: 'Roboto Mono', 'Courier New', monospace;
 }
 
 .zip-subtitle {
@@ -314,28 +356,33 @@ nav {
   margin-top: 3px;
 }
 
-.score-badge {
-  display: flex;
-  flex-direction: column;
+.low-sample-badge {
+  display: inline-flex;
   align-items: center;
-  background: var(--bg);
-  border-radius: 12px;
-  padding: 10px 16px;
+  gap: 3px;
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: var(--radius-sm);
+  margin-left: 6px;
+  cursor: default;
 }
 
-.score-value {
+.score-inline {
   font-size: 28px;
   font-weight: 800;
   line-height: 1;
+  font-family: 'Roboto Mono', 'Courier New', monospace;
 }
 
-.score-label {
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+.score-out-of {
+  font-size: 13px;
+  font-weight: 500;
   color: var(--text-muted);
-  margin-top: 2px;
+  margin-left: 2px;
 }
 
 .risk-bar-wrap { margin-bottom: 20px; }
@@ -343,15 +390,15 @@ nav {
 .risk-bar-label {
   display: flex;
   justify-content: space-between;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--text-muted);
-  margin-bottom: 6px;
+  margin-bottom: 7px;
 }
 
 .risk-bar-track {
   height: 8px;
-  background: var(--bg);
+  background: var(--surface-2);
   border-radius: 100px;
   overflow: hidden;
 }
@@ -359,9 +406,14 @@ nav {
 .risk-bar-fill {
   height: 100%;
   border-radius: 100px;
-  transition: width 0.5s ease;
+  transition: width 0.4s ease-out;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .risk-bar-fill { transition: none; }
+}
+
+/* ── Stat grid ───────────────────────────────────────────── */
 .stats-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -371,12 +423,12 @@ nav {
 .stat-box {
   background: var(--surface-2);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--radius);
   padding: 12px;
 }
 
 .stat-box-label {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
@@ -385,29 +437,33 @@ nav {
 }
 
 .stat-box-value {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 700;
   color: var(--text);
   letter-spacing: -0.5px;
+  font-family: 'Roboto Mono', 'Courier New', monospace;
 }
 
 .stat-box-unit {
   font-size: 13px;
   font-weight: 500;
   color: var(--text-muted);
+  font-family: inherit;
 }
 
+/* ── Sources ─────────────────────────────────────────────── */
 .sources-line {
   margin-top: 16px;
   padding-top: 12px;
   border-top: 1px solid var(--border);
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-light);
   line-height: 1.7;
 }
 
 .sources-line strong { color: var(--text-muted); }
 
+/* ── Explainer card ──────────────────────────────────────── */
 .explainer-row {
   display: flex;
   align-items: flex-start;
@@ -424,32 +480,41 @@ nav {
   height: 7px;
   border-radius: 50%;
   background: var(--accent);
-  margin-top: 7px;
+  margin-top: 8px;
   flex-shrink: 0;
 }
 
 .explainer-row p {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-muted);
   line-height: 1.65;
 }
 
 .explainer-row strong { color: var(--text); font-weight: 600; }
 
+/* ── Footer ──────────────────────────────────────────────── */
 footer {
-  background: var(--primary-dark);
-  color: rgba(255,255,255,0.45);
+  background: var(--surface-2);
+  border-top: 1px solid var(--border);
+  color: var(--text-light);
   text-align: center;
-  padding: 24px;
+  padding: 20px 24px;
   font-size: 13px;
+  line-height: 1.7;
 }
 
-footer strong { color: rgba(255,255,255,0.8); }
+footer strong { color: var(--text-muted); }
 
+/* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 900px) {
   .main { grid-template-columns: 1fr; }
-  #map { height: 400px; }
+  #map { height: 420px; }
   .nav-tagline { display: none; }
+  .card { padding: 16px; }
+}
+
+@media (max-width: 640px) {
+  #map { height: 360px; }
 }
 </style>
 </head>
@@ -458,7 +523,7 @@ footer strong { color: rgba(255,255,255,0.8); }
 
 <nav>
   <a class="nav-brand" href="#">
-    <div class="nav-logo-icon">🏡</div>
+    <div class="nav-logo-icon"><span aria-hidden="true">🏡</span></div>
     <span class="nav-brand-name">First Dibs</span>
   </a>
   <span class="nav-tagline">Cuyahoga County Homebuyer Intelligence</span>
@@ -470,24 +535,26 @@ footer strong { color: rgba(255,255,255,0.8); }
     <h1>Beat the Bid<br><span>Before It Starts</span></h1>
     <p>See where investors are outcompeting buyers — and get the strategy to win anyway.</p>
     <div class="search-bar">
-      <input id="zipInput" type="text" placeholder="Enter ZIP code…" maxlength="5">
+      <input id="zipInput" type="text" placeholder="Enter ZIP code…" maxlength="5"
+             aria-label="Enter a Cuyahoga County ZIP code" inputmode="numeric" pattern="[0-9]*">
       <button class="btn-primary" onclick="searchZip()">Check ZIP</button>
     </div>
+    <div class="search-error" id="searchError" role="alert" aria-live="polite"></div>
   </div>
 </div>
 
 <div class="main">
 
   <div class="map-wrapper">
-    <div id="map"></div>
-    <div class="map-legend">
+    <div id="map" aria-label="Cuyahoga County investor competition map — click a ZIP for details"></div>
+    <div class="map-legend" aria-hidden="true">
       <div class="map-legend-title">Competition Level</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#1a9850"></div>Low</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#91cf60"></div>Moderate</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#fee08b"></div>Elevated</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#fc8d59"></div>High</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#d7301f"></div>Very High</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#8b0000"></div>Extreme</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--risk-low)"></div>Low</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--risk-moderate)"></div>Moderate</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--risk-elevated)"></div>Elevated</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--risk-high)"></div>High</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--risk-very-high)"></div>Very High</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--risk-extreme)"></div>Extreme</div>
     </div>
   </div>
 
@@ -495,7 +562,7 @@ footer strong { color: rgba(255,255,255,0.8); }
 
     <div class="card" id="info">
       <div class="info-empty">
-        <div class="info-empty-icon">🗺️</div>
+        <div class="info-empty-icon"><span aria-hidden="true">🗺️</span></div>
         <p>Click a ZIP on the map<br>or search above to see<br>competition data.</p>
       </div>
     </div>
@@ -503,19 +570,19 @@ footer strong { color: rgba(255,255,255,0.8); }
     <div class="card">
       <div class="card-label">How the risk score works</div>
       <div class="explainer-row">
-        <div class="explainer-dot"></div>
+        <div class="explainer-dot" aria-hidden="true"></div>
         <p><strong>Corporate/LLC ownership %</strong> (35%) — share of residential parcels owned by LLCs, corporations, or investment entities.</p>
       </div>
       <div class="explainer-row">
-        <div class="explainer-dot"></div>
+        <div class="explainer-dot" aria-hidden="true"></div>
         <p><strong>Median days on market</strong> (30%) — how fast homes go under contract. Fewer days = hotter market.</p>
       </div>
       <div class="explainer-row">
-        <div class="explainer-dot"></div>
+        <div class="explainer-dot" aria-hidden="true"></div>
         <p><strong>Sale-to-list ratio</strong> (20%) — homes selling above list price signal bidding war conditions.</p>
       </div>
       <div class="explainer-row">
-        <div class="explainer-dot"></div>
+        <div class="explainer-dot" aria-hidden="true"></div>
         <p><strong>Risk score 0–100</strong> — higher score means more competition and greater chance of being outbid. Weights renormalize when a factor is missing.</p>
       </div>
     </div>
@@ -525,7 +592,8 @@ footer strong { color: rgba(255,255,255,0.8); }
 </div>
 
 <footer>
-  <strong>First Dibs</strong> &nbsp;·&nbsp; Cuyahoga County Homebuyer Intelligence &nbsp;·&nbsp; Data: Census TIGER 2023 · Redfin · Cuyahoga Fiscal Officer
+  <strong>First Dibs</strong> &nbsp;·&nbsp; Cuyahoga County Homebuyer Intelligence<br>
+  Data: Census TIGER 2023 &nbsp;·&nbsp; Redfin Data Center &nbsp;·&nbsp; Cuyahoga County Fiscal Officer &nbsp;·&nbsp; Vintage: April 2026
 </footer>
 
 <script>
@@ -556,21 +624,21 @@ function riskScore(d) {
 }
 
 function getColor(score) {
-  if (score > 75) return '#8b0000';
-  if (score > 60) return '#d7301f';
-  if (score > 45) return '#fc8d59';
-  if (score > 30) return '#fee08b';
-  if (score > 15) return '#91cf60';
-  return '#1a9850';
+  if (score > 75) return '#8c1c13';
+  if (score > 60) return '#d4522a';
+  if (score > 45) return '#f0a500';
+  if (score > 30) return '#d4a017';
+  if (score > 15) return '#5aae61';
+  return '#2c7bb6';
 }
 
 function getRiskLabel(score) {
-  if (score > 75) return { label: 'Extreme',   color: '#8b0000' };
-  if (score > 60) return { label: 'Very High', color: '#d7301f' };
-  if (score > 45) return { label: 'High',      color: '#ea580c' };
-  if (score > 30) return { label: 'Elevated',  color: '#ca8a04' };
-  if (score > 15) return { label: 'Moderate',  color: '#65a30d' };
-  return             { label: 'Low',       color: '#16a34a' };
+  if (score > 75) return { label: 'Extreme',   color: '#8c1c13' };
+  if (score > 60) return { label: 'Very High', color: '#d4522a' };
+  if (score > 45) return { label: 'High',      color: '#c2730f' };
+  if (score > 30) return { label: 'Elevated',  color: '#92650a' };
+  if (score > 15) return { label: 'Moderate',  color: '#2d6e35' };
+  return             { label: 'Low',       color: '#1a5c8a' };
 }
 
 function loadData() {
@@ -585,7 +653,7 @@ function loadData() {
       const zip = f.properties.zip;
       const m = metrics.zips[zip] || {};
       zipData[zip] = {
-        geo:          f,
+        geo:           f,
         corporate_pct: m.corporate_pct ?? null,
         median_dom:    m.median_dom    ?? null,
         sale_to_list:  m.sale_to_list  ?? null,
@@ -598,7 +666,7 @@ function loadData() {
   })
   .catch(err => {
     console.error('Error loading data:', err);
-    document.getElementById('info').innerHTML = '<p style="color:red;padding:8px">Error loading map data.</p>';
+    document.getElementById('info').innerHTML = '<p style="color:#b91c1c;padding:8px">Error loading map data. Please refresh.</p>';
   });
 }
 
@@ -627,20 +695,21 @@ function selectZip(zip) {
 
   const fmt = (v, unit, decimals = 0) =>
     v != null
-      ? `<span class="stat-box-value">${v.toFixed ? v.toFixed(decimals) : v}<span class="stat-box-unit">${unit}</span></span>`
+      ? `<span class="stat-box-value">${typeof v === 'number' ? v.toFixed(decimals) : v}<span class="stat-box-unit">${unit}</span></span>`
       : `<span class="stat-box-value" style="color:var(--text-light)">—</span>`;
 
+  const lowSampleBadge = z.low_sample
+    ? `<span class="low-sample-badge" title="Fewer than 10 sales in the latest month; trailing 3-month median used">ⓘ low sample</span>`
+    : '';
+
   document.getElementById('info').innerHTML = `
-    <div class="zip-header">
-      <div>
-        <div class="card-label">ZIP Code</div>
-        <div class="zip-title">${zip}</div>
-        <div class="zip-subtitle">Cuyahoga County${z.low_sample ? ' · low sample' : ''}</div>
+    <div style="border-left:4px solid ${color};padding-left:14px;margin-bottom:16px;">
+      <div class="card-label">ZIP Code</div>
+      <div style="display:flex;align-items:baseline;gap:8px;">
+        <span class="zip-title">${zip}</span>
+        <span class="score-inline" style="color:${color}">${z.score}</span><span class="score-out-of">/ 100</span>
       </div>
-      <div class="score-badge">
-        <div class="score-value" style="color:${color}">${z.score}</div>
-        <div class="score-label">/ 100</div>
-      </div>
+      <div class="zip-subtitle">Cuyahoga County${lowSampleBadge}</div>
     </div>
     <div class="risk-bar-wrap">
       <div class="risk-bar-label">
@@ -677,11 +746,15 @@ function selectZip(zip) {
 
 function searchZip() {
   const zip = document.getElementById('zipInput').value.trim();
+  const errorEl = document.getElementById('searchError');
   if (zipData[zip]) {
+    errorEl.textContent = '';
     selectZip(zip);
     gtag('event', 'zip_search', { zip });
   } else {
-    alert('No data available for that ZIP code.');
+    errorEl.textContent = zip
+      ? `No data for ZIP ${zip}. Try a Cuyahoga County ZIP like 44102 or 44120.`
+      : 'Please enter a ZIP code.';
   }
 }
 
