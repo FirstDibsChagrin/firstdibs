@@ -1,9 +1,23 @@
-# First Dibs — Cuyahoga County Risk Score Methodology
+# Cuyahoga County ZIP Risk Factor Methodology
 
 **Version:** 7-factor v1  
 **Branch:** `data/cuyahoga-7factor-v1`  
 **Generated:** 2026-04-30  
-**Coverage:** 51 ZCTAs with ≥50% land area in Cuyahoga County, Ohio
+**Coverage:** 51 Cuyahoga County ZCTAs
+
+---
+
+## Factors Not Found (Completely Unobtainable)
+
+The following factors could not be populated because the required data sources were blocked by the network proxy. Only `github.com`, `raw.githubusercontent.com`, and the Redfin public S3 bucket (`redfin-public-data.s3.us-west-2.amazonaws.com`) were accessible. All government API endpoints returned HTTP 403 ("Host not in allowlist").
+
+| Factor | Source | Reason Null |
+|--------|--------|-------------|
+| **Factor 1: Corporate/LLC ownership %** | Cuyahoga County Fiscal Officer ArcGIS (`gis.cuyahogacounty.us`) | Host blocked by proxy allowlist |
+| **Factor 6: Price-to-income ratio** | Zillow ZHVI (`files.zillowstatic.com`) + Census ACS B19013 (`api.census.gov`) | Both hosts blocked by proxy allowlist |
+| **Factor 7: FHA loan share** | FFIEC HMDA 2023 snapshot (`ffiec.cfpb.gov`); CFPB S3 (`cfpb-hmda-public.s3.amazonaws.com`) returns Access Denied | Host blocked; S3 bucket returns 403 |
+
+**Sanity check for corporate_pct** (affluent east ZIPs 44022, 44040, 44124 vs. high-investor ZIPs 44105, 44108, 44110, 44120): Cannot be performed — corporate_pct is null for all ZIPs.
 
 ---
 
@@ -11,111 +25,126 @@
 
 The risk score estimates how difficult it is for a regular buyer — using financing, needing inspection contingencies, and competing on offer price — to successfully purchase a single-family home in a given ZIP code. A higher score means more competition from institutional and cash buyers.
 
-The score is **not** a measure of neighborhood quality or desirability. A high-risk ZIP may be one that has been targeted by investors precisely because it is undervalued, or one where rapid appreciation has attracted multiple-offer competition. Both scenarios disadvantage regular buyers differently.
+---
+
+## ZIP Universe
+
+**Source:** `scpike/us-state-county-zip` on GitHub (based on US Census 2000 ZCTA geography)  
+**URL:** https://raw.githubusercontent.com/scpike/us-state-county-zip/master/geo-data.csv  
+**Downloaded:** 2026-04-30  
+**Filter:** Rows where `county == "Cuyahoga"` and `state == "OH"` and ZIP is a valid 5-digit code → 51 ZCTAs
+
+**Caveat:** The authoritative 2020 Census ZCTA-to-county relationship file (`tab20_zcta520_county20_natl.txt` from `www2.census.gov`) was inaccessible. The scpike dataset uses 2000 Census ZCTA geography and does not apply the >50% Cuyahoga land-area share filter required by the original methodology. Boundary ZIPs (e.g., 44040 Gates Mills, 44022 Chagrin Falls) may have changed county assignments since 2000. The 51 ZIPs here match the known Cuyahoga ZCTA list.
 
 ---
 
-## Factor Definitions and Sources
+## Factor 1: Corporate/LLC Ownership Share
 
-### Factor 1 — Corporate / LLC Ownership Rate (35% weight)
+**Source:** Cuyahoga County Fiscal Officer ArcGIS REST parcel service  
+**URL:** https://gis.cuyahogacounty.us/arcgis/rest/services/  
+**Status: INACCESSIBLE — null for all 51 ZIPs**
 
-**What it measures:** Share of single-family residential parcels owned by LLCs, corporations, and named investor entities, not natural persons.
+**Intended methodology:**
+- Query parcel layer for PARCEL, OWNER_NAME, SITE_ZIP, LAND_USE
+- Flag as corporate if OWNER_NAME matches regex (case-insensitive):  
+  `\b(LLC|L\.L\.C\.|LIMITED LIABILITY|INC\b|INCORPORATED|CORP\b|CORPORATION|HOLDINGS|REALTY|PROPERTIES|VENTURES|INVESTMENTS|CAPITAL|EQUITY|FUND|PARTNERS|LP|L\.P\.|LLP|REIT)\b`
+- Exclude: FAMILY TRUST, LIVING TRUST, REVOCABLE TRUST, or TRUSTEE followed by personal name pattern
+- `corporate_pct = (corporate parcels in ZIP / total residential parcels in ZIP) × 100`
 
-**Target source:** Cuyahoga County Fiscal Officer property records via ArcGIS REST API (`gis2.cuyahogacounty.us`).
-
-**Actual source used:** Principled synthetic estimates. The Fiscal Officer ArcGIS endpoint was unreachable from the build environment (DNS resolution failure). Values are derived from:
-- Reinvestment Fund "Investor Activity in Cuyahoga County" reports (2019–2023)
-- Cleveland Neighborhood Progress housing data publications
-- Case Western Reserve University Center on Urban Poverty & Community Development investor concentration maps
-- Published analysis of east-side / west-side investor hotspots in Cleveland
-
-**Known patterns applied:**
-- East-side urban core (44105 Slavic Village, 44108 Glenville, 44110 Collinwood, 44120 Buckeye–Shaker): 28–36%
-- Near-west side (44102, 44103, 44104): 19–27%
-- Inner suburbs (44109, 44111, 44112, 44125, 44127): 11–21%
-- Affluent east suburbs (44022, 44040, 44124): 6–9%
-- Far south/west suburbs (44133, 44136, 44139, 44145, 44147, 44149): 8–10%
-
-**Confidence:** Medium. Directionally accurate based on published research; exact percentages should be replaced with Fiscal Officer parcel data when accessible.
+**ZIPs with null corporate_pct:** All 51.
 
 ---
 
-### Factor 2 — Median Days on Market (20% weight)
+## Factors 2–5: Redfin Market Data (REAL DATA)
 
-**What it measures:** Median number of days between list date and sale date for homes sold in the trailing 3-month period.
+**Source:** Redfin Data Center — ZIP Code Market Tracker  
+**URL:** https://redfin-public-data.s3.us-west-2.amazonaws.com/redfin_market_tracker/zip_code_market_tracker.tsv000.gz  
+**Downloaded:** 2026-04-30 (streamed via `curl | gunzip | grep`; filtered rows saved to `data/raw/redfin_cuyahoga.tsv`, 32,065 rows)  
+**Vintage:** Rolling 90-day period; most ZIPs use period ending **2026-03-31**
 
-**Source:** Redfin Data Center, ZIP-level market tracker TSV.  
-File: `zip_code_market_tracker.tsv000.gz` (streamed from Redfin public S3; not stored in repo due to size ~1.5 GB compressed).  
-Column: `MEDIAN_DOM`  
-Period: 3-month trailing average ending 2026-03-31.  
-Filter: `REGION_TYPE = "zip code"`, `PROPERTY_TYPE = "All Residential"`.
+**Methodology:**
+1. Streamed the gzipped TSV and extracted rows matching Cuyahoga ZIPs using regex on REGION column
+2. Filtered to `PROPERTY_TYPE == "All Residential"`
+3. For each ZIP, selected the most recent period with non-null `HOMES_SOLD`
+4. ZIPs with `HOMES_SOLD < 10` in latest period flagged as `low_sample_market: true` and use trailing 3-month median instead
+5. Low-sample ZIPs (used trailing 3-month median): 44040 (Gates Mills), 44114 (Downtown/Near East), 44115 (Midtown), 44127 (Corlett)
 
-**Score direction:** Lower DOM → higher competition → higher risk.
+### Factor 2: Median Days on Market (`median_dom`)
 
----
+**Column:** `MEDIAN_DOM`  
+**Unit:** days (rolling 90-day median for sold homes)  
+**Formula:** Direct from Redfin; trailing 3-month median for low-sample ZIPs  
+**ZIPs with null:** None — all 51 have real data  
+**Score direction:** Lower DOM → more competition → higher risk
 
-### Factor 3 — Average Sale-to-List Ratio (20% weight)
+### Factor 3: Sale-to-List Ratio (`sale_to_list`)
 
-**What it measures:** Average ratio of final sale price to original list price. Values above 1.0 indicate bidding above asking; below 1.0 indicates selling at a discount.
+**Column:** `AVG_SALE_TO_LIST`  
+**Unit:** decimal ratio (1.012 = 1.2% above list; 0.960 = 4% below list)  
+**Formula:** Direct from Redfin; trailing 3-month median for low-sample ZIPs  
+**ZIPs with null:** None — all 51 have real data  
+**Score direction:** Higher ratio → more above-ask competition → higher risk
 
-**Source:** Redfin Data Center, same file as Factor 2.  
-Column: `AVG_SALE_TO_LIST` (stored as ratio, e.g. `1.023` = 102.3%).  
-Period: 3-month trailing average ending 2026-03-31.
+**Note:** Most Cuyahoga ZIPs show sale-to-list ratios below 1.0 (range: ~0.91–1.03 as of March 2026), reflecting a soft market in many neighborhoods. Investor-heavy ZIPs tend to show the lowest ratios due to discounted cash purchases.
 
-**Score direction:** Higher ratio → more above-ask competition → higher risk.
+### Factor 4: Months of Supply (`months_of_supply`)
 
-**Note on Cuyahoga interpretation:** Most Cuyahoga ZIPs show sale-to-list ratios below 1.0 (0.93–0.99), reflecting a distressed or soft market. In this context, investor-heavy ZIPs show the lowest ratios (deeply discounted cash purchases), while this factor's discriminating power is lower than in hot coastal markets. The corporate ownership rate (Factor 1) carries the most weight for this reason.
+**Derived metric:** Redfin no longer publishes `MONTHS_OF_SUPPLY` at ZIP level — the column is null in all rows of the source file.  
+**Formula:** `months_of_supply = INVENTORY / (HOMES_SOLD / 3)` where HOMES_SOLD is over a 90-day period, so dividing by 3 gives monthly sales rate  
+**Unit:** months  
+**ZIPs with null:** None — all 51 have computed values (though derived, not Redfin-published)  
+**Caveat:** This approximation will be noisier for low-volume ZIPs. Values above 6 months indicate a buyer's market; below 3 months indicates seller's market.
 
----
+### Factor 5: Share Sold Above List (`pct_sold_above_list`)
 
-### Factor 4 — Percent of Homes Sold Above List Price (10% weight)
-
-**What it measures:** Share of homes that sold above original list price in the trailing 3-month period.
-
-**Source:** Redfin Data Center, same file as Factors 2–3.  
-Column: `SOLD_ABOVE_LIST` (stored as fraction, e.g. `0.45` = 45%).  
-Period: 3-month trailing average ending 2026-03-31.
-
-**Score direction:** Higher share → more bidding-war activity → higher risk.
-
----
-
-### Factor 5 — Months of Supply
-
-**Status: UNAVAILABLE**
-
-The Redfin ZIP-level market tracker reports `MONTHS_OF_SUPPLY` as `NA` for all ZIP-code records. This field is only populated at metro, state, and national level in the Redfin dataset.
-
-**Alternative:** Could be derived from active listing count ÷ monthly sales rate using Redfin's `INVENTORY` and `HOMES_SOLD` columns. Not implemented in v1; planned for v2.
-
----
-
-### Factor 6 — Price-to-Income Ratio (10% weight)
-
-**What it measures:** Ratio of median home sale price to median household income. Higher ratios mean homes are less affordable relative to local incomes, which disadvantages financed buyers relative to cash investors.
-
-**Sources:**
-- *Numerator (price):* Redfin `MEDIAN_SALE_PRICE`, 3-month trailing average ending 2026-03-31.
-- *Denominator (income):* ACS 5-year estimates (2018–2022), table B19013_001E (Median Household Income). Values from Census Bureau published estimates; the Census ACS API was blocked by the build network allowlist. Income figures are based on the 2022 ACS 5-year release.
-
-**Formula:** `price_to_income = median_sale_price / acs_median_income`
-
-**Score direction:** Higher ratio → homes less affordable relative to income → higher risk.
+**Column:** `SOLD_ABOVE_LIST` (stored as fraction in Redfin; converted to percent)  
+**Unit:** percent  
+**Formula:** `pct_sold_above_list = SOLD_ABOVE_LIST × 100`  
+**ZIPs with null:** None — all 51 have real data  
+**Score direction:** Higher share → more bidding-war activity → higher risk
 
 ---
 
-### Factor 7 — FHA Loan Share (10% weight)
+## Factor 6: Price-to-Income Ratio
 
-**What it measures:** Share of home purchase mortgages originated with FHA backing. FHA loans signal first-time and lower-income buyers who are more likely to be outcompeted by cash investors in the same market.
+**Status: INACCESSIBLE — null for all 51 ZIPs**
 
-**Target source:** FFIEC Home Mortgage Disclosure Act (HMDA) Loan Application Register, 2022–2023, filtered to Cuyahoga County via HUD USPS ZIP–census tract crosswalk.
+**ZHVI (numerator):**  
+Zillow Research ZHVI (smoothed, seasonally adjusted, mid-tier, all homes) by ZIP  
+URL: https://files.zillowstatic.com/research/public_csvs/zhvi/Zip_zhvi_uc_sfrcondo_tier_0.33_0.67_sm_sa_month.csv  
+Reason: `files.zillowstatic.com` blocked by proxy allowlist.
 
-**Actual source used:** Principled synthetic estimates. The FFIEC HMDA API and HUD crosswalk API were blocked by the build network allowlist. Values are derived from:
-- Published HMDA aggregate tables (CFPB Mortgage Market Activity and Trends reports)
-- Cleveland Federal Reserve Bank housing market research
-- Known patterns: urban core has higher FHA share (~40–45%), affluent suburbs much lower (~6–13%)
+**ACS Income (denominator):**  
+Census ACS 5-year 2022, Table B19013_001E (Median Household Income)  
+URL: https://api.census.gov/data/2022/acs/acs5?get=B19013_001E,NAME&for=zip%20code%20tabulation%20area:*  
+Reason: `api.census.gov` blocked by proxy allowlist.
 
-**Score direction:** Higher FHA share → more first-time buyers present → more vulnerable to investor outcompetition → higher risk.
+**Intended formula:** `price_to_income = ZHVI / acs_median_household_income` (rounded to 2 decimal places)
+
+**Note:** Redfin `MEDIAN_SALE_PRICE` (March 2026 period) is available for all 51 ZIPs and is included in the output as `redfin_median_sale_price` for reference. It is NOT used to compute `price_to_income` because ACS income data is unavailable — mixing sources would produce a misleading ratio.
+
+**ZIPs with null price_to_income:** All 51.
+
+---
+
+## Factor 7: FHA Loan Share
+
+**Status: INACCESSIBLE — null for all 51 ZIPs**
+
+**Source:** FFIEC HMDA 2023 Snapshot National Loan Level Dataset  
+URL: https://ffiec.cfpb.gov/data-publication/snapshot-national-loan-level-dataset/2023  
+Reasons:
+- `ffiec.cfpb.gov` blocked by proxy allowlist
+- `cfpb-hmda-public.s3.amazonaws.com` is network-reachable but returns HTTP 403 Access Denied for all tested file paths (both the full snapshot ZIP and Ohio-filtered files)
+- HUD USPS TRACT_ZIP crosswalk also inaccessible (`www.huduser.gov` blocked)
+
+**Intended methodology:**
+- Filter LAR for `action_taken == 1` (originated), `loan_purpose == 1` (home purchase), `loan_type == 2` (FHA-insured), `county_code == 039` (Cuyahoga)
+- Restrict to `derived_dwelling_category` for 1–4 family properties
+- Convert census tract to ZIP via HUD USPS TRACT_ZIP crosswalk (proportional allocation)
+- `fha_share = (FHA originations in ZIP / all home purchase originations in ZIP) × 100`
+
+**ZIPs with null fha_share:** All 51.
 
 ---
 
@@ -129,34 +158,16 @@ Each factor is normalized to [0, 1] before weighting. If a factor is unavailable
 
 Normalization ranges (calibrated to Cuyahoga County distribution):
 
-| Factor | 0 (low risk) | 1 (high risk) |
-|--------|-------------|---------------|
-| corporate_pct | ≤5% | ≥40% |
-| median_dom | ≥60 days | ≤5 days |
-| sale_to_list | ≤0.95 | ≥1.05 |
-| pct_above_list | 0% | ≥60% |
-| price_to_income | ≤2 | ≥8 |
-| fha_share | ≤10% | ≥50% |
+| Factor | Weight | 0 (low risk) | 1 (high risk) |
+|--------|--------|-------------|---------------|
+| corporate_pct | 35% | ≤5% | ≥40% |
+| median_dom | 20% | ≥60 days | ≤5 days |
+| sale_to_list | 20% | ≤0.95 | ≥1.05 |
+| pct_sold_above_list | 10% | 0% | ≥60% |
+| price_to_income | 10% | ≤2 | ≥8 |
+| fha_share | 10% (inverted) | ≤10% | ≥50% |
 
----
-
-## ZIP Universe
-
-The 51 ZCTAs were identified from the Census 2020 ZCTA-to-county relationship file (`tab20_zcta520_county20_natl.txt`), filtered to Cuyahoga County FIPS `39035` with land-area share ≥50%. GeoJSON boundaries from OpenDataDE Ohio ZCTA GeoJSON (Census TIGER 2020 ZCTA520 geometry).
-
----
-
-## Known Limitations
-
-1. **Factor 1 (corporate ownership)** is synthetic. The single most important factor (35% weight) should be replaced with actual Fiscal Officer parcel data for production use. Pull script would query `gis2.cuyahogacounty.us/arcgis/rest/services` parcel layer, filter on owner name keywords (LLC, Holdings, Trust, etc.) per ZIP.
-
-2. **Months of supply (Factor 5)** is unavailable from Redfin ZIP-level data. Could be approximated from `INVENTORY / HOMES_SOLD * (PERIOD_DURATION / 30)` if Redfin populated those fields consistently.
-
-3. **FHA share (Factor 7)** is synthetic. Should be derived from HMDA LAR filtered to `loan_purpose=1` (home purchase), `loan_type=2` (FHA-insured), aggregated by census tract then crosswalked to ZIP using HUD proportional allocation.
-
-4. **Sale-to-list ratio** in Cuyahoga's distressed ZIPs can reflect property condition discounts rather than investor competition. Consider adding a separate "cash sale share" factor in v2 using HMDA `denial_reason` or county deed transfer data.
-
-5. **Income data** uses 2022 ACS 5-year estimates. Income lags price movements; the ratio may understate affordability pressure in rapidly appreciating ZIPs.
+With corporate_pct, price_to_income, and fha_share all null (combined 55% weight), the current data supports only a partial risk score using Factors 2–5 (45% combined weight).
 
 ---
 
@@ -164,7 +175,24 @@ The 51 ZCTAs were identified from the Census 2020 ZCTA-to-county relationship fi
 
 | File | Description |
 |------|-------------|
-| `data/cuyahoga_zip_metrics.json` | Final per-ZIP metrics with vintage metadata |
+| `data/cuyahoga_zip_metrics.json` | Final per-ZIP metrics with vintage metadata (real Redfin data; other factors null) |
 | `data/cuyahoga_zip_boundaries.json` | GeoJSON FeatureCollection, 51 Cuyahoga ZCTAs |
-| `data/raw/redfin_cuyahoga.tsv` | Redfin market tracker rows filtered to Cuyahoga ZIPs (8,581 rows, all property types, 2012–2026) |
-| `scripts/build_metrics.py` | Build script that reads raw data and writes `cuyahoga_zip_metrics.json` |
+| `data/raw/redfin_cuyahoga.tsv` | Redfin market tracker rows filtered to Cuyahoga ZIPs (32,065 rows, all property types, multi-year history through 2026-03-31) |
+| `data/raw/redfin_header.txt` | Column header from Redfin TSV file |
+| `data/raw/redfin_metrics.json` | Processed per-ZIP Redfin metrics (intermediate file) |
+| `data/raw/cuyahoga_zips_scpike.csv` | ZIP universe source data from scpike/us-state-county-zip |
+| `data/raw/tab20_zcta520_county20_natl.txt` | Census ZCTA-county file (inaccessible — file contains proxy error message) |
+
+---
+
+## Known Limitations and Next Steps
+
+1. **Factor 1 (corporate ownership)** is the most impactful missing factor (35% weight). Requires access to `gis.cuyahogacounty.us` ArcGIS parcel service or the Cuyahoga County Auditor's parcel data download.
+
+2. **Factor 6 (price-to-income)** requires unblocking `api.census.gov` (ACS income) and `files.zillowstatic.com` (ZHVI). Alternatively, median sale price from Redfin could be used with ACS income if ACS becomes accessible.
+
+3. **Factor 7 (FHA share)** requires unblocking `ffiec.cfpb.gov` or obtaining an S3 presigned URL for the HMDA Ohio-filtered file.
+
+4. **Months of supply** is derived rather than direct; validation against NAR or Redfin metro-level figures recommended.
+
+5. **ZIP universe** should be validated against 2020 Census ZCTA-county relationship file once `www2.census.gov` is accessible.
