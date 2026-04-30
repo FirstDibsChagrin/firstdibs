@@ -1,0 +1,19 @@
+Cuyahoga County Parcel Corporate/LLC Ownership Rate (Factor 1) was NOT obtained.
+
+Target endpoints attempted:
+  1. https://gis.cuyahogacounty.us/arcgis/rest/services/ → HTTP 403, proxy "Host not in allowlist"
+  2. https://data.cuyahogacounty.us/resource/ → ECONNREFUSED
+  3. https://data.cuyahogacounty.us/api/geospatial/ → ECONNREFUSED
+
+Intended methodology:
+  - Query Fiscal Officer parcel layer for PARCEL, OWNER_NAME, SITE_ZIP, LAND_USE
+  - Apply corporate regex: \b(LLC|L\.L\.C\.|LIMITED LIABILITY|INC\b|INCORPORATED|CORP\b|
+    CORPORATION|HOLDINGS|REALTY|PROPERTIES|VENTURES|INVESTMENTS|CAPITAL|EQUITY|FUND|
+    PARTNERS|LP|L\.P\.|LLP|REIT)\b
+  - Exclude: FAMILY TRUST, LIVING TRUST, REVOCABLE TRUST, TRUSTEE + personal name
+  - corporate_pct = corporate parcels / total residential parcels × 100
+
+Result: corporate_pct = null for all 51 ZIPs in cuyahoga_zip_metrics.json
+
+Sanity check (affluent east 44022/44040/44124 vs high-investor 44105/44108/44110/44120):
+CANNOT BE PERFORMED — data unavailable.
