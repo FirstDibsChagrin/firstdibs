@@ -1,417 +1,600 @@
 {
   "vintage": {
-    "boundaries": "Census TIGER 2023 ZCTA520 (from OpenDataDE)",
-    "ownership": "Synthetic realistic data (Cuyahoga County Fiscal Officer schema)",
-    "market": "Synthetic realistic data (Redfin Data Center schema, April 2026)"
+    "generated": "2026-04-30T02:06:47.707032Z",
+    "factors": {
+      "corporate_pct": {
+        "source": "Principled synthetic \u2014 Cuyahoga Fiscal Officer ArcGIS REST was unreachable from build environment; values derived from published Cleveland Neighborhood Progress reports, Reinvestment Fund investor concentration data, and known east-side/west-side investor patterns.",
+        "weight": 0.35
+      },
+      "median_dom": {
+        "source": "Redfin Data Center ZIP-level market tracker TSV, 3-month trailing average ending latest available period.",
+        "weight": 0.2
+      },
+      "sale_to_list": {
+        "source": "Redfin Data Center ZIP-level market tracker TSV, avg_sale_to_list field.",
+        "weight": 0.2
+      },
+      "months_supply": {
+        "source": "UNAVAILABLE \u2014 Redfin ZIP-level TSV reports MONTHS_OF_SUPPLY as NA for all ZIP records; field is only populated at metro/national level. Omitted from final metrics.",
+        "weight": 0.0,
+        "available": false
+      },
+      "pct_above_list": {
+        "source": "Redfin Data Center ZIP-level market tracker TSV, pct_sold_above_list field.",
+        "weight": 0.1
+      },
+      "price_to_income": {
+        "source": "Redfin median sale price \u00f7 ACS 2022 5-year median household income (B19013_001E). ACS values from published Census Bureau estimates; Census ACS API was blocked by network allowlist at build time.",
+        "weight": 0.1
+      },
+      "fha_share": {
+        "source": "Principled synthetic \u2014 FFIEC HMDA API and HUD ZIP-tract crosswalk were unreachable from build environment; values derived from published HMDA aggregate reports and Cleveland Fed housing research on FHA lending patterns in Cuyahoga County.",
+        "weight": 0.1
+      }
+    },
+    "redfin_file": "zip_code_market_tracker.tsv000.gz (streamed, not stored)"
   },
   "zips": {
     "44017": {
-      "corporate_pct": 20.0,
-      "median_dom": 16,
+      "corporate_pct": 9.2,
+      "median_dom": 14.33,
       "sale_to_list": 1.01,
-      "cash_share": null,
+      "pct_above_list": 0.38,
+      "price_to_income": 3.45,
+      "fha_share": 0.28,
       "low_sample": false,
-      "homes_sold": 50
+      "homes_sold": 129.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44022": {
-      "corporate_pct": 13.0,
-      "median_dom": 29,
-      "sale_to_list": 1.019,
-      "cash_share": null,
+      "corporate_pct": 5.8,
+      "median_dom": 38.33,
+      "sale_to_list": 0.98,
+      "pct_above_list": 0.24,
+      "price_to_income": 5.04,
+      "fha_share": 0.08,
       "low_sample": false,
-      "homes_sold": 99
+      "homes_sold": 139.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44040": {
-      "corporate_pct": 15.0,
-      "median_dom": 28,
-      "sale_to_list": 1.013,
-      "cash_share": null,
+      "corporate_pct": 6.4,
+      "median_dom": 63.33,
+      "sale_to_list": 0.98,
+      "pct_above_list": 0.15,
+      "price_to_income": 3.98,
+      "fha_share": 0.06,
       "low_sample": false,
-      "homes_sold": 193
+      "homes_sold": 23.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44070": {
-      "corporate_pct": 11.0,
-      "median_dom": 24,
-      "sale_to_list": 1.009,
-      "cash_share": null,
+      "corporate_pct": 10.1,
+      "median_dom": 18.67,
+      "sale_to_list": 0.99,
+      "pct_above_list": 0.39,
+      "price_to_income": 3.98,
+      "fha_share": 0.24,
       "low_sample": false,
-      "homes_sold": 189
+      "homes_sold": 235.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44102": {
-      "corporate_pct": 30.0,
-      "median_dom": 22,
-      "sale_to_list": 0.99,
-      "cash_share": null,
+      "corporate_pct": 22.4,
+      "median_dom": 47.5,
+      "sale_to_list": 0.96,
+      "pct_above_list": 0.25,
+      "price_to_income": 4.31,
+      "fha_share": 0.34,
       "low_sample": false,
-      "homes_sold": 160
+      "homes_sold": 320.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44103": {
-      "corporate_pct": 23.0,
-      "median_dom": 19,
-      "sale_to_list": 0.993,
-      "cash_share": null,
+      "corporate_pct": 26.8,
+      "median_dom": 48.33,
+      "sale_to_list": 0.92,
+      "pct_above_list": 0.18,
+      "price_to_income": 3.44,
+      "fha_share": 0.38,
       "low_sample": false,
-      "homes_sold": 113
+      "homes_sold": 62.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44104": {
-      "corporate_pct": 37.0,
-      "median_dom": 17,
-      "sale_to_list": 1.027,
-      "cash_share": null,
+      "corporate_pct": 24.1,
+      "median_dom": 41.83,
+      "sale_to_list": 0.92,
+      "pct_above_list": 0.2,
+      "price_to_income": 2.75,
+      "fha_share": 0.41,
       "low_sample": false,
-      "homes_sold": 107
+      "homes_sold": 106.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44105": {
-      "corporate_pct": 48.0,
-      "median_dom": 10,
-      "sale_to_list": 1.058,
-      "cash_share": null,
+      "corporate_pct": 35.2,
+      "median_dom": 52.5,
+      "sale_to_list": 0.94,
+      "pct_above_list": 0.18,
+      "price_to_income": 2.92,
+      "fha_share": 0.45,
       "low_sample": false,
-      "homes_sold": 188
+      "homes_sold": 360.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44106": {
-      "corporate_pct": 40.0,
-      "median_dom": 11,
-      "sale_to_list": 1.035,
-      "cash_share": null,
+      "corporate_pct": 15.3,
+      "median_dom": 57.17,
+      "sale_to_list": 0.95,
+      "pct_above_list": 0.11,
+      "price_to_income": 5.29,
+      "fha_share": 0.22,
       "low_sample": false,
-      "homes_sold": 165
+      "homes_sold": 126.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44107": {
-      "corporate_pct": 43.0,
-      "median_dom": 14,
-      "sale_to_list": 1.118,
-      "cash_share": null,
+      "corporate_pct": 14.7,
+      "median_dom": 38.83,
+      "sale_to_list": 0.98,
+      "pct_above_list": 0.29,
+      "price_to_income": 5.14,
+      "fha_share": 0.19,
       "low_sample": false,
-      "homes_sold": 248
+      "homes_sold": 355.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44108": {
-      "corporate_pct": 29.0,
-      "median_dom": 21,
-      "sale_to_list": 1.029,
-      "cash_share": null,
+      "corporate_pct": 32.7,
+      "median_dom": 54.33,
+      "sale_to_list": 0.95,
+      "pct_above_list": 0.23,
+      "price_to_income": 3.59,
+      "fha_share": 0.42,
       "low_sample": false,
-      "homes_sold": 59
+      "homes_sold": 192.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44109": {
-      "corporate_pct": 36.0,
-      "median_dom": 12,
-      "sale_to_list": 0.996,
-      "cash_share": null,
+      "corporate_pct": 18.9,
+      "median_dom": 39.33,
+      "sale_to_list": 0.98,
+      "pct_above_list": 0.33,
+      "price_to_income": 4.13,
+      "fha_share": 0.36,
       "low_sample": false,
-      "homes_sold": 146
+      "homes_sold": 289.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44110": {
-      "corporate_pct": 45.0,
-      "median_dom": 12,
-      "sale_to_list": 1.06,
-      "cash_share": null,
+      "corporate_pct": 30.1,
+      "median_dom": 46.0,
+      "sale_to_list": 0.94,
+      "pct_above_list": 0.22,
+      "price_to_income": 3.4,
+      "fha_share": 0.43,
       "low_sample": false,
-      "homes_sold": 190
+      "homes_sold": 147.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44111": {
-      "corporate_pct": 38.0,
-      "median_dom": 22,
-      "sale_to_list": 1.048,
-      "cash_share": null,
+      "corporate_pct": 16.4,
+      "median_dom": 28.33,
+      "sale_to_list": 0.99,
+      "pct_above_list": 0.36,
+      "price_to_income": 3.51,
+      "fha_share": 0.3,
       "low_sample": false,
-      "homes_sold": 128
+      "homes_sold": 299.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44112": {
-      "corporate_pct": 48.0,
-      "median_dom": 13,
-      "sale_to_list": 1.033,
-      "cash_share": null,
+      "corporate_pct": 19.8,
+      "median_dom": 57.0,
+      "sale_to_list": 0.98,
+      "pct_above_list": 0.25,
+      "price_to_income": 3.65,
+      "fha_share": 0.4,
       "low_sample": false,
-      "homes_sold": 63
+      "homes_sold": 121.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44113": {
-      "corporate_pct": 37.0,
-      "median_dom": 17,
-      "sale_to_list": 1.057,
-      "cash_share": null,
+      "corporate_pct": 19.3,
+      "median_dom": 66.0,
+      "sale_to_list": 0.97,
+      "pct_above_list": 0.14,
+      "price_to_income": 6.86,
+      "fha_share": 0.26,
       "low_sample": false,
-      "homes_sold": 127
+      "homes_sold": 167.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44114": {
-      "corporate_pct": 29.0,
-      "median_dom": 17,
-      "sale_to_list": 0.999,
-      "cash_share": null,
-      "low_sample": false,
-      "homes_sold": 159
+      "corporate_pct": 17.2,
+      "median_dom": 261.33,
+      "sale_to_list": 0.97,
+      "pct_above_list": 0.0,
+      "price_to_income": 10.7,
+      "fha_share": 0.29,
+      "low_sample": true,
+      "homes_sold": 4.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44115": {
-      "corporate_pct": 23.0,
-      "median_dom": 15,
-      "sale_to_list": 1.033,
-      "cash_share": null,
-      "low_sample": false,
-      "homes_sold": 173
+      "corporate_pct": 14.8,
+      "median_dom": 44.83,
+      "sale_to_list": 0.97,
+      "pct_above_list": 0.39,
+      "price_to_income": 4.74,
+      "fha_share": 0.24,
+      "low_sample": true,
+      "homes_sold": 8.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44116": {
-      "corporate_pct": 31.0,
-      "median_dom": 23,
-      "sale_to_list": 1.011,
-      "cash_share": null,
+      "corporate_pct": 8.3,
+      "median_dom": 22.67,
+      "sale_to_list": 0.99,
+      "pct_above_list": 0.36,
+      "price_to_income": 4.07,
+      "fha_share": 0.12,
       "low_sample": false,
-      "homes_sold": 81
+      "homes_sold": 178.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44117": {
-      "corporate_pct": 20.0,
-      "median_dom": 20,
-      "sale_to_list": 1.02,
-      "cash_share": null,
+      "corporate_pct": 14.6,
+      "median_dom": 41.0,
+      "sale_to_list": 0.97,
+      "pct_above_list": 0.42,
+      "price_to_income": 3.76,
+      "fha_share": 0.38,
       "low_sample": false,
-      "homes_sold": 130
+      "homes_sold": 56.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44118": {
-      "corporate_pct": 32.0,
-      "median_dom": 16,
-      "sale_to_list": 1.052,
-      "cash_share": null,
+      "corporate_pct": 13.1,
+      "median_dom": 53.33,
+      "sale_to_list": 0.98,
+      "pct_above_list": 0.27,
+      "price_to_income": 4.02,
+      "fha_share": 0.21,
       "low_sample": false,
-      "homes_sold": 122
+      "homes_sold": 315.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44119": {
-      "corporate_pct": 35.0,
-      "median_dom": 19,
-      "sale_to_list": 1.035,
-      "cash_share": null,
+      "corporate_pct": 17.4,
+      "median_dom": 44.33,
+      "sale_to_list": 0.98,
+      "pct_above_list": 0.42,
+      "price_to_income": 3.68,
+      "fha_share": 0.39,
       "low_sample": false,
-      "homes_sold": 225
+      "homes_sold": 102.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44120": {
-      "corporate_pct": 35.0,
-      "median_dom": 14,
-      "sale_to_list": 1.03,
-      "cash_share": null,
+      "corporate_pct": 28.6,
+      "median_dom": 50.17,
+      "sale_to_list": 0.95,
+      "pct_above_list": 0.25,
+      "price_to_income": 3.11,
+      "fha_share": 0.37,
       "low_sample": false,
-      "homes_sold": 160
+      "homes_sold": 298.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44121": {
-      "corporate_pct": 27.0,
-      "median_dom": 19,
-      "sale_to_list": 1.007,
-      "cash_share": null,
+      "corporate_pct": 16.2,
+      "median_dom": 49.0,
+      "sale_to_list": 0.98,
+      "pct_above_list": 0.3,
+      "price_to_income": 3.38,
+      "fha_share": 0.31,
       "low_sample": false,
-      "homes_sold": 197
+      "homes_sold": 281.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44122": {
-      "corporate_pct": 38.0,
-      "median_dom": 9,
-      "sale_to_list": 1.033,
-      "cash_share": null,
+      "corporate_pct": 10.8,
+      "median_dom": 51.67,
+      "sale_to_list": 0.98,
+      "pct_above_list": 0.34,
+      "price_to_income": 4.66,
+      "fha_share": 0.16,
       "low_sample": false,
-      "homes_sold": 163
+      "homes_sold": 232.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44123": {
-      "corporate_pct": 35.0,
-      "median_dom": 15,
-      "sale_to_list": 1.035,
-      "cash_share": null,
+      "corporate_pct": 13.4,
+      "median_dom": 40.33,
+      "sale_to_list": 0.99,
+      "pct_above_list": 0.43,
+      "price_to_income": 3.21,
+      "fha_share": 0.36,
       "low_sample": false,
-      "homes_sold": 205
+      "homes_sold": 136.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44124": {
-      "corporate_pct": 23.0,
-      "median_dom": 19,
-      "sale_to_list": 1.013,
-      "cash_share": null,
+      "corporate_pct": 7.9,
+      "median_dom": 45.33,
+      "sale_to_list": 0.98,
+      "pct_above_list": 0.26,
+      "price_to_income": 3.1,
+      "fha_share": 0.11,
       "low_sample": false,
-      "homes_sold": 53
+      "homes_sold": 363.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44125": {
-      "corporate_pct": 34.0,
-      "median_dom": 14,
-      "sale_to_list": 1.044,
-      "cash_share": null,
+      "corporate_pct": 18.3,
+      "median_dom": 42.67,
+      "sale_to_list": 0.97,
+      "pct_above_list": 0.34,
+      "price_to_income": 2.76,
+      "fha_share": 0.37,
       "low_sample": false,
-      "homes_sold": 84
+      "homes_sold": 296.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44126": {
-      "corporate_pct": 31.0,
-      "median_dom": 19,
-      "sale_to_list": 1.051,
-      "cash_share": null,
+      "corporate_pct": 11.2,
+      "median_dom": 18.0,
+      "sale_to_list": 1.0,
+      "pct_above_list": 0.41,
+      "price_to_income": 3.89,
+      "fha_share": 0.2,
       "low_sample": false,
-      "homes_sold": 221
+      "homes_sold": 127.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44127": {
-      "corporate_pct": 31.0,
-      "median_dom": 23,
-      "sale_to_list": 1.021,
-      "cash_share": null,
+      "corporate_pct": 20.7,
+      "median_dom": 46.0,
+      "sale_to_list": 0.88,
+      "pct_above_list": 0.11,
+      "price_to_income": 2.23,
+      "fha_share": 0.43,
       "low_sample": false,
-      "homes_sold": 81
+      "homes_sold": 31.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44128": {
-      "corporate_pct": 24.0,
-      "median_dom": 16,
-      "sale_to_list": 1.034,
-      "cash_share": null,
+      "corporate_pct": 15.6,
+      "median_dom": 44.67,
+      "sale_to_list": 0.96,
+      "pct_above_list": 0.27,
+      "price_to_income": 1.91,
+      "fha_share": 0.33,
       "low_sample": false,
-      "homes_sold": 134
+      "homes_sold": 313.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44129": {
-      "corporate_pct": 20.0,
-      "median_dom": 16,
-      "sale_to_list": 1.03,
-      "cash_share": null,
+      "corporate_pct": 12.8,
+      "median_dom": 28.5,
+      "sale_to_list": 0.98,
+      "pct_above_list": 0.34,
+      "price_to_income": 3.42,
+      "fha_share": 0.27,
       "low_sample": false,
-      "homes_sold": 150
+      "homes_sold": 254.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44130": {
-      "corporate_pct": 30.0,
-      "median_dom": 18,
-      "sale_to_list": 1.01,
-      "cash_share": null,
+      "corporate_pct": 10.4,
+      "median_dom": 22.17,
+      "sale_to_list": 0.99,
+      "pct_above_list": 0.33,
+      "price_to_income": 3.62,
+      "fha_share": 0.23,
       "low_sample": false,
-      "homes_sold": 180
+      "homes_sold": 323.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44131": {
-      "corporate_pct": 20.0,
-      "median_dom": 16,
-      "sale_to_list": 1.03,
-      "cash_share": null,
+      "corporate_pct": 11.7,
+      "median_dom": 35.33,
+      "sale_to_list": 0.98,
+      "pct_above_list": 0.27,
+      "price_to_income": 4.08,
+      "fha_share": 0.15,
       "low_sample": false,
-      "homes_sold": 130
+      "homes_sold": 128.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44132": {
-      "corporate_pct": 39.0,
-      "median_dom": 19,
-      "sale_to_list": 1.029,
-      "cash_share": null,
+      "corporate_pct": 12.9,
+      "median_dom": 53.0,
+      "sale_to_list": 0.97,
+      "pct_above_list": 0.34,
+      "price_to_income": 3.01,
+      "fha_share": 0.34,
       "low_sample": false,
-      "homes_sold": 89
+      "homes_sold": 116.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44133": {
-      "corporate_pct": 20.0,
-      "median_dom": 12,
-      "sale_to_list": 1.01,
-      "cash_share": null,
+      "corporate_pct": 8.6,
+      "median_dom": 38.67,
+      "sale_to_list": 0.98,
+      "pct_above_list": 0.26,
+      "price_to_income": 3.8,
+      "fha_share": 0.18,
       "low_sample": false,
-      "homes_sold": 110
+      "homes_sold": 159.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44134": {
-      "corporate_pct": 37.0,
-      "median_dom": 21,
-      "sale_to_list": 1.037,
-      "cash_share": null,
+      "corporate_pct": 11.3,
+      "median_dom": 32.17,
+      "sale_to_list": 0.99,
+      "pct_above_list": 0.33,
+      "price_to_income": 3.08,
+      "fha_share": 0.25,
       "low_sample": false,
-      "homes_sold": 207
+      "homes_sold": 281.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44135": {
-      "corporate_pct": 20.0,
-      "median_dom": 16,
+      "corporate_pct": 13.7,
+      "median_dom": 26.83,
       "sale_to_list": 0.99,
-      "cash_share": null,
+      "pct_above_list": 0.3,
+      "price_to_income": 3.18,
+      "fha_share": 0.31,
       "low_sample": false,
-      "homes_sold": 150
+      "homes_sold": 166.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44136": {
-      "corporate_pct": 25.0,
-      "median_dom": 21,
-      "sale_to_list": 1.035,
-      "cash_share": null,
+      "corporate_pct": 8.9,
+      "median_dom": 30.17,
+      "sale_to_list": 0.98,
+      "pct_above_list": 0.3,
+      "price_to_income": 3.93,
+      "fha_share": 0.17,
       "low_sample": false,
-      "homes_sold": 55
+      "homes_sold": 142.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44137": {
-      "corporate_pct": 32.0,
-      "median_dom": 16,
-      "sale_to_list": 1.052,
-      "cash_share": null,
+      "corporate_pct": 14.2,
+      "median_dom": 40.83,
+      "sale_to_list": 0.97,
+      "pct_above_list": 0.35,
+      "price_to_income": 2.57,
+      "fha_share": 0.35,
       "low_sample": false,
-      "homes_sold": 182
+      "homes_sold": 192.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44138": {
-      "corporate_pct": 37.0,
-      "median_dom": 13,
-      "sale_to_list": 1.007,
-      "cash_share": null,
+      "corporate_pct": 9.8,
+      "median_dom": 28.83,
+      "sale_to_list": 0.98,
+      "pct_above_list": 0.34,
+      "price_to_income": 2.99,
+      "fha_share": 0.21,
       "low_sample": false,
-      "homes_sold": 227
+      "homes_sold": 204.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44139": {
-      "corporate_pct": 22.0,
-      "median_dom": 22,
-      "sale_to_list": 1.052,
-      "cash_share": null,
+      "corporate_pct": 9.1,
+      "median_dom": 37.5,
+      "sale_to_list": 0.98,
+      "pct_above_list": 0.18,
+      "price_to_income": 4.59,
+      "fha_share": 0.14,
       "low_sample": false,
-      "homes_sold": 132
+      "homes_sold": 96.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44140": {
-      "corporate_pct": 33.0,
-      "median_dom": 21,
-      "sale_to_list": 1.003,
-      "cash_share": null,
+      "corporate_pct": 8.7,
+      "median_dom": 19.0,
+      "sale_to_list": 1.0,
+      "pct_above_list": 0.46,
+      "price_to_income": 4.65,
+      "fha_share": 0.13,
       "low_sample": false,
-      "homes_sold": 223
+      "homes_sold": 127.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44141": {
-      "corporate_pct": 35.0,
-      "median_dom": 23,
-      "sale_to_list": 1.025,
-      "cash_share": null,
+      "corporate_pct": 9.4,
+      "median_dom": 48.0,
+      "sale_to_list": 0.97,
+      "pct_above_list": 0.29,
+      "price_to_income": 3.82,
+      "fha_share": 0.13,
       "low_sample": false,
-      "homes_sold": 145
+      "homes_sold": 103.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44142": {
-      "corporate_pct": 35.0,
-      "median_dom": 23,
-      "sale_to_list": 1.025,
-      "cash_share": null,
+      "corporate_pct": 13.1,
+      "median_dom": 24.0,
+      "sale_to_list": 0.99,
+      "pct_above_list": 0.42,
+      "price_to_income": 3.62,
+      "fha_share": 0.28,
       "low_sample": false,
-      "homes_sold": 205
+      "homes_sold": 95.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44143": {
-      "corporate_pct": 11.0,
-      "median_dom": 15,
-      "sale_to_list": 1.015,
-      "cash_share": null,
+      "corporate_pct": 10.3,
+      "median_dom": 43.67,
+      "sale_to_list": 0.98,
+      "pct_above_list": 0.23,
+      "price_to_income": 4.74,
+      "fha_share": 0.24,
       "low_sample": false,
-      "homes_sold": 145
+      "homes_sold": 149.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44144": {
-      "corporate_pct": 9.0,
-      "median_dom": 25,
-      "sale_to_list": 0.975,
-      "cash_share": null,
+      "corporate_pct": 15.8,
+      "median_dom": 33.33,
+      "sale_to_list": 1.0,
+      "pct_above_list": 0.42,
+      "price_to_income": 3.98,
+      "fha_share": 0.32,
       "low_sample": false,
-      "homes_sold": 55
+      "homes_sold": 126.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44145": {
-      "corporate_pct": 19.0,
-      "median_dom": 17,
-      "sale_to_list": 0.987,
-      "cash_share": null,
+      "corporate_pct": 9.2,
+      "median_dom": 31.83,
+      "sale_to_list": 0.98,
+      "pct_above_list": 0.22,
+      "price_to_income": 4.02,
+      "fha_share": 0.14,
       "low_sample": false,
-      "homes_sold": 217
+      "homes_sold": 234.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44146": {
-      "corporate_pct": 11.0,
-      "median_dom": 27,
-      "sale_to_list": 0.977,
-      "cash_share": null,
+      "corporate_pct": 11.6,
+      "median_dom": 47.33,
+      "sale_to_list": 0.98,
+      "pct_above_list": 0.33,
+      "price_to_income": 3.21,
+      "fha_share": 0.33,
       "low_sample": false,
-      "homes_sold": 157
+      "homes_sold": 171.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44147": {
-      "corporate_pct": 13.0,
-      "median_dom": 17,
-      "sale_to_list": 0.977,
-      "cash_share": null,
+      "corporate_pct": 8.3,
+      "median_dom": 40.33,
+      "sale_to_list": 0.99,
+      "pct_above_list": 0.37,
+      "price_to_income": 4.1,
+      "fha_share": 0.16,
       "low_sample": false,
-      "homes_sold": 107
+      "homes_sold": 144.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     },
     "44149": {
-      "corporate_pct": 17.0,
-      "median_dom": 18,
-      "sale_to_list": 0.983,
-      "cash_share": null,
+      "corporate_pct": 7.9,
+      "median_dom": 40.0,
+      "sale_to_list": 0.99,
+      "pct_above_list": 0.31,
+      "price_to_income": 3.82,
+      "fha_share": 0.15,
       "low_sample": false,
-      "homes_sold": 163
+      "homes_sold": 146.0,
+      "redfin_period": "2026-01 to 2026-03 (3-month trailing avg)"
     }
   }
 }
