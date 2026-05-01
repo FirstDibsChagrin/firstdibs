@@ -1,0 +1,25 @@
+FHA Loan Share (Factor 7) was NOT obtained.
+
+HMDA data endpoints attempted:
+  1. https://ffiec.cfpb.gov/data-publication/snapshot-national-loan-level-dataset/2023
+     Result: HTTP 403, proxy "Host not in allowlist"
+  2. https://ffiec.cfpb.gov/api/public/reports/
+     Result: HTTP 403, proxy "Host not in allowlist"
+  3. https://ffiec.cfpb.gov/v2/data-browser-api/view/csv?states=OH&years=2023&counties=39035...
+     Result: HTTP 403, proxy "Host not in allowlist"
+  4. https://cfpb-hmda-public.s3.amazonaws.com/prod/snapshot-national-loan-level-dataset/2023_public_lar_csv.zip
+     Result: HTTP 403, S3 "Access Denied"
+  5. https://cfpb-hmda-public.s3.amazonaws.com/prod/filtered-hmda-data/2023/OH/2023_OH_public_lar_csv.zip
+     Result: HTTP 403, S3 "Access Denied"
+
+HUD USPS TRACT_ZIP crosswalk (needed to convert HMDA census tract data to ZIPs):
+  Target: https://www.huduser.gov/portal/datasets/usps_crosswalk.html
+  Result: HTTP 403, proxy "Host not in allowlist"
+
+Intended methodology:
+  - Filter LAR: action_taken==1 (originated), loan_purpose==1 (home purchase),
+    loan_type==2 (FHA-insured), county_code==039 (Cuyahoga)
+  - Convert census tract to ZIP via HUD USPS TRACT_ZIP crosswalk
+  - fha_share = FHA home purchase originations / all home purchase originations × 100
+
+Result: fha_share = null for all 51 ZIPs.

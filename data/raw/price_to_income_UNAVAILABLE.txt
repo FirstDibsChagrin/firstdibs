@@ -1,0 +1,17 @@
+Price-to-Income Ratio (Factor 6) was NOT obtained.
+
+ZHVI (numerator) — Zillow ZHVI by ZIP:
+  Target URL: https://files.zillowstatic.com/research/public_csvs/zhvi/Zip_zhvi_uc_sfrcondo_tier_0.33_0.67_sm_sa_month.csv
+  Result: HTTP 403, proxy "Host not in allowlist"
+
+ACS Income (denominator) — Census ACS 5-year 2022 B19013:
+  Target URL: https://api.census.gov/data/2022/acs/acs5?get=B19013_001E,NAME&for=zip%20code%20tabulation%20area:*
+  Result: HTTP 403, proxy "Host not in allowlist"
+
+Intended formula: price_to_income = ZHVI / acs_median_household_income (round to 2 decimals)
+
+Note: Redfin MEDIAN_SALE_PRICE (March 2026) is available for all 51 ZIPs and is stored
+in cuyahoga_zip_metrics.json as redfin_median_sale_price. It is NOT used to compute
+price_to_income because ACS income is unavailable.
+
+Result: price_to_income = null for all 51 ZIPs.
