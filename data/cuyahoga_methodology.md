@@ -41,16 +41,43 @@ The risk score estimates how difficult it is for a regular buyer — using finan
 
 ## Factor 1: Corporate/LLC Ownership Share
 
-**Source:** Cuyahoga County Fiscal Officer ArcGIS REST parcel service  
-**URL:** https://gis.cuyahogacounty.us/arcgis/rest/services/  
-**Status: INACCESSIBLE — null for all 51 ZIPs**
+**Status: INACCESSIBLE — null for all 51 ZIPs after exhausting all four paths**  
+**Detailed attempt log:** `data/raw/llc_sourcing_attempts.md`
 
-**Intended methodology:**
-- Query parcel layer for PARCEL, OWNER_NAME, SITE_ZIP, LAND_USE
-- Flag as corporate if OWNER_NAME matches regex (case-insensitive):  
-  `\b(LLC|L\.L\.C\.|LIMITED LIABILITY|INC\b|INCORPORATED|CORP\b|CORPORATION|HOLDINGS|REALTY|PROPERTIES|VENTURES|INVESTMENTS|CAPITAL|EQUITY|FUND|PARTNERS|LP|L\.P\.|LLP|REIT)\b`
-- Exclude: FAMILY TRUST, LIVING TRUST, REVOCABLE TRUST, or TRUSTEE followed by personal name pattern
-- `corporate_pct = (corporate parcels in ZIP / total residential parcels in ZIP) × 100`
+### What was tried (Paths A–D, 2026-05-01)
+
+**Path A (ArcGIS REST FeatureServer):** All ArcGIS-related domains blocked — `gis.cuyahogacounty.us`, `data-cuyahoga.opendata.arcgis.com`, `services.arcgis.com` (all subdomains), `hub.arcgis.com`, `opendata.arcgis.com`, ArcGIS S3 CDN, and the county's ArcGIS Online org (`cuyahogacounty.maps.arcgis.com`). The City of Cleveland GitHub notebook (`City-of-Cleveland/open-data-examples`, "02-County Property Data - Corporate Owners by Neighborhood.ipynb") confirms the dataset exists at ArcGIS item `a84be47945564300a2119f6b9a411d59` (Cleveland-only) with field `deeded_owner` — but the download endpoint `opendata.arcgis.com/api/v3/datasets/…` is blocked.
+
+**Path B (Fiscal Officer bulk / NEOCANDO):** `fiscalofficer.cuyahogacounty.us` and `neocando.case.edu` both blocked.
+
+**Path C (Cleveland rental registry / open data):** `data.clevelandohio.gov` and all city portal subdomains blocked.
+
+**Path D (Published reports):** All report hosts blocked — wrlandconservancy.org, clevelandfed.org, signalohio.org, gao.gov, case.edu/socialwork, all regional public radio outlets. No GitHub repo found with committed parcel-level data. Web search snippets yielded only county/tract-level aggregates (not usable per the no-interpolation rule): hotspot-tract average 27% investor-owned SFHs in 2024; east-side Cleveland historically Black neighborhoods >46% sales to business entities; county-wide ~21% as of 2020.
+
+**Path D5 (Ohio state GIS):** geodata.ohio.gov, OGRIP, and all Ohio state GIS servers blocked.
+
+### To obtain this data in a future refresh
+
+Run the City of Cleveland's open notebook from a normal network:
+```
+https://github.com/City-of-Cleveland/open-data-examples
+  → 02-County Property Data - Corporate Owners by Neighborhood.ipynb
+```
+For full-county (not just Cleveland-city) data, use ArcGIS item `8bff3524ed374480b8c6ebb1b237b6b3` ("Parcels with Real Property CAMA") via:
+```
+https://opendata.arcgis.com/api/v3/datasets/8bff3524ed374480b8c6ebb1b237b6b3_0/downloads/data?format=csv&where=1%3D1
+```
+Apply the LLC regex from the original methodology, group by site-address ZIP, exclude government/land-bank owners, and compute `corporate_pct`.
+
+### Intended methodology (for documentation)
+- Source: Cuyahoga County Fiscal Officer parcel data via ArcGIS FeatureServer
+- Field: `DEEDED_OWNER` (or `OWNER1` / `OWNER_NAME` depending on layer)
+- Residential filter: Cuyahoga 500-series land-use class codes (single family, 2-family, 3-family, condo, apartment)
+- Corporate regex (case-insensitive): `\b(LLC|L\.L\.C\.|LIMITED LIABILITY|INC\b|INCORPORATED|CORP\b|CORPORATION|HOLDINGS|REALTY|PROPERTIES|VENTURES|INVESTMENTS|CAPITAL|EQUITY|FUND|PARTNERS|LP|L\.P\.|LLP|REIT)\b`
+- Exclude from numerator and denominator: names containing `CUYAHOGA LAND BANK`, `CITY OF CLEVELAND`, `CMHA`, `HUD`, `STATE OF OHIO`, `COUNTY OF CUYAHOGA`, `LAND BANK`, `HOUSING AUTHORITY`, `RECONSTRUCTION`
+- Exclude from corporate flag: names containing `FAMILY TRUST`, `LIVING TRUST`, `REVOCABLE TRUST`, or `TRUSTEE` followed by personal-name pattern
+- Formula: `corporate_pct = corporate_parcels / total_residential_parcels_excluding_govt × 100` (rounded to 1 decimal)
+- Aggregate by site-address ZIP, not mailing ZIP
 
 **ZIPs with null corporate_pct:** All 51.
 
