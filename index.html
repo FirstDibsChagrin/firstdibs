@@ -193,6 +193,19 @@ nav {
 .btn-primary:hover  { background: var(--primary-dark); }
 .btn-primary:active { transform: scale(0.97); }
 
+.search-error {
+  max-width: 400px;
+  margin: 10px auto 0;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.95);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  display: none;
+}
+
 .main {
   max-width: 1200px;
   margin: 0 auto;
@@ -246,11 +259,23 @@ nav {
 
 .legend-item:last-child { margin-bottom: 0; }
 
-.legend-dot {
-  width: 10px;
+.legend-swatch {
+  width: 18px;
   height: 10px;
-  border-radius: 50%;
+  border-radius: 3px;
   flex-shrink: 0;
+}
+
+.legend-swatch-stripe {
+  width: 18px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    #bbb 0px, #bbb 2px,
+    #e8e8e8 2px, #e8e8e8 5px
+  );
 }
 
 .sidebar {
@@ -364,6 +389,7 @@ nav {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+  margin-bottom: 16px;
 }
 
 .stat-box {
@@ -395,8 +421,79 @@ nav {
   color: var(--text-muted);
 }
 
+.why-score {
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  margin-bottom: 4px;
+}
+
+.why-score-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.why-factor-row {
+  display: grid;
+  grid-template-columns: 1fr auto 80px;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 7px;
+}
+
+.why-factor-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.why-factor-val {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.why-mini-track {
+  height: 5px;
+  background: var(--bg);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.why-mini-fill {
+  height: 100%;
+  border-radius: 100px;
+}
+
+.btn-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 5px 10px;
+  margin-top: 6px;
+  transition: background 0.12s, color 0.12s;
+}
+
+.btn-toggle:hover {
+  background: var(--bg);
+  color: var(--text);
+}
+
 .sources-line {
-  margin-top: 16px;
+  margin-top: 4px;
   padding-top: 12px;
   border-top: 1px solid var(--border);
   font-size: 11px;
@@ -405,6 +502,8 @@ nav {
 }
 
 .sources-line strong { color: var(--text-muted); }
+.sources-line a { color: var(--accent); text-decoration: none; }
+.sources-line a:hover { text-decoration: underline; }
 
 .explainer-row {
   display: flex;
@@ -443,6 +542,8 @@ footer {
 }
 
 footer strong { color: rgba(255,255,255,0.8); }
+footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
+footer a:hover { color: rgba(255,255,255,0.9); text-decoration: underline; }
 
 @media (max-width: 900px) {
   .main { grid-template-columns: 1fr; }
@@ -471,6 +572,7 @@ footer strong { color: rgba(255,255,255,0.8); }
       <input id="zipInput" type="text" placeholder="Enter ZIP code…" maxlength="5">
       <button class="btn-primary" onclick="searchZip()">Check ZIP</button>
     </div>
+    <div class="search-error" id="searchError">No data found for that ZIP code. Try a Cuyahoga County ZIP.</div>
   </div>
 </div>
 
@@ -480,12 +582,13 @@ footer strong { color: rgba(255,255,255,0.8); }
     <div id="map"></div>
     <div class="map-legend">
       <div class="map-legend-title">Competition Level</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#1a9850"></div>Low</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#91cf60"></div>Moderate</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#fee08b"></div>Elevated</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#fc8d59"></div>High</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#d7301f"></div>Very High</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#8b0000"></div>Extreme</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#ffffd4;border:1px solid #ccc"></div>Low (0–17)</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#fee391"></div>Moderate (17–33)</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#fec44c"></div>Elevated (33–50)</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#fe9929"></div>High (50–67)</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#d95f0e"></div>Very High (67–83)</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#993404"></div>Extreme (83–100)</div>
+      <div class="legend-item"><div class="legend-swatch-stripe"></div>Insufficient data</div>
     </div>
   </div>
 
@@ -502,19 +605,15 @@ footer strong { color: rgba(255,255,255,0.8); }
       <div class="card-label">How the risk score works</div>
       <div class="explainer-row">
         <div class="explainer-dot"></div>
-        <p><strong>Corporate/LLC ownership %</strong> (35%) — share of residential parcels owned by LLCs, corporations, or investment entities.</p>
+        <p><strong>Six market signals</strong> — corporate ownership, days on market, sale-to-list ratio, % sold above ask, months of supply, and price-to-income ratio — are each normalized and weighted.</p>
       </div>
       <div class="explainer-row">
         <div class="explainer-dot"></div>
-        <p><strong>Median days on market</strong> (30%) — how fast homes go under contract. Fewer days = hotter market.</p>
+        <p><strong>Score 0–100</strong> — higher means more competition from cash and institutional buyers. Weights renormalize automatically when a factor is missing for a ZIP.</p>
       </div>
       <div class="explainer-row">
         <div class="explainer-dot"></div>
-        <p><strong>Sale-to-list ratio</strong> (20%) — homes selling above list price signal bidding war conditions.</p>
-      </div>
-      <div class="explainer-row">
-        <div class="explainer-dot"></div>
-        <p><strong>Risk score 0–100</strong> — higher score means more competition and greater chance of being outbid. Weights renormalize when a factor is missing.</p>
+        <p><strong>Data vintage:</strong> Redfin rolling 90-day window ending March 2026. Corporate ownership from Cuyahoga County Fiscal Officer parcel data. <a href="methodology.html">Full methodology →</a></p>
       </div>
     </div>
 
@@ -523,10 +622,24 @@ footer strong { color: rgba(255,255,255,0.8); }
 </div>
 
 <footer>
-  <strong>First Dibs</strong> &nbsp;·&nbsp; Cuyahoga County Homebuyer Intelligence &nbsp;·&nbsp; Data: Census TIGER 2023 · Redfin · Cuyahoga Fiscal Officer
+  <strong>First Dibs</strong> &nbsp;·&nbsp; Cuyahoga County Homebuyer Intelligence &nbsp;·&nbsp;
+  Data: Redfin · Cuyahoga Fiscal Officer · ACS 2016 &nbsp;·&nbsp;
+  <a href="methodology.html">Methodology · Data sources</a>
 </footer>
 
 <script>
+
+const FACTORS = [
+  { key: 'corporate_pct',       label: 'Corp. Ownership',   unit: '%',   decimals: 1, w: 0.22, lo: 5,    hi: 40,   display: v => v },
+  { key: 'median_dom',          label: 'Median DOM',         unit: 'd',   decimals: 0, w: 0.12, lo: 60,   hi: 5,    display: v => v },
+  { key: 'sale_to_list',        label: 'Sale-to-List',       unit: '%',   decimals: 1, w: 0.12, lo: 0.95, hi: 1.05, display: v => v * 100 },
+  { key: 'pct_sold_above_list', label: '% Above Ask',        unit: '%',   decimals: 1, w: 0.12, lo: 0,    hi: 60,   display: v => v },
+  { key: 'price_to_income',     label: 'Price-to-Income',    unit: '×',   decimals: 1, w: 0.30, lo: 2,    hi: 8,    display: v => v },
+  { key: 'months_of_supply',    label: 'Months of Supply',   unit: ' mo', decimals: 1, w: 0.12, lo: 8,    hi: 1,    display: v => v },
+];
+
+const PALETTE = ['#ffffd4','#fee391','#fec44c','#fe9929','#d95f0e','#993404'];
+const LABELS  = ['Low','Moderate','Elevated','High','Very High','Extreme'];
 
 let map = L.map('map').setView([41.48, -81.69], 11);
 
@@ -537,38 +650,34 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 let zipData = {};
 let zipMetadataVintage = {};
 
-function clamp01(x) { return Math.max(0, Math.min(1, x)); }
+function normalize(val, lo, hi) {
+  if (hi === lo) return 0;
+  return Math.max(0, Math.min(1, (val - lo) / (hi - lo)));
+}
 
-function riskScore(d) {
-  const factors = [];
-  if (d.corporate_pct != null)
-    factors.push({ v: clamp01(d.corporate_pct / 40),            w: 0.35 });
-  if (d.median_dom != null)
-    factors.push({ v: clamp01((30 - d.median_dom) / 30),        w: 0.30 });
-  if (d.sale_to_list != null)
-    factors.push({ v: clamp01((d.sale_to_list - 0.95) / 0.10), w: 0.20 });
-
-  const totalW = factors.reduce((s, f) => s + f.w, 0);
-  if (totalW === 0) return null;
-  return Math.round(factors.reduce((s, f) => s + f.v * f.w, 0) / totalW * 100);
+function scoreZip(d) {
+  let weightedSum = 0, totalW = 0;
+  FACTORS.forEach(f => {
+    const val = d[f.key];
+    if (val != null) {
+      weightedSum += normalize(val, f.lo, f.hi) * f.w;
+      totalW += f.w;
+    }
+  });
+  if (totalW < 0.50) return null;
+  return Math.round(weightedSum / totalW * 100);
 }
 
 function getColor(score) {
-  if (score > 75) return '#8b0000';
-  if (score > 60) return '#d7301f';
-  if (score > 45) return '#fc8d59';
-  if (score > 30) return '#fee08b';
-  if (score > 15) return '#91cf60';
-  return '#1a9850';
+  if (score == null) return null;
+  const idx = Math.min(5, Math.floor(score / 100 * 6));
+  return PALETTE[idx];
 }
 
 function getRiskLabel(score) {
-  if (score > 75) return { label: 'Extreme',   color: '#8b0000' };
-  if (score > 60) return { label: 'Very High', color: '#d7301f' };
-  if (score > 45) return { label: 'High',      color: '#ea580c' };
-  if (score > 30) return { label: 'Elevated',  color: '#ca8a04' };
-  if (score > 15) return { label: 'Moderate',  color: '#65a30d' };
-  return             { label: 'Low',       color: '#16a34a' };
+  if (score == null) return { label: 'Insufficient data', color: '#888' };
+  const idx = Math.min(5, Math.floor(score / 100 * 6));
+  return { label: LABELS[idx], color: PALETTE[idx] };
 }
 
 function loadData() {
@@ -583,12 +692,17 @@ function loadData() {
       const zip = f.properties.zip;
       const m = metrics.zips[zip] || {};
       zipData[zip] = {
-        geo:           f,
-        corporate_pct: m.corporate_pct ?? null,
-        median_dom:    m.median_dom    ?? null,
-        sale_to_list:  m.sale_to_list  ?? null,
-        low_sample:    m.low_sample    ?? false,
-        homes_sold:    m.homes_sold    ?? null
+        geo:                    f,
+        primary_city:           m.primary_city             ?? null,
+        corporate_pct:          m.corporate_pct            ?? null,
+        median_dom:             m.median_dom               ?? null,
+        sale_to_list:           m.sale_to_list             ?? null,
+        months_of_supply:       m.months_of_supply         ?? null,
+        pct_sold_above_list:    m.pct_sold_above_list      ?? null,
+        price_to_income:        m.price_to_income          ?? null,
+        low_sample_market:      m.low_sample_market        ?? false,
+        homes_sold_latest_month: m.homes_sold_latest_month ?? null,
+        acs_median_income_2016: m.acs_median_income_2016   ?? null,
       };
     });
 
@@ -605,87 +719,158 @@ function drawMap() {
     const z = zipData[zip];
     if (!z.geo) return;
 
-    const score = riskScore(z) ?? 0;
+    const score = scoreZip(z);
     z.score = score;
 
+    const color = getColor(score);
+    const isInsufficient = score == null;
+
     L.geoJSON(z.geo, {
-      style: {
-        color:       getColor(score),
-        fillColor:   getColor(score),
+      style: isInsufficient ? {
+        color:       '#888',
+        fillColor:   '#ccc',
         weight:      1.5,
-        fillOpacity: 0.45
+        fillOpacity: 0.25,
+        dashArray:   '4 3',
+      } : {
+        color:       color,
+        fillColor:   color,
+        weight:      1.5,
+        fillOpacity: 0.55,
       }
     }).addTo(map).on('click', () => selectZip(zip));
   });
 }
 
+function fmtVal(factor, rawVal) {
+  if (rawVal == null) return '<span class="stat-box-value" style="color:var(--text-light)">—</span>';
+  const disp = factor.display(rawVal).toFixed(factor.decimals);
+  return `<span class="stat-box-value">${disp}<span class="stat-box-unit">${factor.unit}</span></span>`;
+}
+
+function buildWhyScore(z) {
+  const scored = FACTORS
+    .map(f => {
+      const val = z[f.key];
+      const norm = val != null ? normalize(val, f.lo, f.hi) : null;
+      return { f, val, norm };
+    })
+    .filter(x => x.norm != null)
+    .sort((a, b) => (b.norm * b.f.w) - (a.norm * a.f.w));
+
+  const top3 = scored.slice(0, 3);
+  const rest = scored.slice(3);
+
+  function rowHtml(x) {
+    const dispVal = x.f.display(x.val).toFixed(x.f.decimals) + x.f.unit;
+    const pct = Math.round(x.norm * 100);
+    const barColor = pct > 67 ? '#d95f0e' : pct > 33 ? '#fec44c' : '#fee391';
+    return `<div class="why-factor-row">
+      <div class="why-factor-label">${x.f.label}</div>
+      <div class="why-factor-val">${dispVal}</div>
+      <div class="why-mini-track"><div class="why-mini-fill" style="width:${pct}%;background:${barColor}"></div></div>
+    </div>`;
+  }
+
+  const restHtml = rest.length > 0 ? `
+    <div id="allFactors" hidden>
+      ${rest.map(rowHtml).join('')}
+    </div>
+    <button class="btn-toggle" id="toggleFactors" aria-expanded="false" onclick="toggleAllFactors()">
+      Show all ${scored.length} factors
+    </button>
+  ` : '';
+
+  return `<div class="why-score">
+    <div class="why-score-title">Why this score</div>
+    ${top3.map(rowHtml).join('')}
+    ${restHtml}
+  </div>`;
+}
+
+function toggleAllFactors() {
+  const btn = document.getElementById('toggleFactors');
+  const panel = document.getElementById('allFactors');
+  if (!btn || !panel) return;
+  const expanded = btn.getAttribute('aria-expanded') === 'true';
+  btn.setAttribute('aria-expanded', String(!expanded));
+  panel.hidden = expanded;
+  btn.textContent = expanded ? `Show all factors` : `Show fewer factors`;
+}
+
 function selectZip(zip) {
   const z = zipData[zip];
   const { label, color } = getRiskLabel(z.score);
+  const scoreDisplay = z.score != null ? z.score : '—';
 
-  const fmt = (v, unit, decimals = 0) =>
-    v != null
-      ? `<span class="stat-box-value">${typeof v === 'number' ? v.toFixed(decimals) : v}<span class="stat-box-unit">${unit}</span></span>`
-      : `<span class="stat-box-value" style="color:var(--text-light)">—</span>`;
+  const subtitleParts = [];
+  if (z.primary_city) subtitleParts.push(z.primary_city);
+  subtitleParts.push('Cuyahoga County');
+  if (z.low_sample_market) subtitleParts.push('low sample');
+  const subtitle = subtitleParts.join(' · ');
+
+  const statsHtml = `<div class="stats-grid">` +
+    FACTORS.map(f => `<div class="stat-box">
+      <div class="stat-box-label">${f.label}</div>
+      ${fmtVal(f, z[f.key])}
+    </div>`).join('') +
+  `</div>`;
+
+  const srcOwnership = zipMetadataVintage.ownership
+    ? zipMetadataVintage.ownership.source : 'Cuyahoga Fiscal Officer';
+  const srcRedfin = zipMetadataVintage.redfin_market
+    ? 'Redfin (' + zipMetadataVintage.redfin_market.month + ')' : 'Redfin';
+  const srcIncome = zipMetadataVintage.income
+    ? 'ACS ' + zipMetadataVintage.income.year : 'ACS';
 
   document.getElementById('info').innerHTML = `
     <div class="zip-header">
       <div>
         <div class="card-label">ZIP Code</div>
         <div class="zip-title">${zip}</div>
-        <div class="zip-subtitle">Cuyahoga County${z.low_sample ? ' · low sample' : ''}</div>
+        <div class="zip-subtitle">${subtitle}</div>
       </div>
       <div class="score-badge">
-        <div class="score-value" style="color:${color}">${z.score}</div>
+        <div class="score-value" style="color:${color}">${scoreDisplay}</div>
         <div class="score-label">/ 100</div>
       </div>
     </div>
     <div class="risk-bar-wrap">
       <div class="risk-bar-label">
         <span style="font-weight:600;color:${color}">${label} Competition</span>
-        <span>${z.score} / 100</span>
+        <span>${scoreDisplay} / 100</span>
       </div>
       <div class="risk-bar-track">
-        <div class="risk-bar-fill" style="width:${z.score}%;background:${color}"></div>
+        <div class="risk-bar-fill" style="width:${z.score ?? 0}%;background:${color}"></div>
       </div>
     </div>
-    <div class="stats-grid">
-      <div class="stat-box">
-        <div class="stat-box-label">Corp. Ownership</div>
-        ${fmt(z.corporate_pct, '%', 1)}
-      </div>
-      <div class="stat-box">
-        <div class="stat-box-label">Median DOM</div>
-        ${fmt(z.median_dom, 'd')}
-      </div>
-      <div class="stat-box">
-        <div class="stat-box-label">Sale-to-List</div>
-        ${z.sale_to_list != null
-          ? `<span class="stat-box-value">${(z.sale_to_list * 100).toFixed(1)}<span class="stat-box-unit">%</span></span>`
-          : `<span class="stat-box-value" style="color:var(--text-light)">—</span>`}
-      </div>
-    </div>
+    ${statsHtml}
+    ${buildWhyScore(z)}
     <div class="sources-line">
-      <strong>Sources:</strong> ${zipMetadataVintage.boundaries} ·
-      ${zipMetadataVintage.ownership} ·
-      ${zipMetadataVintage.market}
+      <strong>Sources:</strong> ${srcOwnership} · ${srcRedfin} · ${srcIncome} &nbsp;·&nbsp;
+      <a href="methodology.html">Methodology →</a>
     </div>
   `;
 }
 
 function searchZip() {
   const zip = document.getElementById('zipInput').value.trim();
+  const errEl = document.getElementById('searchError');
   if (zipData[zip]) {
+    errEl.style.display = 'none';
     selectZip(zip);
     gtag('event', 'zip_search', { zip });
   } else {
-    alert('No data available for that ZIP code.');
+    errEl.style.display = 'block';
   }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('zipInput').addEventListener('keydown', e => {
     if (e.key === 'Enter') searchZip();
+  });
+  document.getElementById('zipInput').addEventListener('input', () => {
+    document.getElementById('searchError').style.display = 'none';
   });
 });
 

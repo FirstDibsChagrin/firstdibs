@@ -31,18 +31,6 @@
       "url": "https://raw.githubusercontent.com/Ro-Data/Ro-Census-Summaries-By-Zipcode/master/econ.txt",
       "note": "Income data is 2016-vintage; paired with 2026 Redfin median sale price instead of Zillow ZHVI (both Zillow CDN and Census ACS API blocked by network proxy). Ratios are inflated vs. contemporary data \u2014 use for relative ZIP comparisons only.",
       "downloaded": "2026-05-01"
-    },
-    "hmda": {
-      "source": "FFIEC HMDA snapshot 2023",
-      "year": "2023",
-      "url": "https://ffiec.cfpb.gov/data-publication/snapshot-national-loan-level-dataset/2023",
-      "note": "INACCESSIBLE - ffiec.cfpb.gov not in allowlist; cfpb-hmda-public S3 bucket returns Access Denied. FHA share null for all ZIPs."
-    },
-    "tract_zip_xwalk": {
-      "source": "HUD USPS ZIP-to-tract crosswalk",
-      "quarter": null,
-      "url": "https://www.huduser.gov/portal/datasets/usps_crosswalk.html",
-      "note": "INACCESSIBLE - www.huduser.gov not in allowlist. Not needed since HMDA data unavailable."
     }
   },
   "zips": {
@@ -54,14 +42,11 @@
       "months_of_supply": 0.53,
       "pct_sold_above_list": 42.2,
       "price_to_income": 4.24,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 45,
       "redfin_median_sale_price": 245000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 57820
     },
     "44022": {
@@ -72,14 +57,11 @@
       "months_of_supply": 3.38,
       "pct_sold_above_list": 23.1,
       "price_to_income": 5.19,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 39,
       "redfin_median_sale_price": 577500,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 111176
     },
     "44040": {
@@ -90,14 +72,11 @@
       "months_of_supply": 3.67,
       "pct_sold_above_list": 22.2,
       "price_to_income": 4.7,
-      "fha_share": null,
       "low_sample_market": true,
       "homes_sold_latest_month": 5,
       "redfin_median_sale_price": 590000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 125563
     },
     "44070": {
@@ -108,14 +87,11 @@
       "months_of_supply": 1.34,
       "pct_sold_above_list": 39.5,
       "price_to_income": 4.49,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 76,
       "redfin_median_sale_price": 275000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 61278
     },
     "44102": {
@@ -126,14 +102,11 @@
       "months_of_supply": 4.81,
       "pct_sold_above_list": 20.7,
       "price_to_income": 5.35,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 111,
       "redfin_median_sale_price": 145400,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 27196
     },
     "44103": {
@@ -144,14 +117,11 @@
       "months_of_supply": 12.25,
       "pct_sold_above_list": 16.7,
       "price_to_income": 5.15,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 12,
       "redfin_median_sale_price": 95500,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 18531
     },
     "44104": {
@@ -162,14 +132,11 @@
       "months_of_supply": 4.18,
       "pct_sold_above_list": 21.1,
       "price_to_income": 6.07,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 38,
       "redfin_median_sale_price": 87500,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 14414
     },
     "44105": {
@@ -180,14 +147,11 @@
       "months_of_supply": 3.29,
       "pct_sold_above_list": 22.8,
       "price_to_income": 3.83,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 114,
       "redfin_median_sale_price": 90000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 23485
     },
     "44106": {
@@ -198,14 +162,11 @@
       "months_of_supply": 5.62,
       "pct_sold_above_list": 15.4,
       "price_to_income": 10.13,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 39,
       "redfin_median_sale_price": 249000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 24578
     },
     "44107": {
@@ -216,14 +177,11 @@
       "months_of_supply": 2.86,
       "pct_sold_above_list": 32.4,
       "price_to_income": 7.42,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 108,
       "redfin_median_sale_price": 350000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 47163
     },
     "44108": {
@@ -234,14 +192,11 @@
       "months_of_supply": 5.47,
       "pct_sold_above_list": 22.8,
       "price_to_income": 4.25,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 57,
       "redfin_median_sale_price": 98000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 23066
     },
     "44109": {
@@ -252,14 +207,11 @@
       "months_of_supply": 3.89,
       "pct_sold_above_list": 35.8,
       "price_to_income": 5.15,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 81,
       "redfin_median_sale_price": 150000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 29125
     },
     "44110": {
@@ -270,14 +222,11 @@
       "months_of_supply": 5.23,
       "pct_sold_above_list": 20.9,
       "price_to_income": 5.24,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 43,
       "redfin_median_sale_price": 109000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 20797
     },
     "44111": {
@@ -288,14 +237,11 @@
       "months_of_supply": 2.27,
       "pct_sold_above_list": 41.8,
       "price_to_income": 4.58,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 91,
       "redfin_median_sale_price": 181500,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 39640
     },
     "44112": {
@@ -306,14 +252,11 @@
       "months_of_supply": 5.02,
       "pct_sold_above_list": 17.5,
       "price_to_income": 5.28,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 40,
       "redfin_median_sale_price": 111000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 21028
     },
     "44113": {
@@ -324,14 +267,11 @@
       "months_of_supply": 5.81,
       "pct_sold_above_list": 12.8,
       "price_to_income": 8.06,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 47,
       "redfin_median_sale_price": 342100,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 42432
     },
     "44114": {
@@ -342,14 +282,11 @@
       "months_of_supply": 9.0,
       "pct_sold_above_list": 0.0,
       "price_to_income": 21.61,
-      "fha_share": null,
       "low_sample_market": true,
       "homes_sold_latest_month": 1,
       "redfin_median_sale_price": 450000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 20823
     },
     "44115": {
@@ -360,14 +297,11 @@
       "months_of_supply": 9.0,
       "pct_sold_above_list": 33.3,
       "price_to_income": 15.23,
-      "fha_share": null,
       "low_sample_market": true,
       "homes_sold_latest_month": 3,
       "redfin_median_sale_price": 181250,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 11899
     },
     "44116": {
@@ -378,14 +312,11 @@
       "months_of_supply": 2.77,
       "pct_sold_above_list": 39.6,
       "price_to_income": 5.23,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 53,
       "redfin_median_sale_price": 340000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 65043
     },
     "44117": {
@@ -396,14 +327,11 @@
       "months_of_supply": 4.62,
       "pct_sold_above_list": 46.2,
       "price_to_income": 7.43,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 13,
       "redfin_median_sale_price": 188000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 25286
     },
     "44118": {
@@ -414,14 +342,11 @@
       "months_of_supply": 3.57,
       "pct_sold_above_list": 25.5,
       "price_to_income": 4.1,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 106,
       "redfin_median_sale_price": 235000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 57368
     },
     "44119": {
@@ -432,14 +357,11 @@
       "months_of_supply": 3.1,
       "pct_sold_above_list": 51.6,
       "price_to_income": 3.99,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 31,
       "redfin_median_sale_price": 151000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 37848
     },
     "44120": {
@@ -450,14 +372,11 @@
       "months_of_supply": 4.52,
       "pct_sold_above_list": 21.3,
       "price_to_income": 3.43,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 89,
       "redfin_median_sale_price": 110000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 32090
     },
     "44121": {
@@ -468,14 +387,11 @@
       "months_of_supply": 2.02,
       "pct_sold_above_list": 31.6,
       "price_to_income": 3.49,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 95,
       "redfin_median_sale_price": 187000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 53645
     },
     "44122": {
@@ -486,14 +402,11 @@
       "months_of_supply": 2.76,
       "pct_sold_above_list": 35.5,
       "price_to_income": 4.48,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 76,
       "redfin_median_sale_price": 343500,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 76627
     },
     "44123": {
@@ -504,14 +417,11 @@
       "months_of_supply": 2.7,
       "pct_sold_above_list": 45.0,
       "price_to_income": 3.62,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 40,
       "redfin_median_sale_price": 143250,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 39565
     },
     "44124": {
@@ -522,14 +432,11 @@
       "months_of_supply": 1.81,
       "pct_sold_above_list": 26.1,
       "price_to_income": 4.28,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 111,
       "redfin_median_sale_price": 247500,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 57831
     },
     "44125": {
@@ -540,14 +447,11 @@
       "months_of_supply": 2.3,
       "pct_sold_above_list": 29.1,
       "price_to_income": 3.4,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 86,
       "redfin_median_sale_price": 145000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 42695
     },
     "44126": {
@@ -558,14 +462,11 @@
       "months_of_supply": 2.31,
       "pct_sold_above_list": 43.6,
       "price_to_income": 5.26,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 39,
       "redfin_median_sale_price": 287000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 54563
     },
     "44127": {
@@ -576,14 +477,11 @@
       "months_of_supply": 4.12,
       "pct_sold_above_list": 10.0,
       "price_to_income": 3.91,
-      "fha_share": null,
       "low_sample_market": true,
       "homes_sold_latest_month": 8,
       "redfin_median_sale_price": 80750,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 20653
     },
     "44128": {
@@ -594,14 +492,11 @@
       "months_of_supply": 2.45,
       "pct_sold_above_list": 25.0,
       "price_to_income": 3.42,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 92,
       "redfin_median_sale_price": 110500,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 32357
     },
     "44129": {
@@ -612,14 +507,11 @@
       "months_of_supply": 1.07,
       "pct_sold_above_list": 33.3,
       "price_to_income": 4.28,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 84,
       "redfin_median_sale_price": 221850,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 51810
     },
     "44130": {
@@ -630,14 +522,11 @@
       "months_of_supply": 0.98,
       "pct_sold_above_list": 38.5,
       "price_to_income": 4.86,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 104,
       "redfin_median_sale_price": 246500,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 50715
     },
     "44131": {
@@ -648,14 +537,11 @@
       "months_of_supply": 2.52,
       "pct_sold_above_list": 22.6,
       "price_to_income": 4.14,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 31,
       "redfin_median_sale_price": 310000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 74863
     },
     "44132": {
@@ -666,14 +552,11 @@
       "months_of_supply": 2.73,
       "pct_sold_above_list": 24.2,
       "price_to_income": 3.65,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 33,
       "redfin_median_sale_price": 137500,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 37696
     },
     "44133": {
@@ -684,14 +567,11 @@
       "months_of_supply": 2.17,
       "pct_sold_above_list": 22.4,
       "price_to_income": 4.48,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 58,
       "redfin_median_sale_price": 296000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 66012
     },
     "44134": {
@@ -702,14 +582,11 @@
       "months_of_supply": 1.17,
       "pct_sold_above_list": 34.4,
       "price_to_income": 4.05,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 90,
       "redfin_median_sale_price": 206000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 50866
     },
     "44135": {
@@ -720,14 +597,11 @@
       "months_of_supply": 2.77,
       "pct_sold_above_list": 30.8,
       "price_to_income": 4.47,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 52,
       "redfin_median_sale_price": 165000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 36951
     },
     "44136": {
@@ -738,14 +612,11 @@
       "months_of_supply": 1.5,
       "pct_sold_above_list": 34.1,
       "price_to_income": 4.57,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 44,
       "redfin_median_sale_price": 344950,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 75451
     },
     "44137": {
@@ -756,14 +627,11 @@
       "months_of_supply": 2.15,
       "pct_sold_above_list": 33.8,
       "price_to_income": 3.82,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 71,
       "redfin_median_sale_price": 145000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 37958
     },
     "44138": {
@@ -774,14 +642,11 @@
       "months_of_supply": 2.18,
       "pct_sold_above_list": 39.2,
       "price_to_income": 3.7,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 51,
       "redfin_median_sale_price": 255000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 68866
     },
     "44139": {
@@ -792,14 +657,11 @@
       "months_of_supply": 3.4,
       "pct_sold_above_list": 20.0,
       "price_to_income": 4.51,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 30,
       "redfin_median_sale_price": 437000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 96836
     },
     "44140": {
@@ -810,14 +672,11 @@
       "months_of_supply": 1.37,
       "pct_sold_above_list": 48.6,
       "price_to_income": 4.96,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 35,
       "redfin_median_sale_price": 462501,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 93220
     },
     "44141": {
@@ -828,14 +687,11 @@
       "months_of_supply": 2.61,
       "pct_sold_above_list": 35.5,
       "price_to_income": 3.84,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 31,
       "redfin_median_sale_price": 375000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 97635
     },
     "44142": {
@@ -846,14 +702,11 @@
       "months_of_supply": 1.57,
       "pct_sold_above_list": 47.8,
       "price_to_income": 4.71,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 23,
       "redfin_median_sale_price": 229900,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 48813
     },
     "44143": {
@@ -864,14 +717,11 @@
       "months_of_supply": 2.23,
       "pct_sold_above_list": 25.7,
       "price_to_income": 5.79,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 35,
       "redfin_median_sale_price": 345000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 59553
     },
     "44144": {
@@ -882,14 +732,11 @@
       "months_of_supply": 2.82,
       "pct_sold_above_list": 42.4,
       "price_to_income": 4.41,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 33,
       "redfin_median_sale_price": 197000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 44696
     },
     "44145": {
@@ -900,14 +747,11 @@
       "months_of_supply": 2.17,
       "pct_sold_above_list": 27.8,
       "price_to_income": 4.91,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 72,
       "redfin_median_sale_price": 397325,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 80989
     },
     "44146": {
@@ -918,14 +762,11 @@
       "months_of_supply": 2.71,
       "pct_sold_above_list": 40.4,
       "price_to_income": 4.19,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 52,
       "redfin_median_sale_price": 179700,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 42914
     },
     "44147": {
@@ -936,14 +777,11 @@
       "months_of_supply": 1.94,
       "pct_sold_above_list": 35.4,
       "price_to_income": 4.84,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 48,
       "redfin_median_sale_price": 376500,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 77722
     },
     "44149": {
@@ -954,14 +792,11 @@
       "months_of_supply": 1.77,
       "pct_sold_above_list": 41.0,
       "price_to_income": 4.67,
-      "fha_share": null,
       "low_sample_market": false,
       "homes_sold_latest_month": 39,
       "redfin_median_sale_price": 417000,
       "redfin_period_end": "2026-03-31",
-      "missing": [
-        "fha_share"
-      ],
+      "missing": [],
       "acs_median_income_2016": 89336
     }
   }

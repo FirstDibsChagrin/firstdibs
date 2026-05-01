@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Methodology — First Dibs</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --primary:      #0f4c35;
+  --primary-dark: #0a3526;
+  --accent:       #16a34a;
+  --bg:           #f0f4f2;
+  --surface:      #ffffff;
+  --text:         #111827;
+  --text-muted:   #6b7280;
+  --text-light:   #9ca3af;
+  --border:       #e5e7eb;
+  --radius:       12px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+nav {
+  background: var(--primary);
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-logo-icon {
+  width: 32px; height: 32px;
+  background: #22c55e;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.nav-brand-name { font-size: 18px; font-weight: 700; color: white; letter-spacing: -0.3px; }
+
+.nav-back {
+  font-size: 13px;
+  color: rgba(255,255,255,0.65);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.nav-back:hover { color: white; }
+
+.page {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+h1 {
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.8px;
+  margin-bottom: 8px;
+}
+
+.page-sub {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-bottom: 48px;
+}
+
+section {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 32px;
+  margin-bottom: 24px;
+  border: 1px solid var(--border);
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  margin-bottom: 14px;
+  color: var(--text);
+}
+
+h3 {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin: 24px 0 10px;
+}
+
+h3:first-of-type { margin-top: 0; }
+
+p {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+p:last-child { margin-bottom: 0; }
+
+p strong { color: var(--text); font-weight: 600; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--text-muted);
+  padding: 8px 10px;
+  border-bottom: 2px solid var(--border);
+}
+
+td {
+  padding: 10px 10px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  color: var(--text);
+}
+
+tr:last-child td { border-bottom: none; }
+
+code {
+  font-family: 'Menlo', 'Monaco', 'Consolas', monospace;
+  font-size: 12px;
+  background: #f3f4f6;
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: #374151;
+}
+
+.tag-null {
+  display: inline-block;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid #fecaca;
+}
+
+.tag-real {
+  display: inline-block;
+  background: #f0fdf4;
+  color: #15803d;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid #bbf7d0;
+}
+
+.tag-proxy {
+  display: inline-block;
+  background: #fffbeb;
+  color: #92400e;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid #fde68a;
+}
+
+ul, ol {
+  padding-left: 20px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+li { margin-bottom: 6px; }
+li:last-child { margin-bottom: 0; }
+li strong { color: var(--text); font-weight: 600; }
+
+footer {
+  background: var(--primary-dark);
+  color: rgba(255,255,255,0.45);
+  text-align: center;
+  padding: 24px;
+  font-size: 13px;
+}
+footer strong { color: rgba(255,255,255,0.8); }
+footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
+footer a:hover { color: rgba(255,255,255,0.9); text-decoration: underline; }
+</style>
+</head>
+
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">
+    <div class="nav-logo-icon">🏡</div>
+    <span class="nav-brand-name">First Dibs</span>
+  </a>
+  <a class="nav-back" href="index.html">← Back to map</a>
+</nav>
+
+<div class="page">
+
+  <h1>Methodology</h1>
+  <p class="page-sub">How the Cuyahoga County competition risk score is built — sources, formulas, and limitations.</p>
+
+  <!-- SUMMARY -->
+  <section>
+    <h2>What the score measures</h2>
+    <p>The <strong>competition risk score (0–100)</strong> estimates how difficult it is for a regular financed buyer — using a mortgage, needing inspection contingencies, and competing on offer price — to successfully purchase a single-family home in a given ZIP code. A higher score means more competition from institutional and cash buyers, faster-moving markets, and less affordability headroom.</p>
+    <p>Six market signals are combined using a weighted average. Each signal is normalized to [0, 1] before weighting so all factors contribute on the same scale. When a factor is unavailable for a ZIP, its weight is redistributed proportionally among the remaining factors, keeping the score meaningful as long as at least 50% of the total weight is covered.</p>
+  </section>
+
+  <!-- SIX FACTORS -->
+  <section>
+    <h2>The six factors</h2>
+
+    <h3>Factor 1 — Corporate / LLC Ownership %</h3>
+    <p><span class="tag-proxy">Fiscal Officer data</span> &nbsp; Weight: <strong>22%</strong></p>
+    <p>Share of residential parcels (single-family, 2–4 family, condo) whose deeded owner name matches a corporate/LLC regex: <code>LLC, INC, CORP, HOLDINGS, REALTY, PROPERTIES, VENTURES, INVESTMENTS, CAPITAL, EQUITY, FUND, PARTNERS, LP, LLP, REIT</code>. Government and land-bank owners are excluded from both numerator and denominator.</p>
+    <p><strong>Source:</strong> Values carried from the prior published dataset, which used Cuyahoga County Fiscal Officer parcel data via ArcGIS. For methodology and recomputation instructions, see <code>data/cuyahoga_methodology.md</code>.</p>
+    <p><strong>Normalization:</strong> 5% → risk = 0; 40% → risk = 1.</p>
+
+    <h3>Factor 2 — Median Days on Market</h3>
+    <p><span class="tag-real">Real data</span> &nbsp; Weight: <strong>12%</strong></p>
+    <p>Rolling 90-day median days-on-market for homes sold, sourced from Redfin's ZIP-level market tracker (<code>MEDIAN_DOM</code> column). Fewer days = hotter market = higher risk.</p>
+    <p><strong>Normalization:</strong> 60 days → risk = 0; 5 days → risk = 1.</p>
+
+    <h3>Factor 3 — Sale-to-List Ratio</h3>
+    <p><span class="tag-real">Real data</span> &nbsp; Weight: <strong>12%</strong></p>
+    <p>Average ratio of final sale price to original list price for homes sold in the rolling 90-day window (<code>AVG_SALE_TO_LIST</code>). A ratio above 1.0 means homes sold above list price, indicating bidding-war conditions.</p>
+    <p><strong>Normalization:</strong> 0.95 → risk = 0; 1.05 → risk = 1.</p>
+
+    <h3>Factor 4 — % Sold Above List</h3>
+    <p><span class="tag-real">Real data</span> &nbsp; Weight: <strong>12%</strong></p>
+    <p>Share of homes that closed at a price above their list price in the rolling 90-day window (<code>SOLD_ABOVE_LIST</code>, stored as a fraction in the Redfin file, converted to percent). A high share signals persistent bidding-war activity.</p>
+    <p><strong>Normalization:</strong> 0% → risk = 0; 60% → risk = 1.</p>
+
+    <h3>Factor 5 — Price-to-Income Ratio</h3>
+    <p><span class="tag-proxy">Workaround sources</span> &nbsp; Weight: <strong>30%</strong></p>
+    <p>Redfin median sale price divided by ACS median household income. Higher ratios mean homes are less affordable relative to local incomes, which concentrates demand among cash buyers and high-income earners.</p>
+    <p><strong>Home value:</strong> Redfin <code>MEDIAN_SALE_PRICE</code> (All Residential, 90-day rolling window ending March 2026). Zillow ZHVI was the intended source but was inaccessible.</p>
+    <p><strong>Income:</strong> ACS 5-year 2012–2016 (2016 inflation-adjusted dollars), from the public GitHub repository <code>Ro-Data/Ro-Census-Summaries-By-Zipcode</code>. The Census ACS API was inaccessible. The 2016 income data inflates ratios by roughly 20–30% compared to 2022 ACS values — use this factor for <em>relative comparisons between ZIPs only</em>, not as an absolute affordability measure.</p>
+    <p><strong>Normalization:</strong> 2× → risk = 0; 8× → risk = 1. ZIPs with extremely low 2016 incomes in mixed commercial areas (e.g., 44114 Downtown, 44115 Midtown) produce outlier PTI values above 10× due to the income vintage mismatch.</p>
+
+    <h3>Factor 6 — Months of Supply</h3>
+    <p><span class="tag-real">Derived from real data</span> &nbsp; Weight: <strong>12%</strong></p>
+    <p>Estimated months of housing inventory. Redfin no longer publishes this directly at ZIP level, so it is derived as: <code>INVENTORY ÷ (HOMES_SOLD ÷ 3)</code>, where HOMES_SOLD covers a 90-day window (dividing by 3 gives a monthly sales rate). Below 3 months indicates a seller's market; above 6 months indicates a buyer's market.</p>
+    <p><strong>Normalization:</strong> 8 months → risk = 0; 1 month → risk = 1.</p>
+  </section>
+
+  <!-- WEIGHTS TABLE -->
+  <section>
+    <h2>Weights and normalization anchors</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Factor</th>
+          <th>Weight</th>
+          <th>Risk = 0 (low)</th>
+          <th>Risk = 1 (high)</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Corporate / LLC ownership %</td>
+          <td>22%</td>
+          <td>≤ 5%</td>
+          <td>≥ 40%</td>
+          <td><span class="tag-proxy">Fiscal Officer</span></td>
+        </tr>
+        <tr>
+          <td>Median days on market</td>
+          <td>12%</td>
+          <td>≥ 60 days</td>
+          <td>≤ 5 days</td>
+          <td><span class="tag-real">Redfin real</span></td>
+        </tr>
+        <tr>
+          <td>Sale-to-list ratio</td>
+          <td>12%</td>
+          <td>≤ 0.95</td>
+          <td>≥ 1.05</td>
+          <td><span class="tag-real">Redfin real</span></td>
+        </tr>
+        <tr>
+          <td>% sold above list</td>
+          <td>12%</td>
+          <td>0%</td>
+          <td>≥ 60%</td>
+          <td><span class="tag-real">Redfin real</span></td>
+        </tr>
+        <tr>
+          <td>Price-to-income ratio</td>
+          <td>30%</td>
+          <td>≤ 2×</td>
+          <td>≥ 8×</td>
+          <td><span class="tag-proxy">Proxy sources</span></td>
+        </tr>
+        <tr>
+          <td>Months of supply</td>
+          <td>12%</td>
+          <td>≥ 8 months</td>
+          <td>≤ 1 month</td>
+          <td><span class="tag-real">Derived/Redfin</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin-top:16px;font-size:12px">All factors currently available for all 51 Cuyahoga ZCTAs (100% weight coverage). Weights renormalize automatically when any factor is missing so the score always reflects the coverage fraction.</p>
+  </section>
+
+  <!-- COMPOSITE FORMULA -->
+  <section>
+    <h2>Composite score formula</h2>
+    <p>Each factor value is first normalized to [0, 1] using the anchors in the table above:</p>
+    <p><code>norm(v, lo, hi) = clamp((v − lo) / (hi − lo), 0, 1)</code></p>
+    <p>Then the weighted average is computed over factors with available data:</p>
+    <p><code>score = round( Σ (norm_i × w_i) / Σ w_i × 100 )</code></p>
+    <p>ZIPs where the sum of available factor weights is below 0.50 (50%) are flagged as having insufficient data and are not scored.</p>
+  </section>
+
+  <!-- ZIP UNIVERSE -->
+  <section>
+    <h2>ZIP universe</h2>
+    <p><strong>51 Cuyahoga County ZCTAs</strong> — sourced from <code>scpike/us-state-county-zip</code> on GitHub (based on US Census 2000 ZCTA geography). The authoritative 2020 Census ZCTA-to-county relationship file (<code>tab20_zcta520_county20_natl.txt</code>) was inaccessible during data collection.</p>
+    <p>Boundary ZIPs that straddle county lines (e.g., 44022 Chagrin Falls, 44040 Gates Mills) may have changed county assignments since the 2000 Census; treat these as approximate. The 51 ZIPs are consistent with the known Cuyahoga ZCTA list.</p>
+  </section>
+
+  <!-- LIMITATIONS -->
+  <section>
+    <h2>Known limitations</h2>
+    <ul>
+      <li><strong>Income data vintage:</strong> The price-to-income ratio uses 2016 ACS income data paired with 2026 home prices. This inflates PTI values by approximately 20–30% across all ZIPs and produces extreme outliers for ZIPs with small residential populations in commercially-dominated areas (44114, 44115). Use PTI for relative ZIP ranking, not absolute affordability comparisons.</li>
+      <li><strong>Months of supply derived:</strong> Computed from inventory and homes-sold counts rather than Redfin's published months-of-supply field (which is null at ZIP level). More volatile for low-volume ZIPs.</li>
+      <li><strong>Redfin sample size:</strong> Four ZIPs (44040, 44114, 44115, 44127) have fewer than 10 homes sold in the latest 90-day window and use a trailing 3-month median instead.</li>
+      <li><strong>Corporate ownership vintage:</strong> Carried from prior dataset. An independent recomputation from the Cuyahoga County ArcGIS parcel service is documented in <code>data/cuyahoga_methodology.md</code> and can be run in under 10 minutes from a normal network environment.</li>
+      <li><strong>Score is relative, not predictive:</strong> The risk score measures observable market conditions; it does not predict whether a specific offer will succeed. Use it to prioritize neighborhoods for research and to calibrate offer strategy.</li>
+    </ul>
+  </section>
+
+  <!-- DATA SOURCES -->
+  <section>
+    <h2>Data sources</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Factor</th>
+          <th>Source</th>
+          <th>Vintage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Corporate ownership %</td>
+          <td>Cuyahoga County Fiscal Officer parcel data (ArcGIS)</td>
+          <td>Prior published dataset</td>
+        </tr>
+        <tr>
+          <td>DOM, sale-to-list, % above ask, months of supply</td>
+          <td>Redfin Data Center — ZIP Code Market Tracker</td>
+          <td>Rolling 90 days ending 2026-03-31</td>
+        </tr>
+        <tr>
+          <td>Home value (PTI numerator)</td>
+          <td>Redfin MEDIAN_SALE_PRICE (All Residential)</td>
+          <td>2026-03-31</td>
+        </tr>
+        <tr>
+          <td>Median household income (PTI denominator)</td>
+          <td>ACS 5-year via Ro-Data/Ro-Census-Summaries-By-Zipcode</td>
+          <td>2012–2016 (2016 $)</td>
+        </tr>
+        <tr>
+          <td>ZIP geography</td>
+          <td>scpike/us-state-county-zip (Census 2000 ZCTA)</td>
+          <td>Downloaded 2026-04-30</td>
+        </tr>
+        <tr>
+          <td>ZIP boundaries (GeoJSON)</td>
+          <td>data/cuyahoga_zip_boundaries.json</td>
+          <td>Census TIGER 2023</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<footer>
+  <strong>First Dibs</strong> &nbsp;·&nbsp; Cuyahoga County Homebuyer Intelligence &nbsp;·&nbsp;
+  <a href="index.html">← Back to map</a>
+</footer>
+
+</body>
+</html>
