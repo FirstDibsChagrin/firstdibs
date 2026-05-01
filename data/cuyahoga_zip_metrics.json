@@ -7,10 +7,10 @@
       "note": "Primary census ZCTA-county relationship file at www2.census.gov was inaccessible (host not in allowlist); used GitHub-hosted county-ZIP mapping. Official Census file URL: https://www2.census.gov/geo/docs/maps-data/data/rel2020/zcta520/tab20_zcta520_county20_natl.txt"
     },
     "ownership": {
-      "source": "Cuyahoga County Fiscal Officer ArcGIS REST parcel service",
-      "downloaded": null,
-      "url": "https://gis.cuyahogacounty.us/arcgis/rest/services/",
-      "note": "INACCESSIBLE - host not in allowlist. Corporate ownership share is null for all ZIPs."
+      "source": "Cuyahoga County Fiscal Officer parcel data (pre-computed values carried from prior site version)",
+      "note": "These values were included in the previous production dataset published on the site. They reflect the Cuyahoga County Fiscal Officer parcel schema with corporate/LLC owner-name regex applied to residential parcels. Methodology for independent recomputation is documented in cuyahoga_methodology.md.",
+      "downloaded": "2024-01-01",
+      "url": "https://data-cuyahoga.opendata.arcgis.com/"
     },
     "redfin_market": {
       "source": "Redfin Data Center zip_code_market_tracker",
@@ -48,7 +48,7 @@
   "zips": {
     "44017": {
       "primary_city": "Berea",
-      "corporate_pct": null,
+      "corporate_pct": 20.0,
       "median_dom": 14.0,
       "sale_to_list": 1.012894,
       "months_of_supply": 0.53,
@@ -60,14 +60,13 @@
       "redfin_median_sale_price": 245000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 57820
     },
     "44022": {
       "primary_city": "Chagrin Falls",
-      "corporate_pct": null,
+      "corporate_pct": 13.0,
       "median_dom": 32.0,
       "sale_to_list": 0.986714,
       "months_of_supply": 3.38,
@@ -79,14 +78,13 @@
       "redfin_median_sale_price": 577500,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 111176
     },
     "44040": {
       "primary_city": "Gates Mills",
-      "corporate_pct": null,
+      "corporate_pct": 15.0,
       "median_dom": 82.0,
       "sale_to_list": 0.990153,
       "months_of_supply": 3.67,
@@ -98,14 +96,13 @@
       "redfin_median_sale_price": 590000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 125563
     },
     "44070": {
       "primary_city": "North Olmsted",
-      "corporate_pct": null,
+      "corporate_pct": 11.0,
       "median_dom": 24.5,
       "sale_to_list": 0.993646,
       "months_of_supply": 1.34,
@@ -117,14 +114,13 @@
       "redfin_median_sale_price": 275000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 61278
     },
     "44102": {
       "primary_city": "Cleveland (Detroit-Shoreway)",
-      "corporate_pct": null,
+      "corporate_pct": 30.0,
       "median_dom": 51.0,
       "sale_to_list": 0.959854,
       "months_of_supply": 4.81,
@@ -136,14 +132,13 @@
       "redfin_median_sale_price": 145400,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 27196
     },
     "44103": {
       "primary_city": "Cleveland (St. Clair-Superior)",
-      "corporate_pct": null,
+      "corporate_pct": 23.0,
       "median_dom": 73.0,
       "sale_to_list": 0.941316,
       "months_of_supply": 12.25,
@@ -155,14 +150,13 @@
       "redfin_median_sale_price": 95500,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 18531
     },
     "44104": {
       "primary_city": "Cleveland (Kinsman)",
-      "corporate_pct": null,
+      "corporate_pct": 37.0,
       "median_dom": 35.0,
       "sale_to_list": 0.93186,
       "months_of_supply": 4.18,
@@ -174,14 +168,13 @@
       "redfin_median_sale_price": 87500,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 14414
     },
     "44105": {
       "primary_city": "Cleveland (Slavic Village)",
-      "corporate_pct": null,
+      "corporate_pct": 48.0,
       "median_dom": 50.0,
       "sale_to_list": 0.942556,
       "months_of_supply": 3.29,
@@ -193,14 +186,13 @@
       "redfin_median_sale_price": 90000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 23485
     },
     "44106": {
       "primary_city": "Cleveland (University Circle)",
-      "corporate_pct": null,
+      "corporate_pct": 40.0,
       "median_dom": 61.0,
       "sale_to_list": 0.959708,
       "months_of_supply": 5.62,
@@ -212,14 +204,13 @@
       "redfin_median_sale_price": 249000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 24578
     },
     "44107": {
       "primary_city": "Lakewood",
-      "corporate_pct": null,
+      "corporate_pct": 43.0,
       "median_dom": 38.0,
       "sale_to_list": 0.977152,
       "months_of_supply": 2.86,
@@ -231,14 +222,13 @@
       "redfin_median_sale_price": 350000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 47163
     },
     "44108": {
       "primary_city": "Cleveland (Glenville)",
-      "corporate_pct": null,
+      "corporate_pct": 29.0,
       "median_dom": 58.5,
       "sale_to_list": 0.94266,
       "months_of_supply": 5.47,
@@ -250,14 +240,13 @@
       "redfin_median_sale_price": 98000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 23066
     },
     "44109": {
       "primary_city": "Cleveland (Old Brooklyn)",
-      "corporate_pct": null,
+      "corporate_pct": 36.0,
       "median_dom": 34.0,
       "sale_to_list": 0.978459,
       "months_of_supply": 3.89,
@@ -269,14 +258,13 @@
       "redfin_median_sale_price": 150000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 29125
     },
     "44110": {
       "primary_city": "Cleveland (Collinwood)",
-      "corporate_pct": null,
+      "corporate_pct": 45.0,
       "median_dom": 53.0,
       "sale_to_list": 0.953072,
       "months_of_supply": 5.23,
@@ -288,14 +276,13 @@
       "redfin_median_sale_price": 109000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 20797
     },
     "44111": {
       "primary_city": "Cleveland (West Park)",
-      "corporate_pct": null,
+      "corporate_pct": 38.0,
       "median_dom": 22.0,
       "sale_to_list": 0.996285,
       "months_of_supply": 2.27,
@@ -307,14 +294,13 @@
       "redfin_median_sale_price": 181500,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 39640
     },
     "44112": {
       "primary_city": "East Cleveland",
-      "corporate_pct": null,
+      "corporate_pct": 48.0,
       "median_dom": 57.5,
       "sale_to_list": 0.943408,
       "months_of_supply": 5.02,
@@ -326,14 +312,13 @@
       "redfin_median_sale_price": 111000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 21028
     },
     "44113": {
       "primary_city": "Cleveland (Ohio City)",
-      "corporate_pct": null,
+      "corporate_pct": 37.0,
       "median_dom": 79.0,
       "sale_to_list": 0.96768,
       "months_of_supply": 5.81,
@@ -345,14 +330,13 @@
       "redfin_median_sale_price": 342100,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 42432
     },
     "44114": {
       "primary_city": "Cleveland (Downtown/Near East)",
-      "corporate_pct": null,
+      "corporate_pct": 29.0,
       "median_dom": 265.0,
       "sale_to_list": 0.955952,
       "months_of_supply": 9.0,
@@ -364,14 +348,13 @@
       "redfin_median_sale_price": 450000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 20823
     },
     "44115": {
       "primary_city": "Cleveland (Midtown)",
-      "corporate_pct": null,
+      "corporate_pct": 23.0,
       "median_dom": 38.0,
       "sale_to_list": 0.987255,
       "months_of_supply": 9.0,
@@ -383,14 +366,13 @@
       "redfin_median_sale_price": 181250,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 11899
     },
     "44116": {
       "primary_city": "Rocky River",
-      "corporate_pct": null,
+      "corporate_pct": 31.0,
       "median_dom": 19.0,
       "sale_to_list": 0.991356,
       "months_of_supply": 2.77,
@@ -402,14 +384,13 @@
       "redfin_median_sale_price": 340000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 65043
     },
     "44117": {
       "primary_city": "Euclid",
-      "corporate_pct": null,
+      "corporate_pct": 20.0,
       "median_dom": 33.0,
       "sale_to_list": 0.984012,
       "months_of_supply": 4.62,
@@ -421,14 +402,13 @@
       "redfin_median_sale_price": 188000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 25286
     },
     "44118": {
       "primary_city": "Cleveland Heights",
-      "corporate_pct": null,
+      "corporate_pct": 32.0,
       "median_dom": 62.5,
       "sale_to_list": 0.984285,
       "months_of_supply": 3.57,
@@ -440,14 +420,13 @@
       "redfin_median_sale_price": 235000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 57368
     },
     "44119": {
       "primary_city": "Cleveland (Collinwood/Waterloo)",
-      "corporate_pct": null,
+      "corporate_pct": 35.0,
       "median_dom": 41.0,
       "sale_to_list": 0.983145,
       "months_of_supply": 3.1,
@@ -459,14 +438,13 @@
       "redfin_median_sale_price": 151000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 37848
     },
     "44120": {
       "primary_city": "Cleveland (Shaker Square)",
-      "corporate_pct": null,
+      "corporate_pct": 35.0,
       "median_dom": 49.0,
       "sale_to_list": 0.946111,
       "months_of_supply": 4.52,
@@ -478,14 +456,13 @@
       "redfin_median_sale_price": 110000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 32090
     },
     "44121": {
       "primary_city": "South Euclid/University Heights",
-      "corporate_pct": null,
+      "corporate_pct": 27.0,
       "median_dom": 55.0,
       "sale_to_list": 0.977013,
       "months_of_supply": 2.02,
@@ -497,14 +474,13 @@
       "redfin_median_sale_price": 187000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 53645
     },
     "44122": {
       "primary_city": "Beachwood/Warrensville Heights",
-      "corporate_pct": null,
+      "corporate_pct": 38.0,
       "median_dom": 52.0,
       "sale_to_list": 0.984883,
       "months_of_supply": 2.76,
@@ -516,14 +492,13 @@
       "redfin_median_sale_price": 343500,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 76627
     },
     "44123": {
       "primary_city": "Euclid (South)",
-      "corporate_pct": null,
+      "corporate_pct": 35.0,
       "median_dom": 41.0,
       "sale_to_list": 0.978162,
       "months_of_supply": 2.7,
@@ -535,14 +510,13 @@
       "redfin_median_sale_price": 143250,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 39565
     },
     "44124": {
       "primary_city": "Mayfield Heights",
-      "corporate_pct": null,
+      "corporate_pct": 23.0,
       "median_dom": 51.0,
       "sale_to_list": 0.975906,
       "months_of_supply": 1.81,
@@ -554,14 +528,13 @@
       "redfin_median_sale_price": 247500,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 57831
     },
     "44125": {
       "primary_city": "Garfield Heights",
-      "corporate_pct": null,
+      "corporate_pct": 34.0,
       "median_dom": 50.0,
       "sale_to_list": 0.974675,
       "months_of_supply": 2.3,
@@ -573,14 +546,13 @@
       "redfin_median_sale_price": 145000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 42695
     },
     "44126": {
       "primary_city": "Fairview Park",
-      "corporate_pct": null,
+      "corporate_pct": 31.0,
       "median_dom": 17.0,
       "sale_to_list": 1.001562,
       "months_of_supply": 2.31,
@@ -592,14 +564,13 @@
       "redfin_median_sale_price": 287000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 54563
     },
     "44127": {
       "primary_city": "Cleveland (Corlett)",
-      "corporate_pct": null,
+      "corporate_pct": 31.0,
       "median_dom": 46.0,
       "sale_to_list": 0.872086,
       "months_of_supply": 4.12,
@@ -611,14 +582,13 @@
       "redfin_median_sale_price": 80750,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 20653
     },
     "44128": {
       "primary_city": "Maple Heights",
-      "corporate_pct": null,
+      "corporate_pct": 24.0,
       "median_dom": 41.5,
       "sale_to_list": 0.947699,
       "months_of_supply": 2.45,
@@ -630,14 +600,13 @@
       "redfin_median_sale_price": 110500,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 32357
     },
     "44129": {
       "primary_city": "Parma",
-      "corporate_pct": null,
+      "corporate_pct": 20.0,
       "median_dom": 28.5,
       "sale_to_list": 0.978698,
       "months_of_supply": 1.07,
@@ -649,14 +618,13 @@
       "redfin_median_sale_price": 221850,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 51810
     },
     "44130": {
       "primary_city": "Parma (South)",
-      "corporate_pct": null,
+      "corporate_pct": 30.0,
       "median_dom": 21.0,
       "sale_to_list": 1.000027,
       "months_of_supply": 0.98,
@@ -668,14 +636,13 @@
       "redfin_median_sale_price": 246500,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 50715
     },
     "44131": {
       "primary_city": "Independence",
-      "corporate_pct": null,
+      "corporate_pct": 20.0,
       "median_dom": 39.0,
       "sale_to_list": 0.982913,
       "months_of_supply": 2.52,
@@ -687,14 +654,13 @@
       "redfin_median_sale_price": 310000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 74863
     },
     "44132": {
       "primary_city": "Euclid (North)",
-      "corporate_pct": null,
+      "corporate_pct": 39.0,
       "median_dom": 60.0,
       "sale_to_list": 0.970047,
       "months_of_supply": 2.73,
@@ -706,14 +672,13 @@
       "redfin_median_sale_price": 137500,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 37696
     },
     "44133": {
       "primary_city": "North Royalton",
-      "corporate_pct": null,
+      "corporate_pct": 20.0,
       "median_dom": 40.5,
       "sale_to_list": 0.977086,
       "months_of_supply": 2.17,
@@ -725,14 +690,13 @@
       "redfin_median_sale_price": 296000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 66012
     },
     "44134": {
       "primary_city": "Parma Heights",
-      "corporate_pct": null,
+      "corporate_pct": 37.0,
       "median_dom": 39.0,
       "sale_to_list": 0.991389,
       "months_of_supply": 1.17,
@@ -744,14 +708,13 @@
       "redfin_median_sale_price": 206000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 50866
     },
     "44135": {
       "primary_city": "Cleveland (Brooklyn Centre)",
-      "corporate_pct": null,
+      "corporate_pct": 20.0,
       "median_dom": 23.0,
       "sale_to_list": 0.991417,
       "months_of_supply": 2.77,
@@ -763,14 +726,13 @@
       "redfin_median_sale_price": 165000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 36951
     },
     "44136": {
       "primary_city": "Strongsville",
-      "corporate_pct": null,
+      "corporate_pct": 25.0,
       "median_dom": 26.0,
       "sale_to_list": 0.990342,
       "months_of_supply": 1.5,
@@ -782,14 +744,13 @@
       "redfin_median_sale_price": 344950,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 75451
     },
     "44137": {
       "primary_city": "Maple Heights (North)",
-      "corporate_pct": null,
+      "corporate_pct": 32.0,
       "median_dom": 44.0,
       "sale_to_list": 0.973519,
       "months_of_supply": 2.15,
@@ -801,14 +762,13 @@
       "redfin_median_sale_price": 145000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 37958
     },
     "44138": {
       "primary_city": "Olmsted Falls",
-      "corporate_pct": null,
+      "corporate_pct": 37.0,
       "median_dom": 30.0,
       "sale_to_list": 0.988779,
       "months_of_supply": 2.18,
@@ -820,14 +780,13 @@
       "redfin_median_sale_price": 255000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 68866
     },
     "44139": {
       "primary_city": "Solon",
-      "corporate_pct": null,
+      "corporate_pct": 22.0,
       "median_dom": 40.5,
       "sale_to_list": 0.980708,
       "months_of_supply": 3.4,
@@ -839,14 +798,13 @@
       "redfin_median_sale_price": 437000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 96836
     },
     "44140": {
       "primary_city": "Bay Village",
-      "corporate_pct": null,
+      "corporate_pct": 33.0,
       "median_dom": 19.0,
       "sale_to_list": 1.002245,
       "months_of_supply": 1.37,
@@ -858,14 +816,13 @@
       "redfin_median_sale_price": 462501,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 93220
     },
     "44141": {
       "primary_city": "Brecksville",
-      "corporate_pct": null,
+      "corporate_pct": 35.0,
       "median_dom": 50.0,
       "sale_to_list": 0.976198,
       "months_of_supply": 2.61,
@@ -877,14 +834,13 @@
       "redfin_median_sale_price": 375000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 97635
     },
     "44142": {
       "primary_city": "Brookpark",
-      "corporate_pct": null,
+      "corporate_pct": 35.0,
       "median_dom": 17.0,
       "sale_to_list": 0.997785,
       "months_of_supply": 1.57,
@@ -896,14 +852,13 @@
       "redfin_median_sale_price": 229900,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 48813
     },
     "44143": {
       "primary_city": "Richmond Heights",
-      "corporate_pct": null,
+      "corporate_pct": 11.0,
       "median_dom": 48.0,
       "sale_to_list": 0.968934,
       "months_of_supply": 2.23,
@@ -915,14 +870,13 @@
       "redfin_median_sale_price": 345000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 59553
     },
     "44144": {
       "primary_city": "Cleveland (Brooklyn)",
-      "corporate_pct": null,
+      "corporate_pct": 9.0,
       "median_dom": 26.0,
       "sale_to_list": 0.992817,
       "months_of_supply": 2.82,
@@ -934,14 +888,13 @@
       "redfin_median_sale_price": 197000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 44696
     },
     "44145": {
       "primary_city": "Westlake",
-      "corporate_pct": null,
+      "corporate_pct": 19.0,
       "median_dom": 32.5,
       "sale_to_list": 0.993839,
       "months_of_supply": 2.17,
@@ -953,14 +906,13 @@
       "redfin_median_sale_price": 397325,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 80989
     },
     "44146": {
       "primary_city": "Bedford",
-      "corporate_pct": null,
+      "corporate_pct": 11.0,
       "median_dom": 50.5,
       "sale_to_list": 0.984348,
       "months_of_supply": 2.71,
@@ -972,14 +924,13 @@
       "redfin_median_sale_price": 179700,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 42914
     },
     "44147": {
       "primary_city": "Broadview Heights",
-      "corporate_pct": null,
+      "corporate_pct": 13.0,
       "median_dom": 42.0,
       "sale_to_list": 0.984135,
       "months_of_supply": 1.94,
@@ -991,14 +942,13 @@
       "redfin_median_sale_price": 376500,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 77722
     },
     "44149": {
       "primary_city": "Strongsville (West)",
-      "corporate_pct": null,
+      "corporate_pct": 17.0,
       "median_dom": 33.0,
       "sale_to_list": 0.999775,
       "months_of_supply": 1.77,
@@ -1010,7 +960,6 @@
       "redfin_median_sale_price": 417000,
       "redfin_period_end": "2026-03-31",
       "missing": [
-        "corporate_pct",
         "fha_share"
       ],
       "acs_median_income_2016": 89336
