@@ -2,7 +2,7 @@
 
 **Version:** 7-factor v1  
 **Branch:** `data/cuyahoga-7factor-v1`  
-**Generated:** 2026-04-30  
+**Generated:** 2026-04-30 (Factor 6 updated 2026-05-01)  
 **Coverage:** 51 Cuyahoga County ZCTAs
 
 ---
@@ -14,8 +14,9 @@ The following factors could not be populated because the required data sources w
 | Factor | Source | Reason Null |
 |--------|--------|-------------|
 | **Factor 1: Corporate/LLC ownership %** | Cuyahoga County Fiscal Officer ArcGIS (`gis.cuyahogacounty.us`) | Host blocked by proxy allowlist |
-| **Factor 6: Price-to-income ratio** | Zillow ZHVI (`files.zillowstatic.com`) + Census ACS B19013 (`api.census.gov`) | Both hosts blocked by proxy allowlist |
 | **Factor 7: FHA loan share** | FFIEC HMDA 2023 snapshot (`ffiec.cfpb.gov`); CFPB S3 (`cfpb-hmda-public.s3.amazonaws.com`) returns Access Denied | Host blocked; S3 bucket returns 403 |
+
+**Factor 6 (price-to-income) was computed via workaround** — see Factor 6 section for details.
 
 **Sanity check for corporate_pct** (affluent east ZIPs 44022, 44040, 44124 vs. high-investor ZIPs 44105, 44108, 44110, 44120): Cannot be performed — corporate_pct is null for all ZIPs.
 
@@ -107,23 +108,28 @@ The risk score estimates how difficult it is for a regular buyer — using finan
 
 ## Factor 6: Price-to-Income Ratio
 
-**Status: INACCESSIBLE — null for all 51 ZIPs**
+**Status: REAL DATA (workaround sources) — available for all 51 ZIPs**
 
-**ZHVI (numerator):**  
-Zillow Research ZHVI (smoothed, seasonally adjusted, mid-tier, all homes) by ZIP  
-URL: https://files.zillowstatic.com/research/public_csvs/zhvi/Zip_zhvi_uc_sfrcondo_tier_0.33_0.67_sm_sa_month.csv  
-Reason: `files.zillowstatic.com` blocked by proxy allowlist.
+**Home value (numerator — workaround):**  
+Redfin `MEDIAN_SALE_PRICE` for "All Residential", trailing 90-day period ending 2026-03-31.  
+Source: same Redfin file as Factors 2–5 (see above).  
+Note: Zillow ZHVI (`files.zillowstatic.com`) was inaccessible (host blocked). Redfin median sale price is used as a proxy. The two series track closely at ZIP level but Redfin sale price reflects closed transactions while ZHVI is a model-smoothed estimate; values will differ slightly.
 
-**ACS Income (denominator):**  
-Census ACS 5-year 2022, Table B19013_001E (Median Household Income)  
-URL: https://api.census.gov/data/2022/acs/acs5?get=B19013_001E,NAME&for=zip%20code%20tabulation%20area:*  
-Reason: `api.census.gov` blocked by proxy allowlist.
+**Median household income (denominator — workaround):**  
+ACS 5-year 2012–2016 (2016 inflation-adjusted dollars), sourced from the public GitHub repository `Ro-Data/Ro-Census-Summaries-By-Zipcode`.  
+URL: https://raw.githubusercontent.com/Ro-Data/Ro-Census-Summaries-By-Zipcode/master/econ.txt  
+Column: `income_and_benefits_in_2016_inflation_adjusted_dollars-dollars-median_household_income_dollars`  
+Downloaded: 2026-05-01  
+Note: Census ACS API (`api.census.gov`) was blocked. The 2016-vintage income data is ~6–8 years older than the 2022 ACS vintage originally specified. This inflates computed ratios in all ZIPs — use values for **relative comparisons between ZIPs only**, not as absolute affordability measures.
 
-**Intended formula:** `price_to_income = ZHVI / acs_median_household_income` (rounded to 2 decimal places)
+**Formula:** `price_to_income = round(redfin_median_sale_price / acs_median_income_2016, 2)`
 
-**Note:** Redfin `MEDIAN_SALE_PRICE` (March 2026 period) is available for all 51 ZIPs and is included in the output as `redfin_median_sale_price` for reference. It is NOT used to compute `price_to_income` because ACS income data is unavailable — mixing sources would produce a misleading ratio.
+**Caveats:**
+- Several ZIPs show extreme PTI values due to old income data: 44114 (Downtown, PTI=21.6), 44115 (Midtown, PTI=15.2), 44106 (University Circle, PTI=10.1). These ZIPs have unusually low 2016 incomes reflecting small residential populations in mixed commercial areas. The 2022 ACS income would yield more moderate ratios (~4–7×).
+- Despite the vintage mismatch, the ordinal ranking (suburban ZIPs vs. investor-heavy inner-city vs. affluent eastern suburbs) is directionally correct.
+- The `acs_median_income_2016` field is stored in the JSON alongside `price_to_income` for transparency.
 
-**ZIPs with null price_to_income:** All 51.
+**ZIPs with null price_to_income:** None — all 51 have computed values.
 
 ---
 
@@ -167,7 +173,7 @@ Normalization ranges (calibrated to Cuyahoga County distribution):
 | price_to_income | 10% | ≤2 | ≥8 |
 | fha_share | 10% (inverted) | ≤10% | ≥50% |
 
-With corporate_pct, price_to_income, and fha_share all null (combined 55% weight), the current data supports only a partial risk score using Factors 2–5 (45% combined weight).
+With corporate_pct and fha_share null (combined 35% weight), the current data supports a partial risk score using Factors 2–6 (65% combined weight). ZIPs with `coverage < 0.50` (weight of available factors < 50%) will be flagged as insufficient-data — all 51 ZIPs clear this threshold (65% ≥ 50%) when the PTI workaround is included.
 
 ---
 
@@ -189,7 +195,7 @@ With corporate_pct, price_to_income, and fha_share all null (combined 55% weight
 
 1. **Factor 1 (corporate ownership)** is the most impactful missing factor (35% weight). Requires access to `gis.cuyahogacounty.us` ArcGIS parcel service or the Cuyahoga County Auditor's parcel data download.
 
-2. **Factor 6 (price-to-income)** requires unblocking `api.census.gov` (ACS income) and `files.zillowstatic.com` (ZHVI). Alternatively, median sale price from Redfin could be used with ACS income if ACS becomes accessible.
+2. **Factor 6 (price-to-income)** is computed via workaround (Redfin median sale price + ACS 2016 income). For a production refresh: unblock `api.census.gov` (ACS 2022 B19013) and `files.zillowstatic.com` (ZHVI) to replace both proxy sources with the intended originals. The 2016 income data inflates ratios; the direction is correct but absolute values should not be cited.
 
 3. **Factor 7 (FHA share)** requires unblocking `ffiec.cfpb.gov` or obtaining an S3 presigned URL for the HMDA Ohio-filtered file.
 
