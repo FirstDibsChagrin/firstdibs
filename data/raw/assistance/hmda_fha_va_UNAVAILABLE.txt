@@ -1,0 +1,23 @@
+SOURCE: HMDA LAR — FHA and VA originations per ZIP (Cuyahoga County, 2023)
+STATUS: UNAVAILABLE — all endpoints returned HTTP 403
+
+ATTEMPTED URLS:
+  https://ffiec.cfpb.gov/data/snapshot/nationwide/2023_lar.zip        → 403
+  https://ffiec.cfpb.gov/data/static/nationwide/2023_lar.zip          → 403
+  https://cfpb-hmda-public.s3.amazonaws.com/prod/snapshot-data/2023_lar.zip → 403
+  https://cfpb-hmda-public.s3.amazonaws.com/prod/static-data/2023/nationwide_lar_2023.txt → 403
+  https://s3.amazonaws.com/cfpb-hmda-public/prod/snapshot-data/2023_lar.zip → 403
+
+TRACT→ZIP CROSSWALK ATTEMPTS (HUD USPS):
+  https://huduser.gov/portal/datasets/usps_crosswalk.html              → 403
+  https://www.huduser.gov/apps/public/uspscrosswalk/home               → 403
+  No GitHub-hosted mirror found in public repositories
+
+METHODOLOGY INTENT:
+  - Filter HMDA LAR to action_taken=1 (originated), state=39, county=035 (Cuyahoga)
+  - loan_type=2 → FHA; loan_type=3 → VA
+  - Join to HUD USPS tract→ZIP crosswalk (res_ratio weighting)
+  - Aggregate to ZIP: fha_originations, va_originations, denial_rate (action_taken 3/5 vs 1)
+
+DATA AVAILABLE FROM OTHER SOURCES: none
+ALTERNATIVE USED: all ZIP values set to null

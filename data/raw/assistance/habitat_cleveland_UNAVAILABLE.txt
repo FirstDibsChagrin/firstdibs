@@ -1,0 +1,21 @@
+SOURCE: Habitat for Humanity Greater Cleveland — build, rehab, and repair activity per ZIP
+STATUS: UNAVAILABLE — Habitat website blocked
+
+ATTEMPTED URLS:
+  https://www.clevelandhabitat.org/                                    → 403
+  https://www.clevelandhabitat.org/homeownership/                     → 403
+  https://www.clevelandhabitat.org/our-work/                          → 403
+
+DATA CAPTURED FROM WEB SEARCH SNIPPETS:
+  - "400 Home Campaign" (2023–2027): 100 new builds, 50 rehabs, 250 critical home repairs
+  - Geographic focus: Buckeye-Woodhill corridor (44104, 44120 area)
+  - Homeownership program: zero-interest mortgage, sweat equity required
+  - A Brush With Kindness: exterior repair grants for low-income homeowners
+  - Partner families: income 30–60% AMI
+
+METHODOLOGY INTENT:
+  - Request annual program report or partner family data by ZIP from Habitat GCL
+  - Fields: new_builds, rehabs, repairs per ZIP, avg mortgage amount, completion year
+
+DATA AVAILABLE FROM OTHER SOURCES: none found
+ALTERNATIVE USED: all ZIP values set to null; campaign targets stored in program metadata

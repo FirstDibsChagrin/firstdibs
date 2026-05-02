@@ -1,0 +1,22 @@
+SOURCE: OHFA (Ohio Housing Finance Agency) — Your Choice! / Grants for Grads / Target Area loans per ZIP
+STATUS: UNAVAILABLE — primary domain blocked; no accessible county-level breakdown found
+
+ATTEMPTED URLS:
+  https://www.ohiohome.org/                                            → 403
+  https://ohiohome.org/about/annualreport.aspx                        → 403
+  https://www.ohiohome.org/docs/annualreport_24.pdf                   → 403
+  https://www.ohiohome.org/homebuyer/homebuyer.aspx                   → 403
+
+DATA CAPTURED FROM WEB SEARCH SNIPPETS (statewide context only):
+  - FY2024: 6,664 borrowers assisted statewide, >$1.3 billion in mortgage volume
+  - Programs: Your Choice! (2.5% or 5% DPA), Grants for Grads, Ohio Heroes, Target Area
+  - Income limits vary by county/household size; purchase price limits apply
+  - Cuyahoga County served but no county-level loan count accessible
+
+METHODOLOGY INTENT:
+  - Request OHFA county/ZIP loan data via open-data portal or annual report appendix
+  - Filter to Cuyahoga County ZIP codes
+  - Fields: program type, loan count, avg loan amount, pct first-time buyers
+
+DATA AVAILABLE FROM OTHER SOURCES: statewide totals only (not useful for per-ZIP mapping)
+ALTERNATIVE USED: all ZIP values set to null; statewide figures stored in program metadata
