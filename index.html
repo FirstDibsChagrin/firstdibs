@@ -206,6 +206,223 @@ nav {
   display: none;
 }
 
+/* ── Preset bar ─────────────────────────────────────────── */
+
+.preset-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.preset-bar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 24px;
+}
+
+.preset-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.preset-row-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  margin-right: 2px;
+}
+
+.btn-preset {
+  background: var(--primary);
+  color: white;
+  border: 2px solid var(--primary);
+  padding: 6px 16px;
+  border-radius: 100px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+  white-space: nowrap;
+}
+
+.btn-preset.inactive {
+  background: white;
+  color: var(--primary);
+}
+
+.btn-preset.inactive:hover {
+  background: var(--bg);
+}
+
+.btn-customize {
+  background: none;
+  border: 1.5px solid var(--border);
+  color: var(--text-muted);
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: border-color 0.12s, color 0.12s;
+  white-space: nowrap;
+}
+
+.btn-customize:hover {
+  border-color: var(--text-muted);
+  color: var(--text);
+}
+
+/* ── Weight panel ────────────────────────────────────────── */
+
+#weight-panel {
+  margin-top: 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+}
+
+.weight-panel-grid {
+  display: grid;
+  grid-template-columns: 138px 1fr 52px;
+  gap: 5px 12px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.slider-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+  cursor: pointer;
+  height: 18px;
+}
+
+input.num-weight {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 4px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+  background: var(--surface);
+}
+
+input.num-weight:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+
+.norm-bar-row {
+  grid-column: 2 / 4;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 6px;
+}
+
+.norm-bar-track {
+  flex: 1;
+  height: 4px;
+  background: var(--border);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.norm-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 100px;
+  transition: width 0.08s;
+}
+
+.norm-bar-pct {
+  font-size: 10px;
+  color: var(--text-light);
+  min-width: 32px;
+  text-align: right;
+}
+
+.slider-divider {
+  grid-column: 1 / 4;
+  height: 1px;
+  background: var(--border);
+  margin: 2px 0 6px;
+}
+
+.slider-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.slider-total {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  flex: 1;
+}
+
+.slider-hint {
+  font-size: 11px;
+  color: var(--text-light);
+  margin-top: 4px;
+  line-height: 1.5;
+}
+
+.slider-warning {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  display: none;
+}
+
+.btn-reset {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 5px 12px;
+  white-space: nowrap;
+  transition: background 0.12s, color 0.12s;
+}
+
+.btn-reset:hover {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ── Main layout ─────────────────────────────────────────── */
+
 .main {
   max-width: 1200px;
   margin: 0 auto;
@@ -277,6 +494,8 @@ nav {
     #e8e8e8 2px, #e8e8e8 5px
   );
 }
+
+/* ── Sidebar ─────────────────────────────────────────────── */
 
 .sidebar {
   display: flex;
@@ -549,6 +768,16 @@ footer a:hover { color: rgba(255,255,255,0.9); text-decoration: underline; }
   .main { grid-template-columns: 1fr; }
   #map { height: 400px; }
   .nav-tagline { display: none; }
+  .preset-row {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+  }
+  .preset-row > * { scroll-snap-align: start; flex-shrink: 0; }
+  .btn-customize { margin-left: 0; }
+  .weight-panel-grid { grid-template-columns: 110px 1fr 50px; }
 }
 </style>
 </head>
@@ -573,6 +802,111 @@ footer a:hover { color: rgba(255,255,255,0.9); text-decoration: underline; }
       <button class="btn-primary" onclick="searchZip()">Check ZIP</button>
     </div>
     <div class="search-error" id="searchError">No data found for that ZIP code. Try a Cuyahoga County ZIP.</div>
+  </div>
+</div>
+
+<!-- ── Preset bar ─────────────────────────────────────── -->
+<div class="preset-bar">
+  <div class="preset-bar-inner">
+    <div class="preset-row">
+      <span class="preset-row-label">View as:</span>
+      <div role="radiogroup" aria-label="Weight preset" style="display:contents">
+        <button id="preset-default"
+                class="btn-preset"
+                role="radio" aria-checked="true"
+                onclick="applyPreset('default')">Default</button>
+        <button id="preset-affordability"
+                class="btn-preset inactive"
+                role="radio" aria-checked="false"
+                onclick="applyPreset('affordability')">Affordability first</button>
+        <button id="preset-investor_aware"
+                class="btn-preset inactive"
+                role="radio" aria-checked="false"
+                onclick="applyPreset('investor_aware')">Investor-aware</button>
+        <button id="preset-speed"
+                class="btn-preset inactive"
+                role="radio" aria-checked="false"
+                onclick="applyPreset('speed')">Speed of competition</button>
+      </div>
+      <button id="customizeToggle"
+              class="btn-customize"
+              aria-expanded="false"
+              aria-controls="weight-panel">
+        Customize weights ▾
+      </button>
+    </div>
+
+    <div id="weight-panel" hidden>
+      <div class="weight-panel-grid" style="margin-top:16px">
+
+        <!-- Corp. Ownership -->
+        <label id="lbl-corporate_pct" class="slider-label">Corp. Ownership</label>
+        <input type="range"  id="rng-corporate_pct"  min="0" max="100" step="1" value="25" aria-labelledby="lbl-corporate_pct">
+        <input type="number" id="num-corporate_pct"  min="0" max="100" step="1" value="25" class="num-weight" aria-labelledby="lbl-corporate_pct">
+        <div class="norm-bar-row">
+          <div class="norm-bar-track"><div class="norm-bar-fill" id="nrm-corporate_pct" style="width:25%"></div></div>
+          <span class="norm-bar-pct" id="nrmlbl-corporate_pct">25%</span>
+        </div>
+
+        <!-- Median DOM -->
+        <label id="lbl-median_dom" class="slider-label">Median DOM</label>
+        <input type="range"  id="rng-median_dom"  min="0" max="100" step="1" value="12" aria-labelledby="lbl-median_dom">
+        <input type="number" id="num-median_dom"  min="0" max="100" step="1" value="12" class="num-weight" aria-labelledby="lbl-median_dom">
+        <div class="norm-bar-row">
+          <div class="norm-bar-track"><div class="norm-bar-fill" id="nrm-median_dom" style="width:12%"></div></div>
+          <span class="norm-bar-pct" id="nrmlbl-median_dom">12%</span>
+        </div>
+
+        <!-- Sale-to-List -->
+        <label id="lbl-sale_to_list" class="slider-label">Sale-to-List</label>
+        <input type="range"  id="rng-sale_to_list"  min="0" max="100" step="1" value="11" aria-labelledby="lbl-sale_to_list">
+        <input type="number" id="num-sale_to_list"  min="0" max="100" step="1" value="11" class="num-weight" aria-labelledby="lbl-sale_to_list">
+        <div class="norm-bar-row">
+          <div class="norm-bar-track"><div class="norm-bar-fill" id="nrm-sale_to_list" style="width:11%"></div></div>
+          <span class="norm-bar-pct" id="nrmlbl-sale_to_list">11%</span>
+        </div>
+
+        <!-- % Above Ask -->
+        <label id="lbl-pct_sold_above_list" class="slider-label">% Above Ask</label>
+        <input type="range"  id="rng-pct_sold_above_list"  min="0" max="100" step="1" value="11" aria-labelledby="lbl-pct_sold_above_list">
+        <input type="number" id="num-pct_sold_above_list"  min="0" max="100" step="1" value="11" class="num-weight" aria-labelledby="lbl-pct_sold_above_list">
+        <div class="norm-bar-row">
+          <div class="norm-bar-track"><div class="norm-bar-fill" id="nrm-pct_sold_above_list" style="width:11%"></div></div>
+          <span class="norm-bar-pct" id="nrmlbl-pct_sold_above_list">11%</span>
+        </div>
+
+        <!-- Price-to-Income -->
+        <label id="lbl-price_to_income" class="slider-label">Price-to-Income</label>
+        <input type="range"  id="rng-price_to_income"  min="0" max="100" step="1" value="30" aria-labelledby="lbl-price_to_income">
+        <input type="number" id="num-price_to_income"  min="0" max="100" step="1" value="30" class="num-weight" aria-labelledby="lbl-price_to_income">
+        <div class="norm-bar-row">
+          <div class="norm-bar-track"><div class="norm-bar-fill" id="nrm-price_to_income" style="width:30%"></div></div>
+          <span class="norm-bar-pct" id="nrmlbl-price_to_income">30%</span>
+        </div>
+
+        <!-- Months of Supply -->
+        <label id="lbl-months_of_supply" class="slider-label">Months of Supply</label>
+        <input type="range"  id="rng-months_of_supply"  min="0" max="100" step="1" value="11" aria-labelledby="lbl-months_of_supply">
+        <input type="number" id="num-months_of_supply"  min="0" max="100" step="1" value="11" class="num-weight" aria-labelledby="lbl-months_of_supply">
+        <div class="norm-bar-row">
+          <div class="norm-bar-track"><div class="norm-bar-fill" id="nrm-months_of_supply" style="width:11%"></div></div>
+          <span class="norm-bar-pct" id="nrmlbl-months_of_supply">11%</span>
+        </div>
+
+        <div class="slider-divider"></div>
+      </div>
+
+      <div class="slider-warning" id="sliderWarning">
+        Set at least one factor above zero to compute a score.
+      </div>
+      <div class="slider-footer">
+        <div>
+          <div class="slider-total" id="sliderTotal">Raw total: 100</div>
+          <div class="slider-hint">Drag any slider freely. We divide by the total so they always add up to 100%.</div>
+        </div>
+        <button class="btn-reset" onclick="applyPreset('default')">Reset to default</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -629,17 +963,45 @@ footer a:hover { color: rgba(255,255,255,0.9); text-decoration: underline; }
 
 <script>
 
+// ── Factor definitions (anchors + display only; weights live in PRESETS) ──
+
 const FACTORS = [
-  { key: 'corporate_pct',       label: 'Corp. Ownership',   unit: '%',   decimals: 1, w: 0.22, lo: 5,    hi: 40,   display: v => v },
-  { key: 'median_dom',          label: 'Median DOM',         unit: 'd',   decimals: 0, w: 0.12, lo: 60,   hi: 5,    display: v => v },
-  { key: 'sale_to_list',        label: 'Sale-to-List',       unit: '%',   decimals: 1, w: 0.12, lo: 0.95, hi: 1.05, display: v => v * 100 },
-  { key: 'pct_sold_above_list', label: '% Above Ask',        unit: '%',   decimals: 1, w: 0.12, lo: 0,    hi: 60,   display: v => v },
-  { key: 'price_to_income',     label: 'Price-to-Income',    unit: '×',   decimals: 1, w: 0.30, lo: 2,    hi: 8,    display: v => v },
-  { key: 'months_of_supply',    label: 'Months of Supply',   unit: ' mo', decimals: 1, w: 0.12, lo: 8,    hi: 1,    display: v => v },
+  { key: 'corporate_pct',       label: 'Corp. Ownership',   unit: '%',   decimals: 1, lo: 5,    hi: 40,   display: v => v },
+  { key: 'median_dom',          label: 'Median DOM',         unit: 'd',   decimals: 0, lo: 60,   hi: 5,    display: v => v },
+  { key: 'sale_to_list',        label: 'Sale-to-List',       unit: '%',   decimals: 1, lo: 0.95, hi: 1.05, display: v => v * 100 },
+  { key: 'pct_sold_above_list', label: '% Above Ask',        unit: '%',   decimals: 1, lo: 0,    hi: 60,   display: v => v },
+  { key: 'price_to_income',     label: 'Price-to-Income',    unit: '×',   decimals: 1, lo: 2,    hi: 8,    display: v => v },
+  { key: 'months_of_supply',    label: 'Months of Supply',   unit: ' mo', decimals: 1, lo: 8,    hi: 1,    display: v => v },
 ];
+
+// ── Presets (integer raw weights; auto-renormalized at compute time) ──
+
+const PRESETS = {
+  default: {
+    label: 'Default',
+    weights: { corporate_pct: 25, median_dom: 12, sale_to_list: 11, pct_sold_above_list: 11, price_to_income: 30, months_of_supply: 11 },
+  },
+  affordability: {
+    label: 'Affordability first',
+    weights: { corporate_pct: 12, median_dom: 9,  sale_to_list: 9,  pct_sold_above_list: 10, price_to_income: 50, months_of_supply: 10 },
+  },
+  investor_aware: {
+    label: 'Investor-aware',
+    weights: { corporate_pct: 40, median_dom: 11, sale_to_list: 11, pct_sold_above_list: 11, price_to_income: 17, months_of_supply: 10 },
+  },
+  speed: {
+    label: 'Speed of competition',
+    weights: { corporate_pct: 17, median_dom: 22, sale_to_list: 17, pct_sold_above_list: 17, price_to_income: 11, months_of_supply: 16 },
+  },
+};
+
+const DEFAULT_WEIGHTS = PRESETS.default.weights;
 
 const PALETTE = ['#3288bd','#99d594','#e6f598','#fee08b','#fc8d59','#d53e4f'];
 const LABELS  = ['Low','Moderate','Elevated','High','Very High','Extreme'];
+const LS_KEY  = 'firstdibs.weights.v1';
+
+// ── Mutable state ──
 
 let map = L.map('map').setView([41.48, -81.69], 11);
 
@@ -647,25 +1009,49 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap'
 }).addTo(map);
 
-let zipData = {};
-let zipMetadataVintage = {};
+let zipData             = {};
+let zipMetadataVintage  = {};
+let currentWeights      = { ...DEFAULT_WEIGHTS };
+let activePreset        = 'default';
+let currentZip          = null;
+let rafPending          = false;
+let customizedThisSession = false;
+
+// ── Core math ──
 
 function normalize(val, lo, hi) {
+  if (val == null) return null;
   if (hi === lo) return 0;
   return Math.max(0, Math.min(1, (val - lo) / (hi - lo)));
 }
 
-function scoreZip(d) {
-  let weightedSum = 0, totalW = 0;
-  FACTORS.forEach(f => {
-    const val = d[f.key];
-    if (val != null) {
-      weightedSum += normalize(val, f.lo, f.hi) * f.w;
-      totalW += f.w;
-    }
-  });
-  if (totalW < 0.50) return null;
-  return Math.round(weightedSum / totalW * 100);
+function scoreZip(metrics, weights) {
+  const w = weights || DEFAULT_WEIGHTS;
+  const rawTotal = Object.values(w).reduce((s, v) => s + v, 0);
+  if (rawTotal === 0) return { score: null, contribs: [], coverage: 0 };
+
+  let weightedSum = 0, weightTotalPresent = 0;
+  const contribs = [];
+
+  for (const f of FACTORS) {
+    const raw = w[f.key] ?? 0;
+    if (raw === 0) continue;
+    const normWeight = raw / rawTotal;
+    const sub = normalize(metrics[f.key], f.lo, f.hi);
+    if (sub == null) continue;
+    contribs.push({
+      key: f.key, label: f.label, unit: f.unit, decimals: f.decimals,
+      display: f.display, val: metrics[f.key],
+      sub, normWeight, contribution: sub * normWeight,
+    });
+    weightedSum        += sub * normWeight;
+    weightTotalPresent += normWeight;
+  }
+
+  if (weightTotalPresent < 0.5) return { score: null, contribs: [], coverage: weightTotalPresent };
+  const score = Math.round(weightedSum / weightTotalPresent * 100);
+  contribs.sort((a, b) => b.contribution - a.contribution);
+  return { score, contribs, coverage: weightTotalPresent };
 }
 
 function getColor(score) {
@@ -680,7 +1066,137 @@ function getRiskLabel(score) {
   return { label: LABELS[idx], color: PALETTE[idx] };
 }
 
+// ── Preset detection ──
+
+function detectActivePreset(weights) {
+  for (const [id, preset] of Object.entries(PRESETS)) {
+    const match = FACTORS.every(f =>
+      Math.abs((weights[f.key] ?? 0) - preset.weights[f.key]) <= 1
+    );
+    if (match) return id;
+  }
+  return 'custom';
+}
+
+// ── Weight UI sync ──
+
+function updateSliderUI() {
+  const rawTotal = Object.values(currentWeights).reduce((s, v) => s + v, 0);
+  FACTORS.forEach(f => {
+    const v   = currentWeights[f.key] ?? 0;
+    const rng = document.getElementById('rng-' + f.key);
+    const num = document.getElementById('num-' + f.key);
+    const nrm = document.getElementById('nrm-' + f.key);
+    const lbl = document.getElementById('nrmlbl-' + f.key);
+    if (rng) rng.value = v;
+    if (num) num.value = v;
+    const pct = rawTotal > 0 ? Math.round(v / rawTotal * 100) : 0;
+    if (nrm) nrm.style.width = pct + '%';
+    if (lbl) lbl.textContent = pct + '%';
+  });
+  const totalEl = document.getElementById('sliderTotal');
+  if (totalEl) {
+    totalEl.textContent = rawTotal === 100
+      ? `Raw total: 100`
+      : `Raw total: ${rawTotal} — normalized to 100% at compute`;
+  }
+  const warnEl = document.getElementById('sliderWarning');
+  if (warnEl) warnEl.style.display = rawTotal === 0 ? 'block' : 'none';
+}
+
+function updatePresetButtons() {
+  Object.keys(PRESETS).forEach(id => {
+    const btn = document.getElementById('preset-' + id);
+    if (!btn) return;
+    const isActive = id === activePreset;
+    btn.setAttribute('aria-checked', String(isActive));
+    btn.className = isActive ? 'btn-preset' : 'btn-preset inactive';
+  });
+}
+
+// ── Apply preset ──
+
+function applyPreset(id) {
+  if (!PRESETS[id]) return;
+  currentWeights = { ...PRESETS[id].weights };
+  activePreset   = id;
+  updateSliderUI();
+  updatePresetButtons();
+  scheduleRecompute();
+  saveWeights();
+  try { gtag('event', 'weights_changed', { preset: id }); } catch (_) {}
+}
+
+// ── Slider input handler ──
+
+function onWeightInput(key, rawVal) {
+  const v = Math.max(0, Math.min(100, Math.round(Number(rawVal) || 0)));
+  currentWeights[key] = v;
+  activePreset = detectActivePreset(currentWeights);
+  updateSliderUI();
+  updatePresetButtons();
+  scheduleRecompute();
+  saveWeights();
+  if (!customizedThisSession && activePreset === 'custom') {
+    customizedThisSession = true;
+    try { gtag('event', 'weights_customized'); } catch (_) {}
+  }
+}
+
+// ── Live repaint ──
+
+function recomputeAll() {
+  Object.keys(zipData).forEach(zip => {
+    const z = zipData[zip];
+    const { score } = scoreZip(z, currentWeights);
+    z.score = score;
+    if (!z.layer) return;
+    const color   = getColor(score);
+    const isInsuff = score == null;
+    z.layer.setStyle(isInsuff
+      ? { color: '#888', fillColor: '#ccc', weight: 1.5, fillOpacity: 0.25, dashArray: '4 3' }
+      : { color, fillColor: color, weight: 1.5, fillOpacity: 0.55, dashArray: null }
+    );
+  });
+  if (currentZip) selectZip(currentZip);
+}
+
+function scheduleRecompute() {
+  if (rafPending) return;
+  rafPending = true;
+  requestAnimationFrame(() => { recomputeAll(); rafPending = false; });
+}
+
+// ── localStorage ──
+
+function saveWeights() {
+  try {
+    localStorage.setItem(LS_KEY, JSON.stringify({
+      preset: activePreset,
+      weights: currentWeights,
+      savedAt: new Date().toISOString(),
+    }));
+  } catch (_) {}
+}
+
+function loadWeights() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return;
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed.weights !== 'object') return;
+    const valid = FACTORS.every(f => typeof parsed.weights[f.key] === 'number');
+    if (!valid) return;
+    currentWeights = parsed.weights;
+    activePreset   = parsed.preset || detectActivePreset(parsed.weights);
+  } catch (_) {}
+}
+
+// ── Data loading ──
+
 function loadData() {
+  loadWeights();
+
   Promise.all([
     fetch('data/cuyahoga_zip_boundaries.json').then(r => r.json()),
     fetch('data/cuyahoga_zip_metrics.json').then(r => r.json())
@@ -690,27 +1206,30 @@ function loadData() {
 
     boundaries.features.forEach(f => {
       const zip = f.properties.zip;
-      const m = metrics.zips[zip] || {};
+      const m   = metrics.zips[zip] || {};
       zipData[zip] = {
-        geo:                    f,
-        primary_city:           m.primary_city             ?? null,
-        corporate_pct:          m.corporate_pct            ?? null,
-        median_dom:             m.median_dom               ?? null,
-        sale_to_list:           m.sale_to_list             ?? null,
-        months_of_supply:       m.months_of_supply         ?? null,
-        pct_sold_above_list:    m.pct_sold_above_list      ?? null,
-        price_to_income:        m.price_to_income          ?? null,
-        low_sample_market:      m.low_sample_market        ?? false,
-        homes_sold_latest_month: m.homes_sold_latest_month ?? null,
-        acs_median_income_2016: m.acs_median_income_2016   ?? null,
+        geo:                     f,
+        primary_city:            m.primary_city             ?? null,
+        corporate_pct:           m.corporate_pct            ?? null,
+        median_dom:              m.median_dom               ?? null,
+        sale_to_list:            m.sale_to_list             ?? null,
+        months_of_supply:        m.months_of_supply         ?? null,
+        pct_sold_above_list:     m.pct_sold_above_list      ?? null,
+        price_to_income:         m.price_to_income          ?? null,
+        low_sample_market:       m.low_sample_market        ?? false,
+        homes_sold_latest_month: m.homes_sold_latest_month  ?? null,
+        acs_median_income_2016:  m.acs_median_income_2016   ?? null,
       };
     });
 
     drawMap();
+    updateSliderUI();
+    updatePresetButtons();
   })
   .catch(err => {
     console.error('Error loading data:', err);
-    document.getElementById('info').innerHTML = '<p style="color:red;padding:8px">Error loading map data.</p>';
+    document.getElementById('info').innerHTML =
+      '<p style="color:red;padding:8px">Error loading map data.</p>';
   });
 }
 
@@ -719,67 +1238,63 @@ function drawMap() {
     const z = zipData[zip];
     if (!z.geo) return;
 
-    const score = scoreZip(z);
+    const { score } = scoreZip(z, currentWeights);
     z.score = score;
 
-    const color = getColor(score);
-    const isInsufficient = score == null;
+    const color    = getColor(score);
+    const isInsuff = score == null;
 
-    L.geoJSON(z.geo, {
-      style: isInsufficient ? {
-        color:       '#888',
-        fillColor:   '#ccc',
-        weight:      1.5,
-        fillOpacity: 0.25,
-        dashArray:   '4 3',
+    z.layer = L.geoJSON(z.geo, {
+      style: isInsuff ? {
+        color: '#888', fillColor: '#ccc', weight: 1.5, fillOpacity: 0.25, dashArray: '4 3',
       } : {
-        color:       color,
-        fillColor:   color,
-        weight:      1.5,
-        fillOpacity: 0.55,
+        color, fillColor: color, weight: 1.5, fillOpacity: 0.55,
       }
     }).addTo(map).on('click', () => selectZip(zip));
   });
 }
 
+// ── Sidebar rendering ──
+
 function fmtVal(factor, rawVal) {
-  if (rawVal == null) return '<span class="stat-box-value" style="color:var(--text-light)">—</span>';
+  if (rawVal == null)
+    return '<span class="stat-box-value" style="color:var(--text-light)">—</span>';
   const disp = factor.display(rawVal).toFixed(factor.decimals);
   return `<span class="stat-box-value">${disp}<span class="stat-box-unit">${factor.unit}</span></span>`;
 }
 
-function buildWhyScore(z) {
-  const scored = FACTORS
-    .map(f => {
-      const val = z[f.key];
-      const norm = val != null ? normalize(val, f.lo, f.hi) : null;
-      return { f, val, norm };
-    })
-    .filter(x => x.norm != null)
-    .sort((a, b) => (b.norm * b.f.w) - (a.norm * a.f.w));
+function buildWhyScore(contribs, score) {
+  if (!contribs || contribs.length === 0 || score == null) {
+    return `<div class="why-score">
+      <div class="why-score-title">Why this score</div>
+      <p style="font-size:13px;color:var(--text-muted);margin:0">
+        Set at least one factor above zero to compute a score.
+      </p>
+    </div>`;
+  }
 
-  const top3 = scored.slice(0, 3);
-  const rest = scored.slice(3);
+  const top3 = contribs.slice(0, 3);
+  const rest = contribs.slice(3);
 
-  function rowHtml(x) {
-    const dispVal = x.f.display(x.val).toFixed(x.f.decimals) + x.f.unit;
-    const pct = Math.round(x.norm * 100);
+  function rowHtml(c) {
+    const dispVal  = c.display(c.val).toFixed(c.decimals) + c.unit;
+    const pct      = Math.round(c.sub * 100);
     const barColor = pct > 67 ? '#d53e4f' : pct > 33 ? '#fee08b' : '#99d594';
     return `<div class="why-factor-row">
-      <div class="why-factor-label">${x.f.label}</div>
+      <div class="why-factor-label">${c.label}</div>
       <div class="why-factor-val">${dispVal}</div>
-      <div class="why-mini-track"><div class="why-mini-fill" style="width:${pct}%;background:${barColor}"></div></div>
+      <div class="why-mini-track">
+        <div class="why-mini-fill" style="width:${pct}%;background:${barColor}"></div>
+      </div>
     </div>`;
   }
 
   const restHtml = rest.length > 0 ? `
-    <div id="allFactors" hidden>
-      ${rest.map(rowHtml).join('')}
-    </div>
-    <button class="btn-toggle" id="toggleFactors" aria-expanded="false" onclick="toggleAllFactors()">
-      Show all ${scored.length} factors
-    </button>
-  ` : '';
+    <div id="allFactors" hidden>${rest.map(rowHtml).join('')}</div>
+    <button class="btn-toggle" id="toggleFactors"
+            aria-expanded="false" onclick="toggleAllFactors()">
+      Show all ${contribs.length} factors
+    </button>` : '';
 
   return `<div class="why-score">
     <div class="why-score-title">Why this score</div>
@@ -788,20 +1303,13 @@ function buildWhyScore(z) {
   </div>`;
 }
 
-function toggleAllFactors() {
-  const btn = document.getElementById('toggleFactors');
-  const panel = document.getElementById('allFactors');
-  if (!btn || !panel) return;
-  const expanded = btn.getAttribute('aria-expanded') === 'true';
-  btn.setAttribute('aria-expanded', String(!expanded));
-  panel.hidden = expanded;
-  btn.textContent = expanded ? `Show all factors` : `Show fewer factors`;
-}
-
 function selectZip(zip) {
+  currentZip = zip;
   const z = zipData[zip];
-  const { label, color } = getRiskLabel(z.score);
-  const scoreDisplay = z.score != null ? z.score : '—';
+  const { score, contribs } = scoreZip(z, currentWeights);
+  z.score = score;
+  const { label, color } = getRiskLabel(score);
+  const scoreDisplay = score != null ? score : '—';
 
   const subtitleParts = [];
   if (z.primary_city) subtitleParts.push(z.primary_city);
@@ -816,11 +1324,10 @@ function selectZip(zip) {
     </div>`).join('') +
   `</div>`;
 
-  const srcOwnership = zipMetadataVintage.ownership
-    ? zipMetadataVintage.ownership.source : 'Cuyahoga Fiscal Officer';
-  const srcRedfin = zipMetadataVintage.redfin_market
+  const srcOwnership = zipMetadataVintage.ownership?.source   || 'Cuyahoga Fiscal Officer';
+  const srcRedfin    = zipMetadataVintage.redfin_market
     ? 'Redfin (' + zipMetadataVintage.redfin_market.month + ')' : 'Redfin';
-  const srcIncome = zipMetadataVintage.income
+  const srcIncome    = zipMetadataVintage.income
     ? 'ACS ' + zipMetadataVintage.income.year : 'ACS';
 
   document.getElementById('info').innerHTML = `
@@ -841,11 +1348,11 @@ function selectZip(zip) {
         <span>${scoreDisplay} / 100</span>
       </div>
       <div class="risk-bar-track">
-        <div class="risk-bar-fill" style="width:${z.score ?? 0}%;background:${color}"></div>
+        <div class="risk-bar-fill" style="width:${score ?? 0}%;background:${color}"></div>
       </div>
     </div>
     ${statsHtml}
-    ${buildWhyScore(z)}
+    ${buildWhyScore(contribs, score)}
     <div class="sources-line">
       <strong>Sources:</strong> ${srcOwnership} · ${srcRedfin} · ${srcIncome} &nbsp;·&nbsp;
       <a href="methodology.html">Methodology →</a>
@@ -854,23 +1361,64 @@ function selectZip(zip) {
 }
 
 function searchZip() {
-  const zip = document.getElementById('zipInput').value.trim();
+  const zip   = document.getElementById('zipInput').value.trim();
   const errEl = document.getElementById('searchError');
   if (zipData[zip]) {
     errEl.style.display = 'none';
     selectZip(zip);
-    gtag('event', 'zip_search', { zip });
+    try { gtag('event', 'zip_search', { zip }); } catch (_) {}
   } else {
     errEl.style.display = 'block';
   }
 }
 
+function toggleAllFactors() {
+  const btn   = document.getElementById('toggleFactors');
+  const panel = document.getElementById('allFactors');
+  if (!btn || !panel) return;
+  const expanded = btn.getAttribute('aria-expanded') === 'true';
+  btn.setAttribute('aria-expanded', String(!expanded));
+  panel.hidden = expanded;
+  btn.textContent = expanded ? 'Show all factors' : 'Show fewer factors';
+}
+
+// ── Event wiring ──
+
 document.addEventListener('DOMContentLoaded', () => {
+
+  // Search bar
   document.getElementById('zipInput').addEventListener('keydown', e => {
     if (e.key === 'Enter') searchZip();
   });
   document.getElementById('zipInput').addEventListener('input', () => {
     document.getElementById('searchError').style.display = 'none';
+  });
+
+  // Customize toggle
+  const toggleBtn = document.getElementById('customizeToggle');
+  const panel     = document.getElementById('weight-panel');
+  if (toggleBtn && panel) {
+    toggleBtn.addEventListener('click', () => {
+      const expanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+      toggleBtn.setAttribute('aria-expanded', String(!expanded));
+      panel.hidden = expanded;
+      toggleBtn.textContent = expanded ? 'Customize weights ▾' : 'Customize weights ▴';
+    });
+  }
+
+  // Sliders + number inputs
+  FACTORS.forEach(f => {
+    const rng = document.getElementById('rng-' + f.key);
+    const num = document.getElementById('num-' + f.key);
+    if (rng) rng.addEventListener('input', () => onWeightInput(f.key, rng.value));
+    if (num) {
+      num.addEventListener('input', () => onWeightInput(f.key, num.value));
+      num.addEventListener('blur',  () => {
+        const clamped = Math.max(0, Math.min(100, Math.round(Number(num.value) || 0)));
+        num.value = clamped;
+        onWeightInput(f.key, clamped);
+      });
+    }
   });
 });
 
