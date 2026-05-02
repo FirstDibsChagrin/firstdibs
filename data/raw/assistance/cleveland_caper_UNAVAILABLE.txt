@@ -1,0 +1,19 @@
+SOURCE: City of Cleveland CAPER — HOME Investment Partnerships and CDBG activity by ZIP
+STATUS: UNAVAILABLE — city document server blocked
+
+ATTEMPTED URLS:
+  https://www.clevelandohio.gov/sites/clevelandohio/files/cd/CAPER_2023-2024.pdf → 403
+  https://clevelandohio.gov/CityofCleveland/Home/Government/CityAgencies/CommunityDevelopment → 403
+  https://clevelandohio.gov/cd/CAPER                                  → 403
+  https://data.clevelandohio.gov/                                      → 403
+
+REPORT PERIOD: June 1, 2023 – May 31, 2024
+PROGRAM: HUD-funded HOME and CDBG housing assistance
+
+METHODOLOGY INTENT:
+  - Parse CAPER PDF appendix tables: DPA count, rehab count, homebuyer counseling count by ZIP
+  - HOME DPA: forgivable second mortgages, income ≤80% AMI
+  - CDBG rehab: owner-occupied repair grants/loans
+
+DATA AVAILABLE FROM OTHER SOURCES: none found
+ALTERNATIVE USED: all ZIP values set to null
