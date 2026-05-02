@@ -582,12 +582,12 @@ footer a:hover { color: rgba(255,255,255,0.9); text-decoration: underline; }
     <div id="map"></div>
     <div class="map-legend">
       <div class="map-legend-title">Competition Level</div>
-      <div class="legend-item"><div class="legend-swatch" style="background:#ffffd4;border:1px solid #ccc"></div>Low (0–17)</div>
-      <div class="legend-item"><div class="legend-swatch" style="background:#fee391"></div>Moderate (17–33)</div>
-      <div class="legend-item"><div class="legend-swatch" style="background:#fec44c"></div>Elevated (33–50)</div>
-      <div class="legend-item"><div class="legend-swatch" style="background:#fe9929"></div>High (50–67)</div>
-      <div class="legend-item"><div class="legend-swatch" style="background:#d95f0e"></div>Very High (67–83)</div>
-      <div class="legend-item"><div class="legend-swatch" style="background:#993404"></div>Extreme (83–100)</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#3288bd"></div>Low (0–17)</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#99d594"></div>Moderate (17–33)</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#e6f598"></div>Elevated (33–50)</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#fee08b"></div>High (50–67)</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#fc8d59"></div>Very High (67–83)</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#d53e4f"></div>Extreme (83–100)</div>
       <div class="legend-item"><div class="legend-swatch-stripe"></div>Insufficient data</div>
     </div>
   </div>
@@ -638,7 +638,7 @@ const FACTORS = [
   { key: 'months_of_supply',    label: 'Months of Supply',   unit: ' mo', decimals: 1, w: 0.12, lo: 8,    hi: 1,    display: v => v },
 ];
 
-const PALETTE = ['#ffffd4','#fee391','#fec44c','#fe9929','#d95f0e','#993404'];
+const PALETTE = ['#3288bd','#99d594','#e6f598','#fee08b','#fc8d59','#d53e4f'];
 const LABELS  = ['Low','Moderate','Elevated','High','Very High','Extreme'];
 
 let map = L.map('map').setView([41.48, -81.69], 11);
@@ -764,7 +764,7 @@ function buildWhyScore(z) {
   function rowHtml(x) {
     const dispVal = x.f.display(x.val).toFixed(x.f.decimals) + x.f.unit;
     const pct = Math.round(x.norm * 100);
-    const barColor = pct > 67 ? '#d95f0e' : pct > 33 ? '#fec44c' : '#fee391';
+    const barColor = pct > 67 ? '#d53e4f' : pct > 33 ? '#fee08b' : '#99d594';
     return `<div class="why-factor-row">
       <div class="why-factor-label">${x.f.label}</div>
       <div class="why-factor-val">${dispVal}</div>
