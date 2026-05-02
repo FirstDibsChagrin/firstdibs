@@ -1,0 +1,18 @@
+SOURCE: Cuyahoga Land Bank — property dispositions per ZIP (sales, demolitions, rehabs, 2023)
+STATUS: UNAVAILABLE — land bank and city data portals blocked
+
+ATTEMPTED URLS:
+  https://www.thelandbank.org/                                         → 403
+  https://www.thelandbank.org/properties.asp                          → 403
+  https://data.clevelandohio.gov/                                      → 403
+  https://data.clevelandohio.gov/api/views/                           → 403
+
+METHODOLOGY INTENT:
+  - Download parcel transaction CSV (sale, demolition, rehab, side lot disposition)
+  - Extract ZIP from parcel address or join via county parcel shapefile
+  - Aggregate per ZIP: rehab_sales_count, demo_count, side_lot_count, total_dispositions
+
+DATA AVAILABLE FROM OTHER SOURCES:
+  - No GitHub-hosted mirror of Cleveland or Cuyahoga parcel transaction data found
+
+ALTERNATIVE USED: all ZIP values set to null
