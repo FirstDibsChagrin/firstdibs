@@ -278,7 +278,8 @@ footer a:hover { color: rgba(255,255,255,0.9); text-decoration: underline; }
 
   <!-- WEIGHTS TABLE -->
   <section>
-    <h2>Weights and normalization anchors</h2>
+    <h2>Default preset — weights and normalization anchors</h2>
+    <p style="margin-bottom:14px">These are the <strong>Default preset</strong> weights — a balanced starting point. Users can switch to any of the four presets or customize sliders directly on the map page. See the "Adjustable weights" section below for the full preset table.</p>
     <table>
       <thead>
         <tr>
@@ -345,6 +346,68 @@ footer a:hover { color: rgba(255,255,255,0.9); text-decoration: underline; }
     <p>Then the weighted average is computed over factors with available data:</p>
     <p><code>score = round( Σ (norm_i × w_i) / Σ w_i × 100 )</code></p>
     <p>ZIPs where the sum of available factor weights is below 0.50 (50%) are flagged as having insufficient data and are not scored.</p>
+  </section>
+
+  <!-- ADJUSTABLE WEIGHTS -->
+  <section>
+    <h2>Adjustable weights</h2>
+    <p>The score is a weighted average of the six factors. The map page exposes four preset configurations and a custom slider panel so users can tune the score to their situation. <strong>Changing weights does not change the underlying data</strong> — only how the six factors are combined.</p>
+    <p>Weights are entered as integers (raw slider values). At compute time they are divided by their sum, so they automatically normalize to 100% regardless of what values are set. This means users can drag sliders freely without factors fighting each other.</p>
+
+    <h3>The four presets</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Factor</th>
+          <th>Default</th>
+          <th>Affordability first</th>
+          <th>Investor-aware</th>
+          <th>Speed of competition</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Corp. / LLC ownership %</td>
+          <td>25</td><td>12</td><td>40</td><td>17</td>
+        </tr>
+        <tr>
+          <td>Median days on market</td>
+          <td>12</td><td>9</td><td>11</td><td>22</td>
+        </tr>
+        <tr>
+          <td>Sale-to-list ratio</td>
+          <td>11</td><td>9</td><td>11</td><td>17</td>
+        </tr>
+        <tr>
+          <td>% sold above list</td>
+          <td>11</td><td>10</td><td>11</td><td>17</td>
+        </tr>
+        <tr>
+          <td>Price-to-income ratio</td>
+          <td>30</td><td>50</td><td>17</td><td>11</td>
+        </tr>
+        <tr>
+          <td>Months of supply</td>
+          <td>11</td><td>10</td><td>10</td><td>16</td>
+        </tr>
+        <tr>
+          <td><strong>Raw total</strong></td>
+          <td><strong>100</strong></td><td><strong>100</strong></td>
+          <td><strong>100</strong></td><td><strong>100</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>When to use each preset</h3>
+    <ul style="margin-top:8px">
+      <li><strong>Default</strong> — balanced starting point for a general first-time buyer using financing.</li>
+      <li><strong>Affordability first</strong> — emphasizes the price-to-income ratio; best for lower-income buyers or FHA-likely borrowers who need to stretch the budget as little as possible.</li>
+      <li><strong>Investor-aware</strong> — heavily weights corporate/LLC ownership; useful when the primary concern is competing against cash-buying institutional buyers.</li>
+      <li><strong>Speed of competition</strong> — weights time-on-market and bidding signals most heavily; best for cash-ready buyers who can move fast and want to identify the most frenetic markets.</li>
+    </ul>
+
+    <h3>Custom weights</h3>
+    <p>The "Customize weights" panel on the map page exposes one slider per factor. Drag any slider from 0 to 100 — the normalized share bar underneath each slider shows what percentage of the total that factor currently represents. The score auto-updates live as you drag. Custom settings persist across page loads via <code>localStorage</code> (key: <code>firstdibs.weights.v1</code>).</p>
   </section>
 
   <!-- ZIP UNIVERSE -->
