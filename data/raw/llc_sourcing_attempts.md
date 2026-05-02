@@ -137,3 +137,126 @@ These figures are at county and census-tract aggregate level; ZIP-level breakdow
 **To unblock this factor in a future refresh, access from a network without these restrictions is needed.** The City of Cleveland's public GitHub notebook (`City-of-Cleveland/open-data-examples`, notebook 02) provides the exact methodology and ArcGIS item IDs needed to compute corporate ownership from parcel data; it can be run in a normal browser/network environment in under 10 minutes.
 
 **`corporate_pct` remains null for all 51 Cuyahoga ZIPs.**
+
+---
+
+## Prompt 4a.1 — Housing Assistance Program Data Troubleshooting
+
+**Date:** 2026-05-02  
+**Task:** Resolve 403 errors blocking 8 housing assistance program sources  
+**Network Environment:** Same as Prompt 1b — only `raw.githubusercontent.com` and Redfin S3 accessible; all government and nonprofit domains return HTTP 403
+
+### Step 1: Diagnosis
+
+All 7 tested assistance program sources returned **HTTP 403** with no `Server` header or session cookies visible. The network proxy intercepts before headers are sent by the target server.
+
+| Program | URL | Status | Server Header | Cloudflare | Session Cookie |
+|---------|-----|--------|---------------|------------|----------------|
+| HMDA (CFPB FFIEC) | `ffiec.cfpb.gov/data/snapshot/…` | 403 | (none) | No | No |
+| OHFA Annual Report | `ohiohome.org/docs/annualreport_24.pdf` | 403 | (none) | No | No |
+| Cleveland CAPER | `clevelandohio.gov/sites/clevelandohio/files/cd/CAPER_2023-2024.pdf` | 403 | (none) | No | No |
+| Cuyahoga County DPA | `cuyahogacounty.gov/housing` | 403 | (none) | No | No |
+| FHLB Welcome Home | `fhlbcin.com/community/welcome-home-program/` | 403 | (none) | No | No |
+| Cleveland Land Bank | `thelandbank.org/` | 403 | (none) | No | No |
+| Habitat for Humanity | `clevelandhabitat.org/` | 403 | (none) | No | No |
+
+### Step 2: User-Agent Spoofing
+
+Retried all 7 sources with browser User-Agent headers:
+```
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.9
+```
+
+**Result:** 0/7 returned 200 OK. All remained 403. User-Agent spoofing does not bypass proxy filtering.
+
+### Step 3: Wayback Machine / Archive.org
+
+Tested both `archive.org` and the Wayback Machine CDX API for cached copies of OHFA Annual Report and Cleveland CAPER:
+
+- `archive.org` itself returns 403 (proxy-blocked)
+- Wayback CDX API (`archive.org/wayback/available?url=…`) returns 403
+- **Outcome:** Archive.org not accessible from this network.
+
+### Step 4: Alternate Sources per Program
+
+For each program, tested alternative sources listed in the guide:
+
+**OHFA:**
+- HUD eCon Planning Suite (Ohio) → 403
+- HUD CPD Maps (ArcGIS) → 403
+- Federal Audit Clearinghouse → 403
+
+**Cleveland/Cuyahoga CAPER:**
+- HUD IDIS public reports → 403
+- HUD eCon Cleveland/Cuyahoga → 403
+- HUD CPD Reports → 403
+
+**FHLB Welcome Home:**
+- FHLB News/Press Releases → 403
+- FHLB Financial Information → 403
+
+**Land Bank:**
+- Cuyahoga County GIS → 403
+- Cleveland NEO CANDO → 403
+
+**Habitat for Humanity:**
+- ProPublica Nonprofits (990s) → 403
+
+**Result:** All 12+ alternate sources also blocked. The proxy allowlist does not include any government or nonprofit hosting domains.
+
+### Step 5: Manual Download Fallback
+
+Given that Steps 2–4 all failed due to persistent proxy filtering, the following files require **manual browser download** from outside the proxy environment and manual placement in `data/raw/manual/`:
+
+```
+NEEDS MANUAL DOWNLOAD
+
+1. OHFA Annual Report FY2024
+   https://www.ohiohome.org/docs/annualreport_24.pdf
+   Save as: data/raw/manual/ohfa_annual_report_2024.pdf
+   Why needed: County-level OHFA program activity (Your Choice!, Grants for Grads, etc.)
+   
+2. Cleveland CAPER 2023-2024
+   https://www.clevelandohio.gov/sites/clevelandohio/files/cd/CAPER_2023-2024.pdf
+   Save as: data/raw/manual/cleveland_caper_2023_2024.pdf
+   Why needed: HOME/CDBG down-payment assistance activity (June 2023 – May 2024)
+   
+3. FHLB Cincinnati Welcome Home Program Annual Report (or press release with activity totals)
+   Primary: https://www.fhlbcin.com/about-us/financial-information/
+   Fallback: Google search for "Welcome Home" FHLB Cincinnati Ohio 2024 filetype:pdf
+   Save as: data/raw/manual/fhlb_welcome_home_2024.pdf
+   Why needed: State-level Ohio grant activity (can be apportioned by income limits if Cuyahoga data available)
+```
+
+### Step 6: Skip-and-Document
+
+The following programs will be marked **catalog-only** (no activity data) pending manual downloads:
+
+1. **HMDA (FHA/VA/Denial Rate)** — `ffiec.cfpb.gov` and `cfpb-hmda-public.s3.amazonaws.com` both blocked; CFPB mirror endpoint also blocked. No GitHub mirror of 2023 Ohio HMDA LAR found. **Status: Catalog-only**
+
+2. **OHFA Loans** — Primary source blocked; all HUD mirrors blocked. **Status: Pending manual download of annual report** (Step 5)
+
+3. **Cleveland CAPER** — City website blocked; all HUD mirror endpoints blocked. **Status: Pending manual download of PDF** (Step 5)
+
+4. **Cuyahoga County DPA** — `cuyahogacounty.gov` blocked; no alternate source found. **Status: Catalog-only**
+
+5. **FHLB Welcome Home** — Main website blocked; all alternate sources blocked. **Status: Pending manual download** (Step 5)
+
+6. **Cleveland Land Bank** — `thelandbank.org` and `data.clevelandohio.gov` blocked; NEO CANDO blocked. **Status: Catalog-only**
+
+7. **Habitat for Humanity** — `clevelandhabitat.org` blocked; ProPublica 990 lookup blocked. **Status: Catalog-only**
+
+### Summary
+
+**Network Constraint Confirmed:** All 8 assistance program data sources require access to domains blocked by the proxy. No workarounds (User-Agent, Wayback Machine, alternate sources) bypassed the filtering.
+
+**Path Forward:**
+1. User downloads 3 PDFs (OHFA annual, Cleveland CAPER, FHLB report) in a normal browser environment
+2. Place them in `data/raw/manual/` as specified above
+3. Parse PDFs to extract: loan counts, ZIP/city/county breakdown, activity dates, program terms
+4. Update `cuyahoga_assistance_programs.json` with extracted data, changing `geography` to match (zip / city / county / statewide)
+5. Update this log with results per program
+
+**No data is fabricated.** Programs without accessible activity data remain catalog-only with `null` activity values, which the UI handles gracefully.
