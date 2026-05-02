@@ -764,6 +764,443 @@ footer strong { color: rgba(255,255,255,0.8); }
 footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
 footer a:hover { color: rgba(255,255,255,0.9); text-decoration: underline; }
 
+/* ── Compare Mode ────────────────────────────────────────────── */
+
+body[data-mode="compare"] #compareInputsContainer {
+  display: flex !important;
+}
+
+body[data-mode="compare"] #info {
+  display: none;
+}
+
+body[data-mode="compare"] #assistanceCard {
+  display: none;
+}
+
+.compare-inputs {
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: none;
+}
+
+.compare-inputs-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.compare-zip-input {
+  flex: 1;
+  min-width: 100px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  background: var(--surface);
+}
+
+.compare-zip-input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+
+.btn-exit-compare {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s, color 0.12s;
+}
+
+.btn-exit-compare:hover {
+  background: var(--bg);
+  border-color: var(--text-muted);
+  color: var(--text);
+}
+
+/* ── Compare Panel Table ─────────────────────────────────────── */
+
+.compare-card {
+  overflow-x: auto;
+}
+
+.compare-table-wrapper {
+  overflow-x: auto;
+  margin: 0 -24px;
+  padding: 0 24px;
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.compare-table thead {
+  background: var(--surface-2);
+  border-bottom: 2px solid var(--border);
+}
+
+.compare-table th {
+  padding: 12px 8px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.compare-col-label {
+  text-align: left;
+  min-width: 140px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.compare-table td {
+  padding: 10px 8px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.compare-row-score .compare-col-value {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.compare-score-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 800;
+}
+
+.compare-col-value {
+  position: relative;
+  color: var(--text);
+}
+
+.compare-col-value.best {
+  background: rgba(34, 197, 94, 0.08);
+  border-left: 3px solid #22c55e;
+}
+
+.compare-col-value.worst {
+  background: rgba(213, 62, 79, 0.08);
+  border-left: 3px solid #d53e4f;
+}
+
+.badge-best {
+  display: inline-block;
+  background: #22c55e;
+  color: white;
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.badge-worst {
+  display: inline-block;
+  background: #d53e4f;
+  color: white;
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.compare-actions {
+  display: flex;
+  gap: 8px;
+  padding: 12px 0 0;
+  border-top: 1px solid var(--border);
+}
+
+.btn-action {
+  flex: 1;
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.btn-action:hover {
+  background: var(--primary-dark);
+}
+
+/* ── Map Compare Overlay ─────────────────────────────────────── */
+
+.compare-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.compare-label {
+  width: 28px;
+  height: 28px;
+  background: var(--accent-bright);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  border: 2px solid white;
+}
+
+/* ── Assistance Programs Card ────────────────────────────────── */
+
+.program-badge {
+  display: inline-block;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: help;
+  margin-left: 4px;
+}
+
+.assistance-programs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.assistance-program {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 14px;
+}
+
+.assistance-program:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.program-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.program-name {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.program-activity {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.program-description {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.program-section-toggle {
+  margin-bottom: 6px;
+}
+
+.btn-toggle-section {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.btn-toggle-section:hover {
+  color: var(--primary);
+}
+
+.program-eligibility {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-top: 6px;
+}
+
+.eligibility-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.eligibility-list li {
+  line-height: 1.6;
+}
+
+.eligibility-list li:before {
+  content: '• ';
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.program-apply {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  margin-top: 4px;
+}
+
+.program-apply:hover {
+  text-decoration: underline;
+}
+
+.assistance-empty {
+  text-align: center;
+  padding: 16px 0;
+}
+
+.assistance-empty p {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.assistance-empty a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.assistance-empty a:hover {
+  text-decoration: underline;
+}
+
+.assistance-footer {
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  text-align: center;
+}
+
+.assistance-footer a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.assistance-footer a:hover {
+  text-decoration: underline;
+}
+
+/* ── Toast Notifications ─────────────────────────────────────── */
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--text);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  z-index: 9999;
+  animation: slideInUp 0.3s ease;
+}
+
+@keyframes slideInUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ── Print Styles ────────────────────────────────────────────── */
+
+@media print {
+  nav, .hero, .preset-bar, .map-wrapper, .map-legend, #info, #assistanceCard, #compareInputsContainer {
+    display: none !important;
+  }
+
+  .main {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+  }
+
+  .compare-table-wrapper {
+    margin: 0;
+    padding: 0;
+  }
+
+  .compare-table {
+    border: 1px solid #000;
+    page-break-inside: avoid;
+  }
+
+  .compare-table th,
+  .compare-table td {
+    border: 1px solid #000;
+    padding: 8px;
+  }
+
+  .compare-score-badge {
+    border: 1px solid #000;
+  }
+
+  body::before {
+    content: 'First Dibs — ZIP Comparison Report';
+    display: block;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+
+  footer {
+    text-align: center;
+    padding-top: 20px;
+    margin-top: 30px;
+    border-top: 1px solid #999;
+    font-size: 11px;
+  }
+}
+
 @media (max-width: 900px) {
   .main { grid-template-columns: 1fr; }
   #map { height: 400px; }
@@ -778,6 +1215,14 @@ footer a:hover { color: rgba(255,255,255,0.9); text-decoration: underline; }
   .preset-row > * { scroll-snap-align: start; flex-shrink: 0; }
   .btn-customize { margin-left: 0; }
   .weight-panel-grid { grid-template-columns: 110px 1fr 50px; }
+
+  .compare-inputs-inner {
+    flex-direction: column;
+  }
+
+  .compare-zip-input {
+    width: 100%;
+  }
 }
 </style>
 </head>
@@ -828,6 +1273,12 @@ footer a:hover { color: rgba(255,255,255,0.9); text-decoration: underline; }
                 role="radio" aria-checked="false"
                 onclick="applyPreset('speed')">Speed of competition</button>
       </div>
+      <button id="compareToggle"
+              class="btn-customize"
+              aria-pressed="false"
+              aria-controls="compareInputsContainer">
+        Compare ZIPs
+      </button>
       <button id="customizeToggle"
               class="btn-customize"
               aria-expanded="false"
@@ -908,6 +1359,16 @@ footer a:hover { color: rgba(255,255,255,0.9); text-decoration: underline; }
       </div>
     </div>
   </div>
+
+  <!-- ── Compare mode controls ─────────────────────────── -->
+  <div id="compareInputsContainer" class="compare-inputs" hidden>
+    <div class="compare-inputs-inner">
+      <input id="compareInput1" class="compare-zip-input" type="text" placeholder="ZIP 1" data-slot="1" maxlength="5" aria-label="Compare ZIP 1">
+      <input id="compareInput2" class="compare-zip-input" type="text" placeholder="ZIP 2" data-slot="2" maxlength="5" aria-label="Compare ZIP 2">
+      <input id="compareInput3" class="compare-zip-input" type="text" placeholder="ZIP 3" data-slot="3" maxlength="5" aria-label="Compare ZIP 3">
+      <button id="exitCompare" class="btn-exit-compare" aria-label="Exit compare mode">Exit compare</button>
+    </div>
+  </div>
 </div>
 
 <div class="main">
@@ -932,6 +1393,22 @@ footer a:hover { color: rgba(255,255,255,0.9); text-decoration: underline; }
       <div class="info-empty">
         <div class="info-empty-icon">🗺️</div>
         <p>Click a ZIP on the map<br>or search above to see<br>competition data.</p>
+      </div>
+    </div>
+
+    <div class="card compare-card" id="comparePanel" hidden>
+      <!-- Rendered by JavaScript -->
+    </div>
+
+    <div class="card assistance-card" id="assistanceCard">
+      <div class="card-label">Programs Available</div>
+      <div id="assistanceProgramsList" class="assistance-programs-list">
+        <div class="info-empty">
+          <p style="color:var(--text-muted);font-size:13px">Select a ZIP to see available programs.</p>
+        </div>
+      </div>
+      <div class="assistance-footer">
+        <a href="methodology.html#assistance-programs">What does this mean? →</a>
       </div>
     </div>
 
@@ -966,12 +1443,12 @@ footer a:hover { color: rgba(255,255,255,0.9); text-decoration: underline; }
 // ── Factor definitions (anchors + display only; weights live in PRESETS) ──
 
 const FACTORS = [
-  { key: 'corporate_pct',       label: 'Corp. Ownership',   unit: '%',   decimals: 1, lo: 5,    hi: 40,   display: v => v },
-  { key: 'median_dom',          label: 'Median DOM',         unit: 'd',   decimals: 0, lo: 60,   hi: 5,    display: v => v },
-  { key: 'sale_to_list',        label: 'Sale-to-List',       unit: '%',   decimals: 1, lo: 0.95, hi: 1.05, display: v => v * 100 },
-  { key: 'pct_sold_above_list', label: '% Above Ask',        unit: '%',   decimals: 1, lo: 0,    hi: 60,   display: v => v },
-  { key: 'price_to_income',     label: 'Price-to-Income',    unit: '×',   decimals: 1, lo: 2,    hi: 8,    display: v => v },
-  { key: 'months_of_supply',    label: 'Months of Supply',   unit: ' mo', decimals: 1, lo: 8,    hi: 1,    display: v => v },
+  { key: 'corporate_pct',       label: 'Investor Ownership',   short: 'Corp. Ownership', unit: '%',   decimals: 1, lo: 5,    hi: 40,   display: v => v },
+  { key: 'median_dom',          label: 'How quickly homes are selling',   short: 'Median DOM', unit: 'd',   decimals: 0, lo: 60,   hi: 5,    display: v => v },
+  { key: 'sale_to_list',        label: 'How often homes go for over asking',   short: 'Sale-to-List', unit: '%',   decimals: 1, lo: 0.95, hi: 1.05, display: v => v * 100 },
+  { key: 'pct_sold_above_list', label: '% Sold Above Asking',   short: '% Above Ask', unit: '%',   decimals: 1, lo: 0,    hi: 60,   display: v => v },
+  { key: 'price_to_income',     label: 'Home Price vs Typical Income',   short: 'Price-to-Income', unit: '×',   decimals: 1, lo: 2,    hi: 8,    display: v => v },
+  { key: 'months_of_supply',    label: 'How quickly homes are selling',   short: 'Months of Supply', unit: ' mo', decimals: 1, lo: 8,    hi: 1,    display: v => v },
 ];
 
 // ── Presets (integer raw weights; auto-renormalized at compute time) ──
@@ -998,7 +1475,7 @@ const PRESETS = {
 const DEFAULT_WEIGHTS = PRESETS.default.weights;
 
 const PALETTE = ['#3288bd','#99d594','#e6f598','#fee08b','#fc8d59','#d53e4f'];
-const LABELS  = ['Low','Moderate','Elevated','High','Very High','Extreme'];
+const LABELS  = ['Easiest','Moderately competitive','Competitive','Very competitive','Highly competitive','Highly competitive'];
 const LS_KEY  = 'firstdibs.weights.v1';
 
 // ── Mutable state ──
@@ -1009,13 +1486,24 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap'
 }).addTo(map);
 
-let zipData             = {};
-let zipMetadataVintage  = {};
-let currentWeights      = { ...DEFAULT_WEIGHTS };
-let activePreset        = 'default';
-let currentZip          = null;
-let rafPending          = false;
+let zipData              = {};
+let zipMetadataVintage   = {};
+let currentWeights       = { ...DEFAULT_WEIGHTS };
+let activePreset         = 'default';
+let currentZip           = null;
+let rafPending           = false;
 let customizedThisSession = false;
+
+// ── Compare mode state ──
+
+const compareState = {
+  mode: false,
+  selectedZips: [],
+  slots: { '1': null, '2': null, '3': null },
+  order: [],
+};
+
+let assistanceData = null;
 
 // ── Core math ──
 
@@ -1061,7 +1549,7 @@ function getColor(score) {
 }
 
 function getRiskLabel(score) {
-  if (score == null) return { label: 'Insufficient data', color: '#888' };
+  if (score == null) return { label: 'Not enough sales here yet to score', color: '#888' };
   const idx = Math.min(5, Math.floor(score / 100 * 6));
   return { label: LABELS[idx], color: PALETTE[idx] };
 }
@@ -1199,10 +1687,12 @@ function loadData() {
 
   Promise.all([
     fetch('data/cuyahoga_zip_boundaries.json').then(r => r.json()),
-    fetch('data/cuyahoga_zip_metrics.json').then(r => r.json())
+    fetch('data/cuyahoga_zip_metrics.json').then(r => r.json()),
+    loadAssistanceData()
   ])
-  .then(([boundaries, metrics]) => {
+  .then(([boundaries, metrics, assistance]) => {
     zipMetadataVintage = metrics.vintage;
+    assistanceData = assistance;
 
     boundaries.features.forEach(f => {
       const zip = f.properties.zip;
@@ -1225,6 +1715,7 @@ function loadData() {
     drawMap();
     updateSliderUI();
     updatePresetButtons();
+    restoreCompareFromHash();
   })
   .catch(err => {
     console.error('Error loading data:', err);
@@ -1250,7 +1741,466 @@ function drawMap() {
       } : {
         color, fillColor: color, weight: 1.5, fillOpacity: 0.55,
       }
-    }).addTo(map).on('click', () => selectZip(zip));
+    }).addTo(map).on('click', () => {
+      if (compareState.mode) {
+        addZipToCompare(zip);
+      } else {
+        selectZip(zip);
+      }
+    });
+  });
+}
+
+// ── Compare mode ──
+
+function parseCompareHash() {
+  const match = window.location.hash.match(/#compare=(.+)/);
+  if (!match) return null;
+  const zips = match[1].split(',')
+    .map(z => z.trim())
+    .filter(z => /^\d{5}$/.test(z) && zipData[z])
+    .slice(0, 3);
+  return zips.length > 0 ? zips : null;
+}
+
+function updateCompareHash(zips) {
+  if (zips.length === 0) {
+    window.history.replaceState(null, '', '#');
+  } else {
+    const sorted = [...zips].sort();
+    window.history.replaceState(null, '', `#compare=${sorted.join(',')}`);
+  }
+}
+
+function announceToScreenReaders(msg) {
+  const ariaLive = document.createElement('div');
+  ariaLive.setAttribute('role', 'status');
+  ariaLive.setAttribute('aria-live', 'polite');
+  ariaLive.setAttribute('aria-atomic', 'true');
+  ariaLive.style.position = 'absolute';
+  ariaLive.style.left = '-10000px';
+  ariaLive.textContent = msg;
+  document.body.appendChild(ariaLive);
+  setTimeout(() => ariaLive.remove(), 2000);
+}
+
+function showToast(msg, durationMs = 2000) {
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = msg;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), durationMs);
+}
+
+function toggleCompareMode() {
+  if (compareState.mode) {
+    exitCompareMode();
+  } else {
+    enterCompareMode();
+  }
+}
+
+function enterCompareMode() {
+  compareState.mode = true;
+  document.body.setAttribute('data-mode', 'compare');
+  document.getElementById('compareInputsContainer').style.display = 'flex';
+  document.getElementById('comparePanel').style.display = 'block';
+  document.getElementById('compareToggle').setAttribute('aria-pressed', 'true');
+  announceToScreenReaders('Compare mode entered. Add up to 3 ZIP codes.');
+}
+
+function exitCompareMode() {
+  compareState.mode = false;
+  document.body.setAttribute('data-mode', 'single-zip');
+  compareState.selectedZips = [];
+  compareState.slots = { '1': null, '2': null, '3': null };
+  compareState.order = [];
+  document.getElementById('compareInputsContainer').style.display = 'none';
+  document.getElementById('comparePanel').style.display = 'none';
+  document.getElementById('compareToggle').setAttribute('aria-pressed', 'false');
+  updateCompareHash([]);
+  ['1', '2', '3'].forEach(slot => {
+    document.getElementById(`compareInput${slot}`).value = '';
+  });
+  updateMapCompareSelection();
+  if (currentZip) selectZip(currentZip);
+}
+
+function addZipToCompare(zip) {
+  if (!zipData[zip]) return false;
+  if (compareState.selectedZips.includes(zip)) {
+    removeZipFromCompare(zip);
+    return false;
+  }
+
+  if (compareState.selectedZips.length >= 3) {
+    const earliest = compareState.order[0];
+    removeZipFromCompare(earliest);
+    showToast(`Replaced ${earliest} with ${zip} (max 3 ZIPs)`);
+  }
+
+  const nextSlot = Object.entries(compareState.slots)
+    .find(([_, z]) => z === null)?.[0] || '1';
+
+  compareState.slots[nextSlot] = zip;
+  compareState.selectedZips.push(zip);
+  compareState.order.push(zip);
+
+  document.getElementById(`compareInput${nextSlot}`).value = zip;
+  updateMapCompareSelection();
+  renderComparePanel();
+  updateCompareHash(compareState.selectedZips);
+  announceToScreenReaders(`${zip} added to compare.`);
+  return true;
+}
+
+function removeZipFromCompare(zip) {
+  const slot = Object.entries(compareState.slots)
+    .find(([_, z]) => z === zip)?.[0];
+
+  if (!slot) return;
+
+  compareState.slots[slot] = null;
+  compareState.selectedZips = compareState.selectedZips.filter(z => z !== zip);
+  compareState.order = compareState.order.filter(z => z !== zip);
+
+  document.getElementById(`compareInput${slot}`).value = '';
+
+  if (compareState.selectedZips.length === 0) {
+    exitCompareMode();
+    return;
+  }
+
+  const remaining = compareState.order;
+  compareState.slots = { '1': null, '2': null, '3': null };
+  remaining.forEach((z, i) => {
+    compareState.slots[String(i + 1)] = z;
+  });
+
+  ['1', '2', '3'].forEach(slot => {
+    document.getElementById(`compareInput${slot}`).value = compareState.slots[slot] || '';
+  });
+
+  updateMapCompareSelection();
+  renderComparePanel();
+  updateCompareHash(compareState.selectedZips);
+  announceToScreenReaders(`${zip} removed from compare.`);
+}
+
+function updateMapCompareSelection() {
+  Object.keys(zipData).forEach(zip => {
+    const z = zipData[zip];
+    if (!z.layer) return;
+
+    const slot = Object.entries(compareState.slots)
+      .find(([_, selectedZip]) => selectedZip === zip)?.[0];
+
+    if (slot) {
+      z.layer.setStyle({
+        weight: 3,
+        opacity: 1,
+        fillOpacity: 0.65,
+        color: '#16a34a'
+      });
+
+      if (!z.compareLabel) {
+        const bounds = L.geoJSON(z.geo).getBounds();
+        const center = bounds.getCenter();
+        const icon = L.divIcon({
+          html: `<div class="compare-label">${slot}</div>`,
+          className: 'compare-marker',
+          iconSize: [28, 28]
+        });
+        z.compareLabel = L.marker(center, { icon }).addTo(map);
+      } else {
+        z.compareLabel.setIcon(L.divIcon({
+          html: `<div class="compare-label">${slot}</div>`,
+          className: 'compare-marker',
+          iconSize: [28, 28]
+        }));
+      }
+    } else {
+      if (compareState.mode) {
+        const { score } = scoreZip(z, currentWeights);
+        const color = getColor(score);
+        z.layer.setStyle({
+          weight: 1.5,
+          opacity: 0.5,
+          fillOpacity: 0.3,
+          color: color || '#888'
+        });
+      } else {
+        const { score } = scoreZip(z, currentWeights);
+        const color = getColor(score);
+        const isInsuff = score == null;
+        z.layer.setStyle(isInsuff
+          ? { color: '#888', fillColor: '#ccc', weight: 1.5, fillOpacity: 0.25, dashArray: '4 3' }
+          : { color, fillColor: color, weight: 1.5, fillOpacity: 0.55, dashArray: null }
+        );
+      }
+
+      if (z.compareLabel) {
+        map.removeLayer(z.compareLabel);
+        z.compareLabel = null;
+      }
+    }
+  });
+
+  if (compareState.selectedZips.length > 0) {
+    const group = new L.FeatureGroup(
+      compareState.selectedZips.map(zip => zipData[zip].layer)
+    );
+    map.fitBounds(group.getBounds(), { padding: [50, 50] });
+  }
+}
+
+function renderComparePanel() {
+  const slots = ['1', '2', '3'];
+  const zips = slots.map(s => compareState.slots[s]);
+
+  const riskData = zips.map(zip => {
+    if (!zip) return null;
+    const z = zipData[zip];
+    const { score, contribs } = scoreZip(z, currentWeights);
+    const { label, color } = getRiskLabel(score);
+    return { zip, score, label, color };
+  });
+
+  const factorData = slots.map(slot => {
+    const zip = compareState.slots[slot];
+    if (!zip) return FACTORS.map(() => null);
+    const z = zipData[zip];
+    return FACTORS.map(f => z[f.key]);
+  });
+
+  const bestWorst = FACTORS.map((f, idx) => {
+    const values = factorData.map(row => row ? row[idx] : null);
+    const validValues = values.filter(v => v != null);
+
+    if (validValues.length === 0) return { best: null, worst: null };
+
+    const normalized = validValues.map(v => normalize(v, f.lo, f.hi));
+    const bestNorm = Math.min(...normalized);
+    const worstNorm = Math.max(...normalized);
+
+    return {
+      bestNorm,
+      worstNorm,
+      bestIdxs: values.map((v, i) =>
+        v != null && Math.abs(normalize(v, f.lo, f.hi) - bestNorm) < 0.05 ? i : -1
+      ).filter(i => i !== -1),
+      worstIdxs: values.map((v, i) =>
+        v != null && Math.abs(normalize(v, f.lo, f.hi) - worstNorm) < 0.05 ? i : -1
+      ).filter(i => i !== -1)
+    };
+  });
+
+  let tableHtml = `<table class="compare-table"><thead><tr>
+    <th class="compare-col-label">Metric</th>`;
+
+  slots.forEach(slot => {
+    const zip = compareState.slots[slot];
+    tableHtml += `<th class="compare-col-zip">${zip || '—'}</th>`;
+  });
+
+  tableHtml += `</tr></thead><tbody>
+    <tr class="compare-row-score">
+      <td class="compare-col-label"><strong>Competition Score</strong></td>`;
+
+  riskData.forEach(data => {
+    if (!data) {
+      tableHtml += '<td class="compare-col-value">—</td>';
+    } else {
+      tableHtml += `<td class="compare-col-value">
+        <span class="compare-score-badge" style="background-color:${data.color}">${data.score}</span>
+      </td>`;
+    }
+  });
+
+  tableHtml += `</tr>`;
+
+  FACTORS.forEach((f, idx) => {
+    const bw = bestWorst[idx];
+    tableHtml += `<tr class="compare-row-factor">
+      <td class="compare-col-label"><span class="factor-label">${f.short}</span></td>`;
+
+    factorData.forEach((row, i) => {
+      const val = row ? row[idx] : null;
+      const isBest = bw.bestIdxs.includes(i);
+      const isWorst = bw.worstIdxs.includes(i);
+
+      let badge = '';
+      if (isBest && !isWorst) badge = '<span class="badge-best">✓</span>';
+      if (isWorst && !isBest) badge = '<span class="badge-worst">highest</span>';
+
+      const disp = val != null
+        ? f.display(val).toFixed(f.decimals) + f.unit
+        : '—';
+
+      const bestClass = isBest ? ' best' : '';
+      const worstClass = isWorst ? ' worst' : '';
+
+      tableHtml += `<td class="compare-col-value${bestClass}${worstClass}">${disp} ${badge}</td>`;
+    });
+
+    tableHtml += `</tr>`;
+  });
+
+  tableHtml += `</tbody></table>`;
+
+  document.getElementById('comparePanel').innerHTML = `
+    <div class="compare-table-wrapper">${tableHtml}</div>
+    <div class="compare-actions">
+      <button class="btn-action" id="printCompare">Print</button>
+      <button class="btn-action" id="shareCompare">Share</button>
+    </div>
+  `;
+
+  document.getElementById('printCompare').addEventListener('click', printCompareReport);
+  document.getElementById('shareCompare').addEventListener('click', shareCompareUrl);
+}
+
+function printCompareReport() {
+  window.print();
+  try { gtag('event', 'compare_print'); } catch (_) {}
+}
+
+function shareCompareUrl() {
+  const url = window.location.origin + window.location.pathname + window.location.hash;
+  navigator.clipboard.writeText(url).then(() => {
+    showToast('Copied comparison URL to clipboard', 2000);
+    try { gtag('event', 'compare_share'); } catch (_) {}
+  }).catch(() => {
+    showToast('Failed to copy URL', 2000);
+  });
+}
+
+function restoreCompareFromHash() {
+  const hashes = parseCompareHash();
+  if (!hashes || hashes.length === 0) return;
+  enterCompareMode();
+  hashes.forEach(zip => addZipToCompare(zip));
+}
+
+// ── Assistance Programs ──
+
+function loadAssistanceData() {
+  return fetch('data/cuyahoga_assistance_programs.json')
+    .then(r => r.json())
+    .catch(() => null);
+}
+
+function renderAssistanceCard(zip) {
+  if (!zip || !assistanceData) {
+    document.getElementById('assistanceProgramsList').innerHTML = `
+      <div class="info-empty">
+        <p style="color:var(--text-muted);font-size:13px">Select a ZIP to see available programs.</p>
+      </div>`;
+    return;
+  }
+
+  const programs = assistanceData.programs || [];
+  const zipActivity = assistanceData.zip_activity[zip] || {};
+
+  const relevantPrograms = programs
+    .filter(p => {
+      if (p.geography === 'zip' && p.id.includes('cleveland')) {
+        return zip >= '44102' && zip <= '44120';
+      }
+      return true;
+    })
+    .sort((a, b) => {
+      const aData = zipActivity[a.id] != null;
+      const bData = zipActivity[b.id] != null;
+      if (aData && !bData) return -1;
+      if (!aData && bData) return 1;
+
+      const geoOrder = { 'zip': 0, 'zip_apportioned': 1, 'city': 2, 'county': 3, 'statewide': 4, 'catalog': 5 };
+      if (geoOrder[a.geography] !== geoOrder[b.geography]) {
+        return geoOrder[a.geography] - geoOrder[b.geography];
+      }
+
+      if (aData && bData) {
+        return (zipActivity[b.id] || 0) - (zipActivity[a.id] || 0);
+      }
+
+      return a.label.localeCompare(b.label);
+    });
+
+  if (relevantPrograms.length === 0) {
+    document.getElementById('assistanceProgramsList').innerHTML = `
+      <div class="assistance-empty">
+        <p>No assistance program data available for this ZIP.</p>
+        <p><a href="methodology.html#assistance-programs">See statewide programs →</a></p>
+      </div>`;
+    return;
+  }
+
+  const html = relevantPrograms.map(p => {
+    const activity = zipActivity[p.id];
+    let activitySummary = 'No data';
+    if (activity != null) {
+      if (p.unit === 'loan count' || p.unit === 'household count') {
+        activitySummary = `${activity} originations`;
+      } else if (p.unit === 'percent') {
+        activitySummary = `${(activity * 100).toFixed(1)}% denial rate`;
+      } else if (p.unit === 'parcel count') {
+        activitySummary = `${activity} dispositions`;
+      }
+    }
+
+    const badgeLabel = {
+      'zip': '[ZIP]',
+      'zip_apportioned': '[ZIP*]',
+      'city': '[City]',
+      'county': '[County]',
+      'statewide': '[State]',
+      'catalog': '[Catalog]'
+    }[p.geography] || p.geography;
+
+    const badgeTooltip = {
+      'zip': 'Data directly from this ZIP code',
+      'zip_apportioned': 'Tract-level data apportioned to ZIP',
+      'city': 'Program operates within city boundaries',
+      'county': 'Program operates at county level',
+      'statewide': 'Program operates statewide',
+      'catalog': 'Program metadata only'
+    }[p.geography] || '';
+
+    const meta = p.metadata || {};
+    const eligibilityItems = [];
+    if (meta.income_limit_pct_ami) eligibilityItems.push(`Income limit: ${meta.income_limit_pct_ami}% AMI`);
+    if (meta.dpa_options) eligibilityItems.push(`Assistance: ${meta.dpa_options.join(', ')}`);
+    if (meta.requirements) meta.requirements.forEach(req => eligibilityItems.push(req));
+    if (meta.max_dpa_usd) eligibilityItems.push(`Max assistance: $${meta.max_dpa_usd.toLocaleString()}`);
+
+    const eligibilityHtml = eligibilityItems.length > 0
+      ? `<ul class="eligibility-list">${eligibilityItems.map(item => `<li>${item}</li>`).join('')}</ul>`
+      : '<p style="font-size:11px;color:var(--text-muted)">No eligibility information available.</p>';
+
+    return `<div class="assistance-program" data-program-id="${p.id}">
+      <div class="program-header">
+        <div class="program-name">${p.label}</div>
+        <div class="program-badge" title="${badgeTooltip}">${badgeLabel}</div>
+      </div>
+      <div class="program-activity">${activitySummary}</div>
+      <div class="program-description">${p.description}</div>
+      <div class="program-section-toggle">
+        <button class="btn-toggle-section" aria-expanded="false">Eligibility ▾</button>
+        <div class="program-eligibility" hidden>${eligibilityHtml}</div>
+      </div>
+      <a href="${p.how_to_apply_link || '#'}" target="_blank" rel="noopener" class="program-apply">How to apply →</a>
+    </div>`;
+  }).join('');
+
+  document.getElementById('assistanceProgramsList').innerHTML = html;
+
+  document.querySelectorAll('.btn-toggle-section').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!expanded));
+      btn.parentElement.querySelector('.program-eligibility').hidden = expanded;
+    });
   });
 }
 
@@ -1358,6 +2308,8 @@ function selectZip(zip) {
       <a href="methodology.html">Methodology →</a>
     </div>
   `;
+
+  renderAssistanceCard(zip);
 }
 
 function searchZip() {
@@ -1420,6 +2372,33 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   });
+
+  // Compare mode toggle
+  const compareToggleBtn = document.getElementById('compareToggle');
+  if (compareToggleBtn) {
+    compareToggleBtn.addEventListener('click', toggleCompareMode);
+  }
+
+  // Compare inputs
+  ['1', '2', '3'].forEach(slot => {
+    const input = document.getElementById(`compareInput${slot}`);
+    if (input) {
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+          const zip = input.value.trim();
+          if (zip && zipData[zip]) {
+            addZipToCompare(zip);
+          }
+        }
+      });
+    }
+  });
+
+  // Exit compare button
+  const exitBtn = document.getElementById('exitCompare');
+  if (exitBtn) {
+    exitBtn.addEventListener('click', exitCompareMode);
+  }
 });
 
 loadData();
