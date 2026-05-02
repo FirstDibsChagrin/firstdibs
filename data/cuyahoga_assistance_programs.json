@@ -1,0 +1,806 @@
+{
+  "vintage": {
+    "generated": "2026-05-02",
+    "period": "2023-2024",
+    "note": "Per-ZIP activity fields remain null: no source provides ZIP-level breakdowns for any program. Three PDFs were parsed directly (OHFA FY2024 Annual Report, Cleveland CAPER 2023-2024, FHLB Cincinnati Welcome Home 2024 program guide). County-level data was recovered for OHFA (Cuyahoga: 460 loans). City-level data was recovered for Cleveland HOME DPA (21 households). FHLB Welcome Home PDF contained only program rules, no activity data. See data/raw/assistance/*_UNAVAILABLE.txt for prior sourcing logs."
+  },
+  "programs": [
+    {
+      "id": "fha_originations",
+      "label": "FHA Originations",
+      "source": "HMDA LAR 2023 (CFPB)",
+      "geography": "zip",
+      "geography_note": "Intended: tract-level HMDA data apportioned to ZIP via HUD USPS crosswalk (res_ratio weighted)",
+      "unit": "loan count",
+      "description": "FHA-insured purchase mortgage originations (loan_type=2, action_taken=1). Low down-payment (3.5%) government-backed loans; key affordability indicator for first-time buyers.",
+      "status": "unavailable",
+      "blocked_urls": [
+        "https://ffiec.cfpb.gov/data/snapshot/nationwide/2023_lar.zip",
+        "https://cfpb-hmda-public.s3.amazonaws.com/prod/snapshot-data/2023_lar.zip"
+      ],
+      "metadata": {},
+      "how_to_apply_link": "https://www.hud.gov/program_offices/public_indian_housing/programs/ph/phr/about/fha_loan"
+    },
+    {
+      "id": "va_originations",
+      "label": "VA Originations",
+      "source": "HMDA LAR 2023 (CFPB)",
+      "geography": "zip",
+      "geography_note": "Intended: tract-level HMDA data apportioned to ZIP via HUD USPS crosswalk (res_ratio weighted)",
+      "unit": "loan count",
+      "description": "VA-guaranteed purchase mortgage originations (loan_type=3, action_taken=1). Zero-down-payment loans for veterans and active-duty service members.",
+      "status": "unavailable",
+      "blocked_urls": [
+        "https://ffiec.cfpb.gov/data/snapshot/nationwide/2023_lar.zip",
+        "https://cfpb-hmda-public.s3.amazonaws.com/prod/snapshot-data/2023_lar.zip"
+      ],
+      "metadata": {},
+      "how_to_apply_link": "https://www.va.gov/housing-assistance/home-loans/"
+    },
+    {
+      "id": "hmda_denial_rate",
+      "label": "Mortgage Denial Rate",
+      "source": "HMDA LAR 2023 (CFPB)",
+      "geography": "zip",
+      "geography_note": "Intended: tract-level HMDA data apportioned to ZIP via HUD USPS crosswalk (res_ratio weighted)",
+      "unit": "percent",
+      "description": "Share of conventional purchase mortgage applications denied (action_taken=3 or 5 as numerator; denominator = originated + denied). Higher denial rates signal credit access barriers.",
+      "status": "unavailable",
+      "blocked_urls": [
+        "https://ffiec.cfpb.gov/data/snapshot/nationwide/2023_lar.zip",
+        "https://cfpb-hmda-public.s3.amazonaws.com/prod/snapshot-data/2023_lar.zip"
+      ],
+      "metadata": {},
+      "how_to_apply_link": "https://www.consumerfinance.gov/hmda/"
+    },
+    {
+      "id": "ohfa_loans",
+      "label": "OHFA Assisted Loans",
+      "source": "Ohio Housing Finance Agency Annual Report FY2024 (PDF — Appendix B)",
+      "geography": "county",
+      "geography_note": "County-level data from Appendix B of OHFA FY2024 Annual Report (annualreport_24.pdf). No ZIP or census-tract breakdown exists in this report.",
+      "unit": "loan count",
+      "description": "Loans originated under OHFA programs: Your Choice! (2.5% or 5% DPA), Grants for Grads, Ohio Heroes, Target Area. Counts first-time and returning buyers assisted with below-market rates and down-payment assistance.",
+      "status": "county_only",
+      "blocked_urls": [
+        "https://www.ohiohome.org/homebuyer/homebuyer.aspx"
+      ],
+      "metadata": {
+        "cuyahoga_fy2024_loans": 460,
+        "cuyahoga_fy2024_pct_of_state": 10.25,
+        "cuyahoga_fy2024_total_loan_usd": 80274570,
+        "cuyahoga_fy2024_avg_loan_usd": 174510,
+        "fy2024_statewide_loans": 4488,
+        "fy2024_statewide_total_loan_usd": 813000000,
+        "fy2024_statewide_gross_reservations_usd": 1300000000,
+        "your_choice_dpa_fy2024_loans": 3662,
+        "your_choice_dpa_5pct_loans": 3160,
+        "your_choice_dpa_2pt5pct_loans": 502,
+        "programs": [
+          "Your Choice!",
+          "Grants for Grads",
+          "Ohio Heroes",
+          "Target Area"
+        ],
+        "income_limits": "vary by county and household size",
+        "dpa_options": [
+          "2.5% of purchase price",
+          "5% of purchase price"
+        ]
+      },
+      "how_to_apply_link": "https://www.ohiohome.org/"
+    },
+    {
+      "id": "cleveland_home_dpa",
+      "label": "Cleveland HOME/CDBG DPA",
+      "source": "City of Cleveland CAPER 2023-2024 (PDF \u2014 CR-05, PR20, PR22)",
+      "geography": "city",
+      "geography_note": "City-level data extracted from Cleveland CAPER FY2023-2024 (CAPER_2023-2024.pdf). CAPER does not contain a ZIP-level homebuyer DPA activity table; only 4 individual property addresses were found (all in 44104).",
+      "unit": "household count",
+      "description": "HUD-funded HOME Investment Partnerships and CDBG down-payment assistance and homebuyer counseling administered by the City of Cleveland Department of Community Development. Covers June 2023\u2013May 2024.",
+      "status": "city_only",
+      "blocked_urls": [],
+      "metadata": {
+        "report_period": "2023-06-01/2024-05-31",
+        "fy2023_2024_direct_financial_assistance_households": 21,
+        "fy2023_2024_five_year_goal_households": 100,
+        "fy2023_2024_home_homebuyer_disbursed_usd": 440615,
+        "fy2023_2024_home_homebuyer_units_committed": 9,
+        "fy2023_2024_home_available_usd": 6547650,
+        "fy2023_2024_home_expended_usd": 8515174,
+        "fy2023_2024_cdbg_available_usd": 21780925,
+        "fy2023_2024_cdbg_expended_usd": 27525670,
+        "active_homebuyer_addresses_zip_44104": 4,
+        "home_avg_subsidy_per_homebuyer_usd": 45000,
+        "funding_sources": [
+          "HOME Investment Partnerships",
+          "CDBG"
+        ],
+        "administering_agency": "City of Cleveland Department of Community Development"
+      },
+      "how_to_apply_link": "https://www.clevelandohio.gov/community-development"
+    },
+    {
+      "id": "cuyahoga_dpa",
+      "label": "Cuyahoga County DPA",
+      "source": "Cuyahoga County Department of Development",
+      "geography": "zip",
+      "geography_note": "County loan activity data intended. County portal blocked.",
+      "unit": "loan count",
+      "description": "Cuyahoga County down-payment assistance: deferred, forgivable second mortgage up to $20,900 (or 10% of purchase price, whichever is less). Targeted to 80% AMI households purchasing primary residences in Cuyahoga County.",
+      "status": "unavailable",
+      "blocked_urls": [
+        "https://cuyahogacounty.gov/housing",
+        "https://cuyahogacounty.gov/residents/housing/home-purchase"
+      ],
+      "metadata": {
+        "max_dpa_usd": 20900,
+        "max_dpa_pct_purchase_price": 10,
+        "income_limit_pct_ami": 80,
+        "loan_type": "deferred forgivable second mortgage",
+        "administrators": [
+          "CHN Housing Capital",
+          "Believe Mortgage Services"
+        ],
+        "requirements": [
+          "primary residence",
+          "homebuyer education course"
+        ]
+      },
+      "how_to_apply_link": "https://cuyahogacounty.gov/housing"
+    },
+    {
+      "id": "fhlb_welcome_home",
+      "label": "FHLB Welcome Home Grants",
+      "source": "FHLB Cincinnati Welcome Home Program 2024 Overview (PDF — program guide only, no activity data)",
+      "geography": "statewide",
+      "geography_note": "No activity data in the PDF. Program guide confirmed grant amounts and eligibility rules for 2024. Ohio/Cuyahoga household counts and 2023 totals are from prior web search snippets (unverified).",
+      "unit": "household count",
+      "description": "Federal Home Loan Bank of Cincinnati Welcome Home Program: forgivable grants for down payment and closing costs, disbursed through FHLB member financial institutions. Forgiven after 5 years of owner-occupancy.",
+      "status": "program_guide_only",
+      "blocked_urls": [
+        "https://www.fhlbcin.com/community/welcome-home-program/",
+        "https://www.fhlbcin.com/tools-resources/open-data/"
+      ],
+      "metadata": {
+        "ohio_2023_households_unverified": 1600,
+        "ohio_2023_total_grants_usd_unverified": 16300000,
+        "grant_max_2024_usd": 20000,
+        "grant_max_veterans_2024_usd": 25000,
+        "grant_min_2024_usd": 10000,
+        "available_funds_2023_usd": 2800000,
+        "available_funds_2022_usd": 11600000,
+        "reservation_open_2024": "2024-03-01",
+        "reservation_close_2024": "2024-12-16",
+        "grant_type": "forgivable after 5 years owner-occupancy",
+        "income_limit_pct_mrb": 80,
+        "homebuyer_min_contribution_usd": 500,
+        "cuyahoga_income_limits_2024_unverified": {
+          "1_2_person_usd": 75200,
+          "3plus_person_usd": 86480
+        },
+        "disbursed_through": "FHLB member financial institutions"
+      },
+      "how_to_apply_link": "https://www.fhlbcin.com/community/welcome-home-program/"
+    },
+    {
+      "id": "land_bank_dispositions",
+      "label": "Land Bank Dispositions",
+      "source": "Cuyahoga Land Bank (CCLRC) 2023",
+      "geography": "zip",
+      "geography_note": "Parcel-level transaction data intended; join to ZIP via parcel address geocode.",
+      "unit": "parcel count",
+      "description": "Cuyahoga County Land Reutilization Corporation (land bank) property dispositions: rehab sales, side-lot transfers, and demolitions. High land-bank activity in a ZIP signals distressed stock being recycled.",
+      "status": "unavailable",
+      "blocked_urls": [
+        "https://www.thelandbank.org/properties.asp",
+        "https://data.clevelandohio.gov/"
+      ],
+      "metadata": {
+        "disposition_types": [
+          "rehab sale",
+          "side-lot transfer",
+          "demolition",
+          "nonprofit transfer"
+        ]
+      },
+      "how_to_apply_link": "https://www.thelandbank.org/"
+    },
+    {
+      "id": "habitat_activity",
+      "label": "Habitat for Humanity Activity",
+      "source": "Habitat for Humanity Greater Cleveland 2023",
+      "geography": "zip",
+      "geography_note": "Program report by ZIP intended. Website blocked.",
+      "unit": "household count",
+      "description": "Habitat for Humanity Greater Cleveland activities: new home builds, home rehabilitations, and critical repair (A Brush With Kindness). Part of the 400 Home Campaign (2023\u20132027). Geographic focus in Buckeye-Woodhill corridor.",
+      "status": "unavailable",
+      "blocked_urls": [
+        "https://www.clevelandhabitat.org/homeownership/",
+        "https://www.clevelandhabitat.org/our-work/"
+      ],
+      "metadata": {
+        "campaign": "400 Home Campaign 2023\u20132027",
+        "campaign_targets": {
+          "new_builds": 100,
+          "rehabs": 50,
+          "critical_repairs": 250
+        },
+        "geographic_focus": "Buckeye-Woodhill corridor",
+        "focus_zips": [
+          "44104",
+          "44120"
+        ],
+        "income_target_pct_ami": "30\u201360%",
+        "programs": [
+          "homeownership (zero-interest mortgage, sweat equity)",
+          "A Brush With Kindness (exterior repair grants)"
+        ]
+      },
+      "how_to_apply_link": "https://www.clevelandhabitat.org/"
+    }
+  ],
+  "zip_activity": {
+    "44017": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44022": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44040": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44070": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44102": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44103": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44104": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44105": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44106": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44107": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44108": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44109": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44110": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44111": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44112": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44113": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44114": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44115": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44116": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44117": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44118": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44119": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44120": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44121": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44122": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44123": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44124": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44125": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44126": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44127": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44128": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44129": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44130": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44131": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44132": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44133": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44134": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44135": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44136": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44137": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44138": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44139": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44140": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44141": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44142": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44143": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44144": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44145": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44146": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44147": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    },
+    "44149": {
+      "fha_originations": null,
+      "va_originations": null,
+      "hmda_denial_rate": null,
+      "ohfa_loans": null,
+      "cleveland_home_dpa": null,
+      "cuyahoga_dpa": null,
+      "fhlb_welcome_home": null,
+      "land_bank_dispositions": null,
+      "habitat_activity": null
+    }
+  }
+}
