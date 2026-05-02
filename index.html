@@ -975,7 +975,54 @@ body[data-mode="compare"] #assistanceCard {
   border: 2px solid white;
 }
 
-/* ── Assistance Programs Card ────────────────────────────────── */
+/* ── Assistance Programs Section (below map, horizontal grid) ──── */
+
+.assistance-section {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 32px 24px;
+  margin-top: 32px;
+}
+
+.assistance-section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.assistance-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.assistance-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.assistance-info-link {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.assistance-info-link:hover {
+  text-decoration: underline;
+}
+
+.assistance-programs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
 
 .program-badge {
   display: inline-block;
@@ -991,20 +1038,19 @@ body[data-mode="compare"] #assistanceCard {
   margin-left: 4px;
 }
 
-.assistance-programs-list {
+.assistance-program {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  height: 100%;
+  transition: box-shadow 0.2s;
 }
 
-.assistance-program {
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 14px;
-}
-
-.assistance-program:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
+.assistance-program:hover {
+  box-shadow: var(--shadow);
 }
 
 .program-header {
@@ -1012,7 +1058,7 @@ body[data-mode="compare"] #assistanceCard {
   align-items: flex-start;
   justify-content: space-between;
   gap: 8px;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   flex-wrap: wrap;
 }
 
@@ -1025,18 +1071,20 @@ body[data-mode="compare"] #assistanceCard {
 .program-activity {
   font-size: 11px;
   color: var(--text-muted);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
+  line-height: 1.4;
 }
 
 .program-description {
   font-size: 12px;
   color: var(--text-muted);
   line-height: 1.5;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  flex: 1;
 }
 
 .program-section-toggle {
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .btn-toggle-section {
@@ -1055,13 +1103,13 @@ body[data-mode="compare"] #assistanceCard {
 }
 
 .program-eligibility {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-muted);
-  background: var(--surface-2);
+  background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 8px 10px;
-  margin-top: 6px;
+  border-radius: 4px;
+  padding: 6px 8px;
+  margin-top: 4px;
 }
 
 .eligibility-list {
@@ -1071,7 +1119,12 @@ body[data-mode="compare"] #assistanceCard {
 }
 
 .eligibility-list li {
-  line-height: 1.6;
+  line-height: 1.5;
+  margin-bottom: 3px;
+}
+
+.eligibility-list li:last-child {
+  margin-bottom: 0;
 }
 
 .eligibility-list li:before {
@@ -1086,7 +1139,8 @@ body[data-mode="compare"] #assistanceCard {
   font-weight: 600;
   color: var(--accent);
   text-decoration: none;
-  margin-top: 4px;
+  margin-top: auto;
+  padding-top: 8px;
 }
 
 .program-apply:hover {
@@ -1095,40 +1149,14 @@ body[data-mode="compare"] #assistanceCard {
 
 .assistance-empty {
   text-align: center;
-  padding: 16px 0;
+  padding: 32px 16px;
+  grid-column: 1 / -1;
 }
 
 .assistance-empty p {
   font-size: 13px;
   color: var(--text-muted);
-  margin-bottom: 8px;
-}
-
-.assistance-empty a {
-  color: var(--accent);
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.assistance-empty a:hover {
-  text-decoration: underline;
-}
-
-.assistance-footer {
-  padding-top: 12px;
-  border-top: 1px solid var(--border);
-  font-size: 11px;
-  text-align: center;
-}
-
-.assistance-footer a {
-  color: var(--accent);
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.assistance-footer a:hover {
-  text-decoration: underline;
+  margin: 0;
 }
 
 /* ── Toast Notifications ─────────────────────────────────────── */
@@ -1222,6 +1250,19 @@ body[data-mode="compare"] #assistanceCard {
 
   .compare-zip-input {
     width: 100%;
+  }
+
+  .assistance-section {
+    padding: 24px;
+  }
+
+  .assistance-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .assistance-programs-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>
@@ -1400,18 +1441,6 @@ body[data-mode="compare"] #assistanceCard {
       <!-- Rendered by JavaScript -->
     </div>
 
-    <div class="card assistance-card" id="assistanceCard">
-      <div class="card-label">Programs Available</div>
-      <div id="assistanceProgramsList" class="assistance-programs-list">
-        <div class="info-empty">
-          <p style="color:var(--text-muted);font-size:13px">Select a ZIP to see available programs.</p>
-        </div>
-      </div>
-      <div class="assistance-footer">
-        <a href="methodology.html#assistance-programs">What does this mean? →</a>
-      </div>
-    </div>
-
     <div class="card">
       <div class="card-label">How the risk score works</div>
       <div class="explainer-row">
@@ -1430,6 +1459,21 @@ body[data-mode="compare"] #assistanceCard {
 
   </div>
 
+</div>
+
+<!-- ── Assistance Programs Section (below map, full width) ────── -->
+<div class="assistance-section">
+  <div class="assistance-section-inner">
+    <div class="assistance-header">
+      <h2>Programs & Resources</h2>
+      <a href="methodology.html#assistance-programs" class="assistance-info-link">What does this mean? →</a>
+    </div>
+    <div id="assistanceProgramsList" class="assistance-programs-grid">
+      <div class="assistance-empty">
+        <p style="color:var(--text-muted);font-size:13px">Select a ZIP to see available programs.</p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <footer>
