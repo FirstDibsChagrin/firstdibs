@@ -1,0 +1,22 @@
+SOURCE: Cuyahoga County Down Payment Assistance Program — loan activity per ZIP
+STATUS: UNAVAILABLE — county portal blocked
+
+ATTEMPTED URLS:
+  https://cuyahogacounty.gov/housing                                   → 403
+  https://cuyahogacounty.gov/residents/housing/home-purchase           → 403
+  https://cuyahogacounty.gov/housing/dpa                               → 403
+  https://cuyahogacounty.gov/opendata                                  → 403
+
+DATA CAPTURED FROM WEB SEARCH SNIPPETS:
+  - Up to $20,900 DPA (10% of purchase price, whichever is less)
+  - Income limit: 80% AMI
+  - Administered by: CHN Housing Capital / Believe Mortgage Services
+  - Deferred, forgivable second mortgage; no monthly payments required
+  - Must be primary residence; homebuyer education required
+
+METHODOLOGY INTENT:
+  - Request loan activity table from county housing office (public records or open-data portal)
+  - Fields: ZIP, loan count, avg DPA amount, avg purchase price, pct first-time buyers
+
+DATA AVAILABLE FROM OTHER SOURCES: none found
+ALTERNATIVE USED: all ZIP values set to null; program terms stored in program metadata
