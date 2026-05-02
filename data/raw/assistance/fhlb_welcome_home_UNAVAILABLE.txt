@@ -1,0 +1,23 @@
+SOURCE: FHLB Cincinnati Welcome Home Program — grant awards per ZIP (Ohio, 2023)
+STATUS: UNAVAILABLE — FHLB Cincinnati portal blocked
+
+ATTEMPTED URLS:
+  https://www.fhlbcin.com/                                             → 403
+  https://www.fhlbcin.com/community/welcome-home-program/             → 403
+  https://www.fhlbcin.com/tools-resources/open-data/                  → 403
+
+DATA CAPTURED FROM WEB SEARCH SNIPPETS:
+  - 2023 Ohio: >1,600 households assisted, >$16.3 million in grants
+  - 2024 grant maximum: up to $20,000 per household (highest in WHP history)
+  - Administered through FHLB member financial institutions
+  - Cuyahoga County 2024 income limits: $75,200 (1–2 person), $86,480 (3+ person)
+  - Grant type: forgivable after 5 years of owner-occupancy
+  - Cannot be combined with other down-payment grants from the same FHLB member
+
+METHODOLOGY INTENT:
+  - Download WHP award data CSVs from fhlbcin.com open data portal
+  - Filter to Ohio recipients, extract ZIP codes
+  - Aggregate: grant_count, total_grant_dollars, avg_grant per ZIP
+
+DATA AVAILABLE FROM OTHER SOURCES: none found
+ALTERNATIVE USED: all ZIP values set to null; statewide and income-limit figures in program metadata
