@@ -518,6 +518,153 @@ footer a:hover { color: rgba(255,255,255,0.9); text-decoration: underline; }
     </table>
   </section>
 
+  <section id="affordability-calculator">
+    <h2>Affordability calculator</h2>
+    <p>
+      The <em>Can I afford here?</em> calculator takes five inputs — annual income, cash saved, monthly debts,
+      credit score range, and preferred loan type — and estimates the maximum home price a buyer could qualify
+      for under FHA and/or conventional financing. All math is client-side; no data is sent anywhere.
+    </p>
+    <p>
+      <strong>This is an estimate, not a pre-approval.</strong> Lenders consider your full credit history,
+      employment history, assets, and the specific property. Use this number as a rough starting point,
+      then talk to a lender or a free HUD-approved counselor for an actual figure.
+    </p>
+
+    <h3>FHA vs conventional — what's different</h3>
+    <p>
+      <strong>FHA loans</strong> are backed by the Federal Housing Administration and accept lower credit scores
+      (580+ for 3.5% down, 500–579 for 10% down). They require Mortgage Insurance Premiums (MIP): an upfront
+      fee of 1.75% of the loan rolled into the balance, plus an annual fee of 0.55% of the remaining loan
+      divided by 12 and added to each monthly payment.
+    </p>
+    <p>
+      <strong>Conventional loans</strong> are not government-backed. They typically require a 620+ credit score.
+      First-time buyer programs (Fannie Mae HomeReady, Freddie Mac Home Possible) allow 3% down. Private Mortgage
+      Insurance (PMI) applies when the down payment is under 20%; the calculator uses a mid-credit estimate of
+      0.50% annually. PMI can be removed once equity reaches 20%.
+    </p>
+
+    <h3>Assumptions used in the calculator</h3>
+    <table>
+      <thead><tr><th>Assumption</th><th>Value</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>FHA interest rate</td>
+          <td>7.00% APR</td>
+          <td>Freddie Mac Primary Mortgage Market Survey (PMMS), week ending 2025-04-24.
+              <a href="https://www.freddiemac.com/pmms" target="_blank" rel="noopener">freddiemac.com/pmms</a>
+              — update quarterly in the <code>ASSUMPTIONS</code> constant in <code>index.html</code>.</td>
+        </tr>
+        <tr>
+          <td>Conventional interest rate</td>
+          <td>6.80% APR</td>
+          <td>Same PMMS source; conventional typically prices slightly below FHA.</td>
+        </tr>
+        <tr>
+          <td>Loan term</td>
+          <td>30 years fixed</td>
+          <td>Standard industry default.</td>
+        </tr>
+        <tr>
+          <td>Property tax rate</td>
+          <td>2.10% effective</td>
+          <td>Cuyahoga County effective residential tax rate — Cuyahoga County Fiscal Officer
+              tax-distribution report. Applied uniformly; individual ZIPs may vary.</td>
+        </tr>
+        <tr>
+          <td>Homeowners insurance</td>
+          <td>$1,400/yr (~$117/mo)</td>
+          <td>Typical Cuyahoga County premium based on industry survey data. Individual
+              premiums vary by home age, location, and coverage level.</td>
+        </tr>
+        <tr>
+          <td>FHA upfront MIP</td>
+          <td>1.75% of loan amount</td>
+          <td>HUD Mortgagee Letter 2023-18 (current as of 2025).</td>
+        </tr>
+        <tr>
+          <td>FHA annual MIP</td>
+          <td>0.55% of loan balance</td>
+          <td>HUD ML 2023-18 — rate for 30-year loans with LTV &gt;95% and base loan ≤$726,200.</td>
+        </tr>
+        <tr>
+          <td>FHA back-end DTI cap</td>
+          <td>43%</td>
+          <td>FHA technically allows up to 50% with compensating factors. The calculator uses
+              43% as a conservative, broadly applicable default to avoid overestimating what
+              most buyers can qualify for without additional documentation.</td>
+        </tr>
+        <tr>
+          <td>Conventional minimum down</td>
+          <td>3%</td>
+          <td>Fannie Mae HomeReady / Freddie Mac Home Possible first-time buyer programs.</td>
+        </tr>
+        <tr>
+          <td>Conventional PMI rate</td>
+          <td>0.50% annual</td>
+          <td>Industry mid-credit estimate for 95%–97% LTV. Actual PMI varies by lender,
+              credit score, and LTV.</td>
+        </tr>
+        <tr>
+          <td>Conventional back-end DTI cap</td>
+          <td>45%</td>
+          <td>Fannie Mae DU standard maximum (may vary with compensating factors).</td>
+        </tr>
+        <tr>
+          <td>Estimated closing costs</td>
+          <td>3% of purchase price</td>
+          <td>Typical buyer-side closing costs (loan origination, title, escrow, prepaids).
+              Actual costs vary by lender and loan amount.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>How the maximum price is calculated</h3>
+    <p>
+      The calculator solves for the home price <em>P</em> two ways and takes the lower.
+    </p>
+    <p>
+      <strong>1. Income constraint (back-end DTI):</strong> Max monthly housing payment =
+      (annual income ÷ 12) × DTI cap − existing monthly debts.
+      The monthly payment includes principal &amp; interest, property taxes, homeowners insurance,
+      and MIP or PMI. The equation is linear in <em>P</em> and solved exactly — no iteration needed.
+    </p>
+    <p>
+      <strong>2. Cash constraint:</strong> Available cash must cover
+      (minimum down payment % + 3% closing costs) × price.
+      Max price from cash = available cash ÷ (down % + 3%).
+    </p>
+    <p>
+      The calculator reports which constraint bound the result ("Reason for the cap").
+      The result is rounded down to the nearest $1,000.
+    </p>
+
+    <h3>ZIP affordability buckets</h3>
+    <p>
+      Each ZIP is classified against the FHA maximum price (or conventional if FHA is not selected)
+      using the Redfin median sale price as the home-value proxy:
+    </p>
+    <ul>
+      <li><strong>Affordable</strong> — median price ≤ max price × 0.95 (5% headroom for rate fluctuation and negotiation).</li>
+      <li><strong>Stretch</strong> — median price ≤ max price × 1.10 (within 10% over budget).</li>
+      <li><strong>Out of reach</strong> — median price &gt; max price × 1.10.</li>
+      <li><strong>No data</strong> — no recent median sale price available for this ZIP.</li>
+    </ul>
+    <p>
+      The "Both" map view layers affordability bucket fills (green = affordable, light green = stretch,
+      gray = out of reach) over risk-level stroke colors so counselors can see competition and fit simultaneously.
+    </p>
+
+    <h3>Updating assumptions when rates change</h3>
+    <p>
+      All assumptions live in a single <code>ASSUMPTIONS</code> constant at the top of the
+      <code>&lt;script&gt;</code> block in <code>index.html</code>. Update
+      <code>fha_rate_apr</code> and <code>conv_rate_apr</code> each quarter using the most recent
+      Freddie Mac PMMS 30-year fixed rate. Note the update date in a comment next to the value.
+    </p>
+  </section>
+
 </div>
 
 <footer>

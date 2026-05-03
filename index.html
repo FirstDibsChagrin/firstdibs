@@ -1324,6 +1324,345 @@ body[data-mode="compare"] #recommendationsCard {
   }
 
 }
+
+/* ── View toggle ─────────────────────────────────────────── */
+
+.view-toggle {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 3px;
+  box-shadow: var(--shadow);
+  white-space: nowrap;
+}
+
+.view-toggle--hidden { display: none; }
+
+.view-toggle-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 0 6px 0 4px;
+}
+
+.view-toggle-btn {
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  border-radius: 100px;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+
+.view-toggle-btn:hover { color: var(--text); }
+
+.view-toggle-btn.active {
+  background: var(--primary);
+  color: white;
+}
+
+/* ── Legend sub-sections (for Both view) ─────────────────── */
+
+.map-legend-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--text-light);
+  margin: 10px 0 6px;
+}
+
+.map-legend-section-label:first-child { margin-top: 0; }
+
+/* ── Calculator card ─────────────────────────────────────── */
+
+.calc-collapse > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 2px 0 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.calc-collapse > summary::-webkit-details-marker { display: none; }
+
+@media (min-width: 901px) {
+  .calc-collapse > summary { display: none; }
+}
+
+.calc-field {
+  margin-bottom: 14px;
+}
+
+.calc-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.calc-helper {
+  display: block;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 3px;
+  line-height: 1.4;
+}
+
+.calc-input,
+.calc-select {
+  width: 100%;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.calc-input:focus,
+.calc-select:focus { border-color: var(--accent); }
+
+.calc-income-error {
+  font-size: 12px;
+  color: #b91c1c;
+  margin-top: 4px;
+}
+
+.calc-path-group {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.calc-path-btn {
+  flex: 1;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--surface-2);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 4px;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+
+.calc-path-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.calc-privacy {
+  font-size: 11px;
+  color: var(--text-light);
+  margin: 12px 0 16px;
+  text-align: center;
+}
+
+.calc-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-calc-primary {
+  flex: 1;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: white;
+  background: var(--primary);
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.btn-calc-primary:hover { background: var(--primary-dark); }
+
+.btn-calc-clear {
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: color 0.12s, border-color 0.12s;
+}
+.btn-calc-clear:hover { color: var(--text); border-color: var(--text-muted); }
+
+/* ── Calculator results ──────────────────────────────────── */
+
+.calc-edit-btn {
+  float: right;
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.calc-path-result {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+
+.calc-path-disabled {
+  opacity: 0.55;
+}
+
+.calc-path-heading {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.calc-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.calc-stat-row:last-of-type { margin-bottom: 0; }
+
+.calc-stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  flex: 1;
+}
+
+.calc-stat-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.calc-binding {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 8px;
+  font-style: italic;
+}
+
+.calc-credit-note {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.calc-all-out-reach {
+  font-size: 13px;
+  color: var(--text-muted);
+  background: #fef9c3;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.calc-all-out-reach a { color: var(--accent); }
+
+.calc-zip-counts {
+  font-size: 13px;
+  color: var(--text-muted);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.calc-zip-counts strong { color: var(--text); }
+
+.calc-zip-counts-note {
+  font-size: 11px;
+  color: var(--text-light);
+  margin-top: 4px;
+}
+
+.btn-see-map {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  background: none;
+  border: 1.5px solid var(--accent);
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+
+.btn-see-map:hover { background: var(--accent); color: white; }
+
+.calc-print-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-light);
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.calc-disclaimer {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.calc-disclaimer a { color: var(--accent); }
+
+@media print {
+  .view-toggle, .btn-calc-primary, .btn-calc-clear,
+  .btn-see-map, .calc-edit-btn, .calc-print-label { display: none !important; }
+  .calc-print-private { display: none !important; }
+  #calcPrintNumbers:checked ~ .calc-results-wrap .calc-print-private { display: block !important; }
+}
 </style>
 </head>
 
@@ -1475,7 +1814,13 @@ body[data-mode="compare"] #recommendationsCard {
 
   <div class="map-wrapper">
     <div id="map"></div>
-    <div class="map-legend">
+    <div class="view-toggle view-toggle--hidden" id="viewToggle" role="group" aria-label="Map view">
+      <span class="view-toggle-label">View</span>
+      <button class="view-toggle-btn active" data-view="risk"         onclick="setMapView('risk')">Risk</button>
+      <button class="view-toggle-btn"         data-view="affordability" onclick="setMapView('affordability')">Affordability</button>
+      <button class="view-toggle-btn"         data-view="both"          onclick="setMapView('both')">Both</button>
+    </div>
+    <div class="map-legend" id="mapLegend">
       <div class="map-legend-title">Competition Level</div>
       <div class="legend-item"><div class="legend-swatch" style="background:#3288bd"></div>Low (0–17)</div>
       <div class="legend-item"><div class="legend-swatch" style="background:#99d594"></div>Moderate (17–33)</div>
@@ -1488,6 +1833,70 @@ body[data-mode="compare"] #recommendationsCard {
   </div>
 
   <div class="sidebar">
+
+    <!-- ── Affordability calculator card ──────────────────── -->
+    <div class="card" id="calcCard">
+      <div class="card-label">Can I afford here?</div>
+      <details class="calc-collapse" id="calcCollapse" open>
+        <summary>Check what you can afford →</summary>
+
+        <div id="calcFormView">
+          <div class="calc-field">
+            <label class="calc-label" for="calcIncome">Annual household income (before taxes)</label>
+            <input class="calc-input" id="calcIncome" type="number" min="0" step="1000"
+                   placeholder="e.g. 65000" aria-describedby="calcIncomeHelper" inputmode="numeric">
+            <span class="calc-helper" id="calcIncomeHelper">Add up all earners in your household.</span>
+            <div class="calc-income-error" id="calcIncomeError" hidden>Please enter your annual income to calculate.</div>
+          </div>
+          <div class="calc-field">
+            <label class="calc-label" for="calcCash">Money saved for down payment &amp; closing costs</label>
+            <input class="calc-input" id="calcCash" type="number" min="0" step="500"
+                   placeholder="e.g. 10000" aria-describedby="calcCashHelper" inputmode="numeric">
+            <span class="calc-helper" id="calcCashHelper">All savings you'd put toward the home.</span>
+          </div>
+          <div class="calc-field">
+            <label class="calc-label" for="calcDebts">Total monthly debt payments</label>
+            <input class="calc-input" id="calcDebts" type="number" min="0" step="50"
+                   value="0" aria-describedby="calcDebtsHelper" inputmode="numeric">
+            <span class="calc-helper" id="calcDebtsHelper">Cars, student loans, credit cards, child support. Not rent.</span>
+          </div>
+          <div class="calc-field">
+            <label class="calc-label" for="calcCredit">Credit score range</label>
+            <select class="calc-select" id="calcCredit">
+              <option value="unknown">I don't know</option>
+              <option value="under620">&lt;620</option>
+              <option value="620-679">620–679</option>
+              <option value="680-739" selected>680–739</option>
+              <option value="740plus">740 or above</option>
+            </select>
+            <span class="calc-helper">Used only to set FHA vs. conventional defaults.</span>
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">Loan type</label>
+            <div class="calc-path-group" role="group" aria-label="Loan path">
+              <button class="calc-path-btn" data-path="fha"  onclick="setCalcPath('fha')"  type="button">FHA</button>
+              <button class="calc-path-btn" data-path="conv" onclick="setCalcPath('conv')" type="button">Conventional</button>
+              <button class="calc-path-btn active" data-path="both" onclick="setCalcPath('both')" type="button">Show me both</button>
+            </div>
+          </div>
+          <p class="calc-privacy">🔒 Your numbers stay in your browser. We never send them anywhere.</p>
+          <div class="calc-actions">
+            <button class="btn-calc-primary" onclick="runCalculator()" type="button">Calculate</button>
+            <button class="btn-calc-clear"   onclick="clearCalculator()" type="button">Clear</button>
+          </div>
+        </div><!-- #calcFormView -->
+
+        <div id="calcResultsView" hidden>
+          <!-- Populated by renderCalcResults() -->
+        </div>
+
+        <p class="calc-disclaimer">
+          This is an estimate, not a pre-approval. Real offers depend on your full financial picture,
+          the specific home, and current rates. To get an actual number, talk to a free
+          <a href="methodology.html#affordability-calculator">HUD-approved counselor</a> or a lender.
+        </p>
+      </details>
+    </div><!-- #calcCard -->
 
     <div class="card" id="info">
       <div class="info-empty">
@@ -1727,7 +2136,40 @@ const DEFAULT_WEIGHTS = PRESETS.default.weights;
 
 const PALETTE = ['#3288bd','#99d594','#e6f598','#fee08b','#fc8d59','#d53e4f'];
 const LABELS  = ['Easiest','Moderately competitive','Competitive','Very competitive','Highly competitive','Highly competitive'];
-const LS_KEY  = 'firstdibs.weights.v1';
+const LS_KEY      = 'firstdibs.weights.v1';
+const CALC_LS_KEY = 'firstdibs.affordability.v1';
+
+// ── Affordability assumptions ──
+// Update quarterly: rate from Freddie Mac PMMS; tax from Cuyahoga Fiscal Officer;
+// insurance from industry surveys; MIP from HUD ML 2023-18.
+const ASSUMPTIONS = {
+  fha_rate_apr:                0.0700, // 7.00% — Freddie Mac PMMS w/e 2025-04-24
+  conv_rate_apr:               0.0680, // 6.80%
+  loan_term_months:            360,
+  cuyahoga_avg_tax_rate:       0.0210, // 2.10% effective — Cuyahoga County Fiscal Officer
+  homeowners_insurance_annual: 1400,   // ~$117/mo — typical Cuyahoga County
+  fha_min_down_pct:            0.035,
+  fha_upfront_mip_pct:         0.0175, // rolled into loan — HUD ML 2023-18
+  fha_annual_mip_pct:          0.0055, // >95% LTV, 30-yr — HUD ML 2023-18
+  fha_dti_back_max:            0.43,   // FHA allows 50% w/ compensating factors; 43% is conservative
+  conv_min_down_pct:           0.03,   // 3% first-time buyer (Fannie HomeReady / Freddie Home Possible)
+  conv_pmi_pct_at_95_ltv:      0.0050, // mid-credit PMI — industry estimate
+  conv_dti_back_max:           0.45,
+  closing_cost_pct:            0.03,   // estimated buyer closing costs as % of price
+};
+
+const AFF_COLORS = {
+  affordable:   '#31a354',
+  stretch:      '#a1d99b',
+  out_of_reach: '#e7e7e7',
+  no_data:      '#cccccc',
+};
+const AFF_STROKE = {
+  affordable:   '#238b45',
+  stretch:      '#74c476',
+  out_of_reach: '#bdbdbd',
+  no_data:      '#888888',
+};
 
 // ── Mutable state ──
 
@@ -1755,6 +2197,17 @@ const compareState = {
 };
 
 let assistanceData = null;
+
+let currentMapView = 'risk';
+const affordabilityState = {
+  hasResults:    false,
+  fha:           null,
+  conv:          null,
+  buckets:       new Map(),
+  showFHA:       true,
+  showConv:      true,
+  creditUnder620: false,
+};
 
 // ── Core math ──
 
@@ -1882,6 +2335,85 @@ function onWeightInput(key, rawVal) {
   }
 }
 
+// ── Map painting (single source of truth for all style changes) ──
+
+function amortFactor(annualRate, termMonths) {
+  const r = annualRate / 12;
+  const pwr = Math.pow(1 + r, termMonths);
+  return r * pwr / (pwr - 1);
+}
+
+function paintMap(viewMode) {
+  Object.keys(zipData).forEach(zip => {
+    const z = zipData[zip];
+    if (!z.layer) return;
+
+    const riskColor = getColor(z.score);
+    const isInsuff  = z.score == null;
+
+    if (viewMode === 'risk') {
+      z.layer.setStyle(isInsuff
+        ? { color: '#888', fillColor: '#ccc', weight: 1.5, fillOpacity: 0.25, dashArray: '4 3' }
+        : { color: riskColor, fillColor: riskColor, weight: 1.5, fillOpacity: 0.55, dashArray: null });
+    } else {
+      const bucket    = affordabilityState.buckets.get(zip) || 'no_data';
+      const fillColor = AFF_COLORS[bucket];
+      const stroke    = viewMode === 'both'
+        ? (isInsuff ? '#888' : riskColor)
+        : AFF_STROKE[bucket];
+      z.layer.setStyle({
+        color:       stroke,
+        fillColor,
+        weight:      viewMode === 'both' ? 2 : 1.5,
+        fillOpacity: bucket === 'no_data' ? 0.25 : 0.65,
+        dashArray:   bucket === 'no_data' ? '4 3' : null,
+      });
+    }
+  });
+  updateLegend(viewMode);
+}
+
+function updateLegend(viewMode) {
+  const legend = document.getElementById('mapLegend');
+  if (!legend) return;
+
+  const riskRows = `
+    <div class="legend-item"><div class="legend-swatch" style="background:#3288bd"></div>Low (0–17)</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#99d594"></div>Moderate (17–33)</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#e6f598"></div>Elevated (33–50)</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#fee08b"></div>High (50–67)</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#fc8d59"></div>Very High (67–83)</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#d53e4f"></div>Extreme (83–100)</div>
+    <div class="legend-item"><div class="legend-swatch-stripe"></div>Insufficient data</div>`;
+
+  const affRows = `
+    <div class="legend-item"><div class="legend-swatch" style="background:#31a354"></div>Affordable</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#a1d99b"></div>Stretch (within 10%)</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#e7e7e7"></div>Out of reach</div>
+    <div class="legend-item"><div class="legend-swatch-stripe"></div>No price data</div>`;
+
+  if (viewMode === 'risk') {
+    legend.innerHTML = `<div class="map-legend-title">Competition Level</div>${riskRows}`;
+  } else if (viewMode === 'affordability') {
+    legend.innerHTML = `<div class="map-legend-title">Affordability</div>
+      <div class="map-legend-section-label">Fill — Can I afford it?</div>${affRows}`;
+  } else {
+    legend.innerHTML = `<div class="map-legend-title">Competition + Affordability</div>
+      <div class="map-legend-section-label">Fill — Can I afford it?</div>${affRows}
+      <div class="map-legend-section-label">Outline — Competition level</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#3288bd;height:4px;border-radius:2px;margin-top:5px"></div>Low</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#d53e4f;height:4px;border-radius:2px"></div>Extreme</div>`;
+  }
+}
+
+function setMapView(view) {
+  currentMapView = view;
+  document.querySelectorAll('.view-toggle-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.view === view);
+  });
+  paintMap(view);
+}
+
 // ── Live repaint ──
 
 function recomputeAll() {
@@ -1889,14 +2421,8 @@ function recomputeAll() {
     const z = zipData[zip];
     const { score } = scoreZip(z, currentWeights);
     z.score = score;
-    if (!z.layer) return;
-    const color   = getColor(score);
-    const isInsuff = score == null;
-    z.layer.setStyle(isInsuff
-      ? { color: '#888', fillColor: '#ccc', weight: 1.5, fillOpacity: 0.25, dashArray: '4 3' }
-      : { color, fillColor: color, weight: 1.5, fillOpacity: 0.55, dashArray: null }
-    );
   });
+  paintMap(currentMapView);
   if (currentZip) selectZip(currentZip);
 }
 
@@ -1960,6 +2486,7 @@ function loadData() {
         low_sample_market:       m.low_sample_market        ?? false,
         homes_sold_latest_month: m.homes_sold_latest_month  ?? null,
         acs_median_income_2016:  m.acs_median_income_2016   ?? null,
+        redfin_median_sale_price: m.redfin_median_sale_price ?? null,
       };
     });
 
@@ -1983,15 +2510,8 @@ function drawMap() {
     const { score } = scoreZip(z, currentWeights);
     z.score = score;
 
-    const color    = getColor(score);
-    const isInsuff = score == null;
-
     z.layer = L.geoJSON(z.geo, {
-      style: isInsuff ? {
-        color: '#888', fillColor: '#ccc', weight: 1.5, fillOpacity: 0.25, dashArray: '4 3',
-      } : {
-        color, fillColor: color, weight: 1.5, fillOpacity: 0.55,
-      }
+      style: { color: '#888', fillColor: '#ccc', weight: 1.5, fillOpacity: 0.25 }
     }).addTo(map).on('click', () => {
       if (compareState.mode) {
         addZipToCompare(zip);
@@ -2000,6 +2520,8 @@ function drawMap() {
       }
     });
   });
+  paintMap('risk');
+  restoreCalcFromStorage();
 }
 
 // ── Compare mode ──
@@ -2290,6 +2812,22 @@ function renderComparePanel() {
   });
   tableHtml += `</tr>`;
 
+  if (affordabilityState.hasResults) {
+    const bucketLabel = { affordable: 'Affordable', stretch: 'Stretch', out_of_reach: 'Out of reach', no_data: 'No data' };
+    tableHtml += `<tr class="compare-row-factor">
+      <td class="compare-col-label"><span class="factor-label">Affordable for you?</span></td>`;
+    zips.forEach(zip => {
+      if (!zip) {
+        tableHtml += '<td class="compare-col-value">—</td>';
+      } else {
+        const bucket = affordabilityState.buckets.get(zip) || 'no_data';
+        const dot    = `display:inline-block;width:8px;height:8px;border-radius:50%;background:${AFF_COLORS[bucket]};margin-right:4px;vertical-align:middle`;
+        tableHtml += `<td class="compare-col-value" style="font-size:12px"><span style="${dot}"></span>${bucketLabel[bucket]}</td>`;
+      }
+    });
+    tableHtml += `</tr>`;
+  }
+
   FACTORS.forEach((f, idx) => {
     const bw = bestWorst[idx];
     tableHtml += `<tr class="compare-row-factor">
@@ -2359,6 +2897,286 @@ function loadAssistanceData() {
   return fetch('data/cuyahoga_assistance_programs.json')
     .then(r => r.json())
     .catch(() => null);
+}
+
+// ── Affordability calculator ──────────────────────────────
+
+function maxAffordablePrice(input, path) {
+  const A = ASSUMPTIONS;
+  const { annual_income, cash_available, monthly_debts } = input;
+
+  if (!annual_income || annual_income < 1) {
+    return { max_price: 0, binding_constraint: 'no_income', monthly_payment_at_max: 0, down_payment_needed: 0, closing_cost_estimate: 0 };
+  }
+
+  const rate     = path === 'fha' ? A.fha_rate_apr    : A.conv_rate_apr;
+  const dti_back = path === 'fha' ? A.fha_dti_back_max : A.conv_dti_back_max;
+  const down_pct = path === 'fha' ? A.fha_min_down_pct : A.conv_min_down_pct;
+  const amort    = amortFactor(rate, A.loan_term_months);
+  const ins_mo   = A.homeowners_insurance_annual / 12;
+  const tax_pct  = A.cuyahoga_avg_tax_rate / 12;
+
+  const max_housing = (annual_income / 12) * dti_back - monthly_debts;
+  if (max_housing <= ins_mo) {
+    return { max_price: 0, binding_constraint: 'dti', monthly_payment_at_max: 0, down_payment_needed: 0, closing_cost_estimate: 0 };
+  }
+
+  // Solve P such that: P × coeff + ins_mo = max_housing
+  let coeff;
+  if (path === 'fha') {
+    const D = down_pct, U = A.fha_upfront_mip_pct, M = A.fha_annual_mip_pct / 12;
+    coeff = (1 - D) * (1 + U) * amort + tax_pct + (1 - D) * M;
+  } else {
+    const D = down_pct, PMI = A.conv_pmi_pct_at_95_ltv / 12;
+    coeff = (1 - D) * amort + tax_pct + (1 - D) * PMI;
+  }
+  const p_dti  = (max_housing - ins_mo) / coeff;
+  const p_cash = cash_available / (down_pct + A.closing_cost_pct);
+
+  const binding   = p_dti <= p_cash ? 'dti' : 'down_payment_cash';
+  const max_price = Math.max(0, Math.floor(Math.min(p_dti, p_cash) / 1000) * 1000);
+
+  let monthly_payment = 0;
+  if (max_price > 0) {
+    if (path === 'fha') {
+      const D = down_pct, U = A.fha_upfront_mip_pct, M = A.fha_annual_mip_pct / 12;
+      const loan = max_price * (1 - D) * (1 + U);
+      monthly_payment = Math.round(loan * amort + max_price * tax_pct + ins_mo + max_price * (1 - D) * M);
+    } else {
+      const D = down_pct, PMI = A.conv_pmi_pct_at_95_ltv / 12;
+      const loan = max_price * (1 - D);
+      monthly_payment = Math.round(loan * amort + max_price * tax_pct + ins_mo + max_price * (1 - D) * PMI);
+    }
+  }
+
+  return {
+    max_price,
+    monthly_payment_at_max: monthly_payment,
+    down_payment_needed:    Math.round(max_price * down_pct),
+    closing_cost_estimate:  Math.round(max_price * A.closing_cost_pct),
+    binding_constraint:     binding,
+  };
+}
+
+function classifyZips(maxPrice) {
+  const buckets = new Map();
+  Object.keys(zipData).forEach(zip => {
+    const price = zipData[zip].redfin_median_sale_price;
+    if (price == null) {
+      buckets.set(zip, 'no_data');
+    } else if (price <= maxPrice * 0.95) {
+      buckets.set(zip, 'affordable');
+    } else if (price <= maxPrice * 1.10) {
+      buckets.set(zip, 'stretch');
+    } else {
+      buckets.set(zip, 'out_of_reach');
+    }
+  });
+  return buckets;
+}
+
+function getCalcInputs() {
+  return {
+    annual_income:  parseFloat(document.getElementById('calcIncome').value) || 0,
+    cash_available: parseFloat(document.getElementById('calcCash').value)   || 0,
+    monthly_debts:  parseFloat(document.getElementById('calcDebts').value)  || 0,
+    credit_band:    document.getElementById('calcCredit').value,
+    loan_path:      document.querySelector('.calc-path-btn.active')?.dataset.path || 'both',
+  };
+}
+
+function runCalculator() {
+  const inputs = getCalcInputs();
+
+  if (!inputs.annual_income || inputs.annual_income < 1) {
+    document.getElementById('calcIncomeError').hidden = false;
+    return;
+  }
+  document.getElementById('calcIncomeError').hidden = true;
+
+  const creditUnder620 = inputs.credit_band === 'under620';
+  const showFHA  = inputs.loan_path === 'fha'  || inputs.loan_path === 'both';
+  const showConv = (inputs.loan_path === 'conv' || inputs.loan_path === 'both') && !creditUnder620;
+  const convRequested = inputs.loan_path === 'conv' || inputs.loan_path === 'both';
+
+  affordabilityState.fha           = showFHA  ? maxAffordablePrice(inputs, 'fha')  : null;
+  affordabilityState.conv          = showConv ? maxAffordablePrice(inputs, 'conv') : null;
+  affordabilityState.creditUnder620 = creditUnder620;
+  affordabilityState.showFHA        = showFHA;
+  affordabilityState.showConv       = showConv;
+  affordabilityState.convRequested  = convRequested;
+
+  const refResult = affordabilityState.fha || affordabilityState.conv;
+  const refMax    = refResult ? refResult.max_price : 0;
+  affordabilityState.buckets    = classifyZips(refMax);
+  affordabilityState.hasResults = true;
+
+  saveCalcInputs(inputs);
+
+  const toggle = document.getElementById('viewToggle');
+  if (toggle) toggle.classList.remove('view-toggle--hidden');
+  setMapView('both');
+
+  document.getElementById('calcFormView').hidden    = true;
+  document.getElementById('calcResultsView').hidden = false;
+  renderCalcResults(inputs);
+
+  if (compareState.mode) renderComparePanel();
+  try { gtag('event', 'calc_run', { income_band: Math.round(inputs.annual_income / 10000) * 10000 }); } catch (_) {}
+}
+
+function bindingText(constraint) {
+  if (constraint === 'dti')               return 'Reason for the cap: your monthly payment would get too high relative to your income.';
+  if (constraint === 'down_payment_cash') return 'Reason for the cap: you\'d run short on cash for the down payment and closing costs.';
+  if (constraint === 'credit_floor')      return 'Conventional loans usually need a score of at least 620.';
+  return '';
+}
+
+function fmtDollar(n) {
+  return n != null && n > 0 ? '$' + Math.round(n).toLocaleString() : '—';
+}
+
+function renderCalcResults(inputs) {
+  const rv = document.getElementById('calcResultsView');
+  const buckets = affordabilityState.buckets;
+
+  const affCount    = [...buckets.values()].filter(b => b === 'affordable').length;
+  const stretchCount = [...buckets.values()].filter(b => b === 'stretch').length;
+  const noDataCount  = [...buckets.values()].filter(b => b === 'no_data').length;
+  const totalCount   = buckets.size;
+
+  const lowCompAff = [...buckets.entries()].filter(([zip, bucket]) => {
+    if (bucket !== 'affordable') return false;
+    const score = zipData[zip]?.score;
+    return score != null && score <= 33;
+  }).length;
+
+  const allOutOfReach = affCount === 0 && stretchCount === 0 && totalCount > noDataCount;
+
+  function pathHtml(result, label) {
+    if (!result) return '';
+    const total = result.down_payment_needed + result.closing_cost_estimate;
+    return `<div class="calc-path-result">
+      <div class="calc-path-heading">${label}</div>
+      <div class="calc-stat-row">
+        <span class="calc-stat-label">Highest price you could afford</span>
+        <span class="calc-stat-value">${fmtDollar(result.max_price)}</span>
+      </div>
+      <div class="calc-stat-row">
+        <span class="calc-stat-label">Monthly payment at that price <span style="font-weight:400;font-size:10px">(incl. taxes &amp; insurance)</span></span>
+        <span class="calc-stat-value">${fmtDollar(result.monthly_payment_at_max)}</span>
+      </div>
+      <div class="calc-stat-row">
+        <span class="calc-stat-label">Money down + closing costs</span>
+        <span class="calc-stat-value">${fmtDollar(total)}</span>
+      </div>
+      ${result.binding_constraint ? `<div class="calc-binding">${bindingText(result.binding_constraint)}</div>` : ''}
+    </div>`;
+  }
+
+  const convHtml = affordabilityState.convRequested && affordabilityState.creditUnder620
+    ? `<div class="calc-path-result calc-path-disabled">
+        <div class="calc-path-heading">Conventional loan</div>
+        <p class="calc-credit-note">Conventional loans usually need a credit score of at least 620. Try FHA, or talk to a free counselor about building your score.</p>
+      </div>`
+    : pathHtml(affordabilityState.conv, 'Conventional loan');
+
+  const outOfReachHtml = allOutOfReach ? `<div class="calc-all-out-reach">
+    No Cuyahoga ZIPs fit a typical home at this budget. Consider
+    <a href="methodology.html#affordability-calculator">down payment assistance programs</a>,
+    talking to a <a href="methodology.html#affordability-calculator">free HUD-approved counselor</a> about your options,
+    or looking at condos and townhomes which may be priced below the single-family medians used here.
+  </div>` : '';
+
+  const countHtml = !allOutOfReach ? `<div class="calc-zip-counts">
+    <strong>${affCount} of ${totalCount - noDataCount} Cuyahoga ZIPs</strong> are affordable for you.
+    ${lowCompAff > 0 ? `${lowCompAff} of those are also low or moderate competition.` : ''}
+    ${noDataCount > 0 ? `<div class="calc-zip-counts-note">${noDataCount} ZIP${noDataCount !== 1 ? 's' : ''} had no recent home-value data and aren't counted.</div>` : ''}
+    <button class="btn-see-map" onclick="fitBoundsAffordable()" type="button">See affordable ZIPs on map</button>
+  </div>` : '';
+
+  rv.innerHTML = `
+    <button class="calc-edit-btn" onclick="showCalcForm(true)" type="button">Edit numbers</button>
+    ${pathHtml(affordabilityState.fha, 'FHA loan')}
+    ${convHtml}
+    ${outOfReachHtml}
+    ${countHtml}
+    <label class="calc-print-label">
+      <input type="checkbox" id="calcPrintNumbers"> Include my income and savings in the printout
+    </label>
+  `;
+}
+
+function showCalcForm(preserveValues) {
+  document.getElementById('calcFormView').hidden    = false;
+  document.getElementById('calcResultsView').hidden = true;
+  if (!preserveValues) {
+    document.getElementById('calcIncome').value = '';
+    document.getElementById('calcCash').value   = '';
+    document.getElementById('calcDebts').value  = '0';
+    document.getElementById('calcCredit').value = '680-739';
+    setCalcPath('both');
+  }
+}
+
+function setCalcPath(path) {
+  document.querySelectorAll('.calc-path-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.path === path);
+  });
+}
+
+function saveCalcInputs(inputs) {
+  try { localStorage.setItem(CALC_LS_KEY, JSON.stringify(inputs)); } catch (_) {}
+}
+
+function loadCalcInputs() {
+  try {
+    const raw = localStorage.getItem(CALC_LS_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (_) { return null; }
+}
+
+function clearCalculator() {
+  try { localStorage.removeItem(CALC_LS_KEY); } catch (_) {}
+  affordabilityState.hasResults = false;
+  affordabilityState.buckets    = new Map();
+  affordabilityState.fha        = null;
+  affordabilityState.conv       = null;
+  const toggle = document.getElementById('viewToggle');
+  if (toggle) toggle.classList.add('view-toggle--hidden');
+  setMapView('risk');
+  showCalcForm(false);
+  document.getElementById('calcResultsView').hidden = true;
+  if (compareState.mode) renderComparePanel();
+}
+
+function fitBoundsAffordable() {
+  setMapView('affordability');
+  const affZips = [...affordabilityState.buckets.entries()]
+    .filter(([, b]) => b === 'affordable')
+    .map(([zip]) => zip);
+  if (affZips.length === 0) return;
+  const bounds = L.latLngBounds();
+  affZips.forEach(zip => {
+    if (zipData[zip]?.layer) bounds.extend(zipData[zip].layer.getBounds());
+  });
+  if (bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] });
+}
+
+function restoreCalcFromStorage() {
+  const saved = loadCalcInputs();
+  if (!saved) return;
+  const incEl = document.getElementById('calcIncome');
+  const cshEl = document.getElementById('calcCash');
+  const dbtEl = document.getElementById('calcDebts');
+  const crdEl = document.getElementById('calcCredit');
+  if (!incEl || !cshEl || !dbtEl || !crdEl) return;
+  incEl.value = saved.annual_income  || '';
+  cshEl.value = saved.cash_available || '';
+  dbtEl.value = saved.monthly_debts  || '0';
+  if (saved.credit_band) crdEl.value = saved.credit_band;
+  if (saved.loan_path)   setCalcPath(saved.loan_path);
+  runCalculator();
 }
 
 function renderAssistanceCard(zip) {
@@ -2764,7 +3582,8 @@ document.addEventListener('DOMContentLoaded', () => {
     exitBtn.addEventListener('click', exitCompareMode);
   }
 
-  // Before print: open cited toolkit items, hide uncited ones
+  // Before print: open cited toolkit items, hide uncited ones;
+  // also hide private calc inputs unless user opts in.
   window.addEventListener('beforeprint', () => {
     const citedIds = new Set();
     document.querySelectorAll('.rec-link').forEach(a => {
@@ -2779,12 +3598,20 @@ document.addEventListener('DOMContentLoaded', () => {
         details.classList.add('print-hide');
       }
     });
+    const showNumbers = document.getElementById('calcPrintNumbers')?.checked;
+    if (!showNumbers) {
+      ['calcIncome', 'calcCash', 'calcDebts'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.closest('.calc-field')?.classList.add('calc-print-private');
+      });
+    }
   });
 
   window.addEventListener('afterprint', () => {
     document.querySelectorAll('.toolkit-item').forEach(details => {
       details.classList.remove('print-hide');
     });
+    document.querySelectorAll('.calc-print-private').forEach(el => el.classList.remove('calc-print-private'));
   });
 });
 
