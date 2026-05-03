@@ -764,6 +764,252 @@ footer strong { color: rgba(255,255,255,0.8); }
 footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
 footer a:hover { color: rgba(255,255,255,0.9); text-decoration: underline; }
 
+/* ── Recommendations Card ─────────────────────────────────────── */
+
+.rec-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border);
+}
+.rec-item:last-child  { border-bottom: none; padding-bottom: 0; }
+.rec-item:first-child { padding-top: 0; }
+
+.rec-headline {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.rec-why {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.rec-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 10px;
+  margin-top: 3px;
+}
+
+.rec-link {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  cursor: pointer;
+}
+.rec-link:hover { text-decoration: underline; }
+
+/* ── Toolkit Card ─────────────────────────────────────────────── */
+
+.toolkit-item {
+  border-bottom: 1px solid var(--border);
+}
+.toolkit-item:last-child { border-bottom: none; }
+
+.toolkit-item summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 12px 0;
+  gap: 8px;
+  user-select: none;
+}
+.toolkit-item summary::-webkit-details-marker { display: none; }
+
+.toolkit-item summary::after {
+  content: '▾';
+  font-size: 11px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  margin-top: 3px;
+  transition: transform 0.18s;
+}
+.toolkit-item[open] summary::after { transform: rotate(-180deg); }
+
+.toolkit-item summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.toolkit-summary-inner { flex: 1; min-width: 0; }
+
+.toolkit-summary-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.toolkit-summary-tagline {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-top: 1px;
+  line-height: 1.4;
+}
+
+.toolkit-body {
+  padding: 0 0 14px 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+.toolkit-section { margin-bottom: 9px; }
+.toolkit-section:last-child { margin-bottom: 0; }
+
+.toolkit-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 3px;
+}
+
+.toolkit-section p { margin: 0; }
+
+.toolkit-note {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 10px;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+.toolkit-links {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+.toolkit-links a {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+}
+.toolkit-links a:hover { text-decoration: underline; }
+
+/* ── Assistance Card (sidebar) ────────────────────────────────── */
+
+.assistance-subtitle {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  line-height: 1.5;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.assistance-program {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+.assistance-program:last-child  { border-bottom: none; padding-bottom: 0; }
+.assistance-program:first-child { padding-top: 0; }
+
+.program-name {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.program-fha-stat {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 5px 8px;
+  margin-bottom: 6px;
+}
+
+.program-description {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.btn-toggle-section {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  font-family: inherit;
+  text-align: left;
+}
+.btn-toggle-section:hover { color: var(--primary); }
+
+.program-eligibility {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 6px 8px;
+  margin-top: 4px;
+}
+
+.eligibility-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.eligibility-list li {
+  line-height: 1.5;
+  margin-bottom: 3px;
+}
+.eligibility-list li:last-child { margin-bottom: 0; }
+.eligibility-list li::before {
+  content: '• ';
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.program-apply {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  margin-top: 6px;
+  align-self: flex-start;
+}
+.program-apply:hover { text-decoration: underline; }
+
+.assistance-empty {
+  text-align: center;
+  padding: 24px 0;
+}
+.assistance-empty p {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
 /* ── Compare Mode ────────────────────────────────────────────── */
 
 body[data-mode="compare"] #compareInputsContainer {
@@ -774,7 +1020,7 @@ body[data-mode="compare"] #info {
   display: none;
 }
 
-body[data-mode="compare"] #assistanceCard {
+body[data-mode="compare"] #recommendationsCard {
   display: none;
 }
 
@@ -977,188 +1223,6 @@ body[data-mode="compare"] #assistanceCard {
 
 /* ── Assistance Programs Section (below map, horizontal grid) ──── */
 
-.assistance-section {
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  padding: 32px 24px;
-  margin-top: 32px;
-}
-
-.assistance-section-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.assistance-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 24px;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.assistance-header h2 {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text);
-  margin: 0;
-  letter-spacing: -0.5px;
-}
-
-.assistance-info-link {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--accent);
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.assistance-info-link:hover {
-  text-decoration: underline;
-}
-
-.assistance-programs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 16px;
-}
-
-.program-badge {
-  display: inline-block;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  color: var(--text-muted);
-  padding: 3px 8px;
-  border-radius: 4px;
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  cursor: help;
-  margin-left: 4px;
-}
-
-.assistance-program {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  transition: box-shadow 0.2s;
-}
-
-.assistance-program:hover {
-  box-shadow: var(--shadow);
-}
-
-.program-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 8px;
-  flex-wrap: wrap;
-}
-
-.program-name {
-  font-weight: 600;
-  font-size: 13px;
-  color: var(--text);
-}
-
-.program-activity {
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-bottom: 6px;
-  line-height: 1.4;
-}
-
-.program-description {
-  font-size: 12px;
-  color: var(--text-muted);
-  line-height: 1.5;
-  margin-bottom: 10px;
-  flex: 1;
-}
-
-.program-section-toggle {
-  margin-bottom: 8px;
-}
-
-.btn-toggle-section {
-  background: none;
-  border: none;
-  color: var(--accent);
-  font-size: 11px;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 0;
-  text-decoration: underline;
-}
-
-.btn-toggle-section:hover {
-  color: var(--primary);
-}
-
-.program-eligibility {
-  font-size: 10px;
-  color: var(--text-muted);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 6px 8px;
-  margin-top: 4px;
-}
-
-.eligibility-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.eligibility-list li {
-  line-height: 1.5;
-  margin-bottom: 3px;
-}
-
-.eligibility-list li:last-child {
-  margin-bottom: 0;
-}
-
-.eligibility-list li:before {
-  content: '• ';
-  color: var(--accent);
-  font-weight: 600;
-}
-
-.program-apply {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--accent);
-  text-decoration: none;
-  margin-top: auto;
-  padding-top: 8px;
-}
-
-.program-apply:hover {
-  text-decoration: underline;
-}
-
-.assistance-empty {
-  text-align: center;
-  padding: 32px 16px;
-  grid-column: 1 / -1;
-}
-
-.assistance-empty p {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin: 0;
-}
-
 /* ── Toast Notifications ─────────────────────────────────────── */
 
 .toast {
@@ -1183,7 +1247,7 @@ body[data-mode="compare"] #assistanceCard {
 /* ── Print Styles ────────────────────────────────────────────── */
 
 @media print {
-  nav, .hero, .preset-bar, .map-wrapper, .map-legend, #info, #assistanceCard, #compareInputsContainer {
+  nav, .hero, .preset-bar, .map-wrapper, .map-legend, #info, #compareInputsContainer {
     display: none !important;
   }
 
@@ -1212,8 +1276,15 @@ body[data-mode="compare"] #assistanceCard {
     border: 1px solid #000;
   }
 
+  /* Flatten toolkit details for print — JS opens them beforeprint */
+  .toolkit-item summary::after { display: none; }
+  .toolkit-item summary { padding-bottom: 4px; }
+
+  /* Hide toolkit items not cited in recommendations (class added by JS) */
+  .toolkit-item.print-hide { display: none !important; }
+
   body::before {
-    content: 'First Dibs — ZIP Comparison Report';
+    content: 'First Dibs — ZIP Report';
     display: block;
     font-size: 18px;
     font-weight: 700;
@@ -1252,18 +1323,6 @@ body[data-mode="compare"] #assistanceCard {
     width: 100%;
   }
 
-  .assistance-section {
-    padding: 24px;
-  }
-
-  .assistance-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .assistance-programs-grid {
-    grid-template-columns: 1fr;
-  }
 }
 </style>
 </head>
@@ -1441,6 +1500,169 @@ body[data-mode="compare"] #assistanceCard {
       <!-- Rendered by JavaScript -->
     </div>
 
+    <!-- ── What to do next card (hidden until ZIP selected) ──── -->
+    <div class="card" id="recommendationsCard" hidden>
+      <div class="card-label">What to do next here</div>
+      <div id="recommendationsList"></div>
+    </div>
+
+    <!-- ── Beat the bid toolkit card ─────────────────────────── -->
+    <div class="card" id="toolkitCard">
+      <div class="card-label">Beat the bid toolkit</div>
+
+      <details class="toolkit-item" id="toolkit-escalation">
+        <summary>
+          <div class="toolkit-summary-inner">
+            <div class="toolkit-summary-label">Escalation Clause</div>
+            <div class="toolkit-summary-tagline">An add-on to your offer that automatically beats competing bids, up to a cap you set.</div>
+          </div>
+        </summary>
+        <div class="toolkit-body">
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">What it is</div>
+            <p>If another buyer submits a higher offer, your bid automatically increases by a set amount — say $1,000 — until you hit your ceiling. Then it stops. You stay competitive without going over your limit.</p>
+          </div>
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">When to use it</div>
+            <p>High-competition ZIPs with short median days on market and many homes selling over asking. Good when you want to stay in the running but still have a firm spending ceiling.</p>
+          </div>
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">When NOT to use it</div>
+            <p>When the market is slow (median DOM over 30 days) or when your financing is tight — if the escalated price pushes past the appraised value, your lender may not cover the gap.</p>
+          </div>
+          <div class="toolkit-note">
+            <strong>Ask your agent:</strong> "Can we add an escalation clause that beats any competing offer by $1,000, up to a maximum of $[X]?"
+          </div>
+        </div>
+      </details>
+
+      <details class="toolkit-item" id="toolkit-appraisal-gap">
+        <summary>
+          <div class="toolkit-summary-inner">
+            <div class="toolkit-summary-label">Appraisal Gap Coverage</div>
+            <div class="toolkit-summary-tagline">Promise to cover the difference if the home appraises for less than your offer.</div>
+          </div>
+        </summary>
+        <div class="toolkit-body">
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">What it is</div>
+            <p>Lenders only finance up to the appraised value. If you offer more than that, you cover the difference in cash. Writing this into your offer tells the seller you won't walk away if the appraisal comes in low.</p>
+          </div>
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">When to use it</div>
+            <p>When homes regularly sell over list — sale-to-list ratio above 1.05 or more than 40% of homes selling above asking. Common in Very High and Extreme competition ZIPs.</p>
+          </div>
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">When NOT to use it</div>
+            <p>If you don't have extra cash available after your down payment and closing costs, don't commit to a gap you can't cover.</p>
+          </div>
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">Example</div>
+            <p>Home listed at $250,000. You offer $275,000. Appraisal comes in at $260,000. With $15,000 gap coverage written in, your offer holds. Without it, your lender only finances against $260,000 and the deal can fall apart.</p>
+          </div>
+          <div class="toolkit-note">
+            <strong>Ask your agent:</strong> "What's a reasonable gap-coverage amount for offers in this market right now?"
+          </div>
+        </div>
+      </details>
+
+      <details class="toolkit-item" id="toolkit-full-underwriting">
+        <summary>
+          <div class="toolkit-summary-inner">
+            <div class="toolkit-summary-label">Full Underwriting Pre-Approval</div>
+            <div class="toolkit-summary-tagline">Pre-approval where the lender has fully checked your finances, not just a soft credit pull.</div>
+          </div>
+        </summary>
+        <div class="toolkit-body">
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">What it is</div>
+            <p>A standard pre-approval letter is a lender's estimate. A fully underwritten pre-approval means an underwriter has actually reviewed your income documents, bank statements, and employment — and conditionally approved your loan. Sellers know the difference.</p>
+          </div>
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">When to use it</div>
+            <p>Always, in any market. Especially important when few FHA buyers are winning offers — a fully underwritten letter signals you're as close to a cash offer as a financed buyer can get.</p>
+          </div>
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">Note</div>
+            <p>Takes longer than a standard letter — sometimes 1–2 weeks. Plan ahead before you start making offers.</p>
+          </div>
+          <div class="toolkit-note">
+            <strong>Ask your lender:</strong> "Can you do a fully underwritten pre-approval — sometimes called a TBD approval or upfront underwrite?"
+          </div>
+        </div>
+      </details>
+
+      <details class="toolkit-item" id="toolkit-dpa">
+        <summary>
+          <div class="toolkit-summary-inner">
+            <div class="toolkit-summary-label">Down Payment Assistance</div>
+            <div class="toolkit-summary-tagline">Money to help cover your down payment, sometimes forgivable after a few years.</div>
+          </div>
+        </summary>
+        <div class="toolkit-body">
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">What it is</div>
+            <p>Federal, state, and local programs that provide money for your down payment and/or closing costs. Many don't have to be repaid if you stay in the home for a set number of years.</p>
+          </div>
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">When to use it</div>
+            <p>Any first-time buyer stretching to reach a down payment. Income limits often apply but are higher than people expect — typically 80% of area median income, which in Cuyahoga County is roughly $75,000–$86,000 depending on household size.</p>
+          </div>
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">Programs to explore</div>
+            <div class="toolkit-links">
+              <a href="https://ohiohome.org/homebuyers.aspx" target="_blank" rel="noopener">OHFA Your Choice! — 2.5% or 5% DPA, statewide →</a>
+              <a href="https://www.hud.gov/states/ohio/homeownership" target="_blank" rel="noopener">HUD Ohio homebuyer resources →</a>
+              <a href="https://www.fhlbcin.com/community-investment/welcome-home/" target="_blank" rel="noopener">FHLB Welcome Home — up to $20,000 grant →</a>
+              <a href="https://chnhousingpartners.org/" target="_blank" rel="noopener">CHN Housing Partners — counseling + DPA intake →</a>
+            </div>
+          </div>
+          <div class="toolkit-note">See the "Help you can apply for" card below for program details and eligibility.</div>
+        </div>
+      </details>
+
+      <details class="toolkit-item" id="toolkit-counselor">
+        <summary>
+          <div class="toolkit-summary-inner">
+            <div class="toolkit-summary-label">Find a Free HUD-Approved Counselor</div>
+            <div class="toolkit-summary-tagline">Government-certified homebuyer counseling agencies — free to you.</div>
+          </div>
+        </summary>
+        <div class="toolkit-body">
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">What it is</div>
+            <p>HUD-approved housing counseling agencies must meet federal standards and charge nothing for basic homebuyer counseling. A counselor will review your budget, explain your loan options, identify programs you qualify for, and help you build a plan.</p>
+          </div>
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">Why it matters</div>
+            <p>Most people don't know this service is free. Counselors can help you figure out DPA eligibility and what offers you can realistically make — before you fall in love with a home.</p>
+          </div>
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">Find a counselor</div>
+            <div class="toolkit-links">
+              <a href="https://www.hud.gov/i_want_to/talk_to_a_housing_counselor" target="_blank" rel="noopener">HUD housing counselor finder →</a>
+              <a href="https://apps.hud.gov/offices/hsg/sfh/hcc/hcs.cfm?webListAction=search&searchstate=OH" target="_blank" rel="noopener">Search Ohio HUD-approved agencies →</a>
+              <a href="https://chnhousingpartners.org/" target="_blank" rel="noopener">CHN Housing Partners (Cleveland area) →</a>
+              <a href="https://esop-cleveland.org/" target="_blank" rel="noopener">ESOP — Empowering and Strengthening Ohio's People →</a>
+              <a href="https://famicos.org/" target="_blank" rel="noopener">Famicos Foundation (Cleveland) →</a>
+            </div>
+          </div>
+        </div>
+      </details>
+
+    </div><!-- end #toolkitCard -->
+
+    <!-- ── Help you can apply for (assistance catalog) ─────────── -->
+    <div class="card" id="assistanceCard">
+      <div class="card-label">Help you can apply for</div>
+      <p class="assistance-subtitle">FHA numbers are for this ZIP. Other programs are statewide or county-wide — eligibility may vary.</p>
+      <div id="assistanceProgramsList">
+        <div class="assistance-empty">
+          <p>Select a ZIP to see available programs.</p>
+        </div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-label">How the risk score works</div>
       <div class="explainer-row">
@@ -1459,21 +1681,6 @@ body[data-mode="compare"] #assistanceCard {
 
   </div>
 
-</div>
-
-<!-- ── Assistance Programs Section (below map, full width) ────── -->
-<div class="assistance-section">
-  <div class="assistance-section-inner">
-    <div class="assistance-header">
-      <h2>Programs & Resources</h2>
-      <a href="methodology.html#assistance-programs" class="assistance-info-link">What does this mean? →</a>
-    </div>
-    <div id="assistanceProgramsList" class="assistance-programs-grid">
-      <div class="assistance-empty">
-        <p style="color:var(--text-muted);font-size:13px">Select a ZIP to see available programs.</p>
-      </div>
-    </div>
-  </div>
 </div>
 
 <footer>
@@ -2007,7 +2214,7 @@ function renderComparePanel() {
     const z = zipData[zip];
     const { score, contribs } = scoreZip(z, currentWeights);
     const { label, color } = getRiskLabel(score);
-    return { zip, score, label, color };
+    return { zip, score, label, color, contribs };
   });
 
   const factorData = slots.map(slot => {
@@ -2061,6 +2268,26 @@ function renderComparePanel() {
     }
   });
 
+  tableHtml += `</tr>`;
+
+  // Next-step row: top content recommendation per ZIP
+  tableHtml += `<tr class="compare-row-factor">
+    <td class="compare-col-label"><span class="factor-label">Next step</span></td>`;
+  riskData.forEach(data => {
+    if (!data || !data.contribs || data.contribs.length === 0) {
+      tableHtml += '<td class="compare-col-value" style="font-size:11px;color:var(--text-muted)">—</td>';
+    } else {
+      const z = zipData[data.zip];
+      const recs = buildRecommendations(z, data.contribs);
+      const topRec = recs[0];
+      const id = topRec.toolkitIds[0];
+      tableHtml += `<td class="compare-col-value" style="font-size:11px;line-height:1.4">
+        ${topRec.headline}<br>
+        <a href="#toolkitCard" onclick="event.preventDefault();exitCompareMode();scrollToToolkit('${id}')"
+           style="color:var(--accent)">See toolkit →</a>
+      </td>`;
+    }
+  });
   tableHtml += `</tr>`;
 
   FACTORS.forEach((f, idx) => {
@@ -2135,115 +2362,95 @@ function loadAssistanceData() {
 }
 
 function renderAssistanceCard(zip) {
+  const listEl = document.getElementById('assistanceProgramsList');
+  if (!listEl) return;
+
   if (!zip || !assistanceData) {
-    document.getElementById('assistanceProgramsList').innerHTML = `
-      <div class="info-empty">
-        <p style="color:var(--text-muted);font-size:13px">Select a ZIP to see available programs.</p>
-      </div>`;
+    listEl.innerHTML = `<div class="assistance-empty"><p>Select a ZIP to see available programs.</p></div>`;
     return;
   }
 
   const programs = assistanceData.programs || [];
-  const zipActivity = assistanceData.zip_activity[zip] || {};
+  const zipActivity = (assistanceData.zip_activity || {})[zip] || {};
 
-  const relevantPrograms = programs
+  // Fixed sort order per plan
+  const sortKey = {
+    fha_originations:      0,
+    hmda_denial_rate:      0,
+    va_originations:       1,
+    ohfa_loans:            2,
+    fhlb_welcome_home:     3,
+    cuyahoga_dpa:          4,
+    cleveland_home_dpa:    5,
+    land_bank_dispositions: 6,
+    habitat_activity:      7,
+  };
+
+  const relevant = programs
     .filter(p => {
-      if (p.geography === 'zip' && p.id.includes('cleveland')) {
-        return zip >= '44102' && zip <= '44120';
+      // Cleveland-specific programs only for Cleveland ZIPs (44102–44120 + 44127–44128)
+      if (p.id === 'cleveland_home_dpa') {
+        return (zip >= '44102' && zip <= '44120') || zip === '44127' || zip === '44128';
       }
       return true;
     })
-    .sort((a, b) => {
-      const aData = zipActivity[a.id] != null;
-      const bData = zipActivity[b.id] != null;
-      if (aData && !bData) return -1;
-      if (!aData && bData) return 1;
+    .sort((a, b) => (sortKey[a.id] ?? 99) - (sortKey[b.id] ?? 99));
 
-      const geoOrder = { 'zip': 0, 'zip_apportioned': 1, 'city': 2, 'county': 3, 'statewide': 4, 'catalog': 5 };
-      if (geoOrder[a.geography] !== geoOrder[b.geography]) {
-        return geoOrder[a.geography] - geoOrder[b.geography];
-      }
-
-      if (aData && bData) {
-        return (zipActivity[b.id] || 0) - (zipActivity[a.id] || 0);
-      }
-
-      return a.label.localeCompare(b.label);
-    });
-
-  if (relevantPrograms.length === 0) {
-    document.getElementById('assistanceProgramsList').innerHTML = `
-      <div class="assistance-empty">
-        <p>No assistance program data available for this ZIP.</p>
-        <p><a href="methodology.html#assistance-programs">See statewide programs →</a></p>
-      </div>`;
+  if (relevant.length === 0) {
+    listEl.innerHTML = `<div class="assistance-empty"><p>No programs for this ZIP. <a href="methodology.html#assistance-programs">See statewide programs →</a></p></div>`;
     return;
   }
 
-  const html = relevantPrograms.map(p => {
+  const html = relevant.map(p => {
+    const isFHA = p.id === 'fha_originations' || p.id === 'hmda_denial_rate';
     const activity = zipActivity[p.id];
-    let activitySummary = 'No data';
-    if (activity != null) {
-      if (p.unit === 'loan count' || p.unit === 'household count') {
-        activitySummary = `${activity} originations`;
-      } else if (p.unit === 'percent') {
-        activitySummary = `${(activity * 100).toFixed(1)}% denial rate`;
-      } else if (p.unit === 'parcel count') {
-        activitySummary = `${activity} dispositions`;
+
+    // FHA hero stat row (denial rate if available)
+    let fhaStat = '';
+    if (p.id === 'hmda_denial_rate') {
+      if (activity != null) {
+        fhaStat = `<div class="program-fha-stat">FHA denial rate this ZIP: ${(activity * 100).toFixed(1)}%</div>`;
+      } else {
+        fhaStat = `<div class="program-fha-stat" style="color:var(--text-muted)">FHA denial rate this ZIP: — (data unavailable)</div>`;
       }
     }
-
-    const badgeLabel = {
-      'zip': '[ZIP]',
-      'zip_apportioned': '[ZIP*]',
-      'city': '[City]',
-      'county': '[County]',
-      'statewide': '[State]',
-      'catalog': '[Catalog]'
-    }[p.geography] || p.geography;
-
-    const badgeTooltip = {
-      'zip': 'Data directly from this ZIP code',
-      'zip_apportioned': 'Tract-level data apportioned to ZIP',
-      'city': 'Program operates within city boundaries',
-      'county': 'Program operates at county level',
-      'statewide': 'Program operates statewide',
-      'catalog': 'Program metadata only'
-    }[p.geography] || '';
+    if (p.id === 'fha_originations' && activity != null) {
+      fhaStat = `<div class="program-fha-stat">${activity} FHA purchase loans originated in this ZIP (2023)</div>`;
+    }
 
     const meta = p.metadata || {};
     const eligibilityItems = [];
     if (meta.income_limit_pct_ami) eligibilityItems.push(`Income limit: ${meta.income_limit_pct_ami}% AMI`);
+    if (meta.income_limit_pct_mrb) eligibilityItems.push(`Income limit: ${meta.income_limit_pct_mrb}% of MRB limit`);
     if (meta.dpa_options) eligibilityItems.push(`Assistance: ${meta.dpa_options.join(', ')}`);
-    if (meta.requirements) meta.requirements.forEach(req => eligibilityItems.push(req));
+    if (meta.grant_max_2024_usd) eligibilityItems.push(`Max grant (2024): $${meta.grant_max_2024_usd.toLocaleString()}`);
+    if (meta.grant_max_veterans_2024_usd) eligibilityItems.push(`Veterans max: $${meta.grant_max_veterans_2024_usd.toLocaleString()}`);
     if (meta.max_dpa_usd) eligibilityItems.push(`Max assistance: $${meta.max_dpa_usd.toLocaleString()}`);
+    if (meta.loan_type) eligibilityItems.push(`Loan type: ${meta.loan_type}`);
+    if (meta.requirements) meta.requirements.forEach(r => eligibilityItems.push(r));
 
-    const eligibilityHtml = eligibilityItems.length > 0
-      ? `<ul class="eligibility-list">${eligibilityItems.map(item => `<li>${item}</li>`).join('')}</ul>`
-      : '<p style="font-size:11px;color:var(--text-muted)">No eligibility information available.</p>';
+    const eligHtml = eligibilityItems.length > 0
+      ? `<ul class="eligibility-list">${eligibilityItems.map(i => `<li>${i}</li>`).join('')}</ul>`
+      : `<p style="font-size:11px;color:var(--text-muted);margin:0">Contact the program for eligibility details.</p>`;
 
     return `<div class="assistance-program" data-program-id="${p.id}">
-      <div class="program-header">
-        <div class="program-name">${p.label}</div>
-        <div class="program-badge" title="${badgeTooltip}">${badgeLabel}</div>
-      </div>
-      <div class="program-activity">${activitySummary}</div>
+      <div class="program-name">${p.label}</div>
+      ${fhaStat}
       <div class="program-description">${p.description}</div>
-      <div class="program-section-toggle">
-        <button class="btn-toggle-section" aria-expanded="false">Eligibility ▾</button>
-        <div class="program-eligibility" hidden>${eligibilityHtml}</div>
-      </div>
+      <button class="btn-toggle-section" aria-expanded="false">Eligibility ▾</button>
+      <div class="program-eligibility" hidden>${eligHtml}</div>
       <a href="${p.how_to_apply_link || '#'}" target="_blank" rel="noopener" class="program-apply">How to apply →</a>
     </div>`;
   }).join('');
 
-  document.getElementById('assistanceProgramsList').innerHTML = html;
+  listEl.innerHTML = html;
 
-  document.querySelectorAll('.btn-toggle-section').forEach(btn => {
-    btn.addEventListener('click', (e) => {
+  listEl.querySelectorAll('.btn-toggle-section').forEach(btn => {
+    btn.addEventListener('click', () => {
       const expanded = btn.getAttribute('aria-expanded') === 'true';
       btn.setAttribute('aria-expanded', String(!expanded));
-      btn.parentElement.querySelector('.program-eligibility').hidden = expanded;
+      btn.nextElementSibling.hidden = expanded;
+      btn.textContent = expanded ? 'Eligibility ▾' : 'Eligibility ▴';
     });
   });
 }
@@ -2295,6 +2502,118 @@ function buildWhyScore(contribs, score) {
     ${top3.map(rowHtml).join('')}
     ${restHtml}
   </div>`;
+}
+
+// ── Recommendations ──
+
+function buildRecommendations(z, contribs) {
+  const recs = [];
+  const top3Keys = contribs.slice(0, 3).map(c => c.key);
+  let urgencyFired = false;
+
+  if (top3Keys.includes('corporate_pct')) {
+    recs.push({
+      headline: 'Include an appraisal gap clause',
+      why: 'Investor buyers in this ZIP often waive appraisal contingencies — matching that removes a common rejection reason.',
+      toolkitIds: ['toolkit-appraisal-gap'],
+    });
+    urgencyFired = true;
+  }
+
+  if ((z.pct_sold_above_list != null && z.pct_sold_above_list >= 40) ||
+      (z.sale_to_list != null && z.sale_to_list >= 1.05)) {
+    const pctText = z.pct_sold_above_list != null
+      ? Math.round(z.pct_sold_above_list) + '% of homes'
+      : 'Homes';
+    recs.push({
+      headline: 'Use an escalation clause',
+      why: `${pctText} in this ZIP sell above asking — an escalation clause keeps your offer competitive without over-bidding upfront.`,
+      toolkitIds: ['toolkit-escalation'],
+    });
+    urgencyFired = true;
+  }
+
+  if (z.median_dom != null && z.median_dom <= 10) {
+    recs.push({
+      headline: 'Get fully underwritten before you search',
+      why: `Homes here go under contract in a median of ${z.median_dom} days — a full underwriting letter lets you make same-day offers with confidence.`,
+      toolkitIds: ['toolkit-full-underwriting'],
+    });
+    urgencyFired = true;
+  }
+
+  if (z.price_to_income != null && z.price_to_income > 4.5) {
+    recs.push({
+      headline: 'Apply for down payment assistance',
+      why: `At ${z.price_to_income.toFixed(1)}× income, the upfront cost is steep — programs like OHFA and Cuyahoga DPA can cover part of your down payment.`,
+      toolkitIds: ['toolkit-dpa'],
+    });
+    urgencyFired = true;
+  }
+
+  if (!urgencyFired) {
+    recs.push({
+      headline: 'Start with strong pre-approval',
+      why: 'Competition here is manageable — a solid pre-approval letter is usually enough to put you in a strong position.',
+      toolkitIds: ['toolkit-full-underwriting'],
+    });
+  }
+
+  recs.push({
+    headline: 'Talk to a free HUD-approved housing counselor',
+    why: 'A counselor can review your full financial picture, connect you with local programs, and help you avoid common pitfalls — at no cost.',
+    toolkitIds: ['toolkit-counselor'],
+  });
+
+  return recs;
+}
+
+function scrollToToolkit(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  el.open = true;
+  document.getElementById('toolkitCard').scrollIntoView({
+    behavior: reduced ? 'instant' : 'smooth',
+    block: 'start',
+  });
+}
+
+function renderRecommendationsCard(zip, contribs) {
+  const card = document.getElementById('recommendationsCard');
+  const listEl = document.getElementById('recommendationsList');
+  if (!card || !listEl) return;
+
+  if (!zip || !contribs || contribs.length === 0) {
+    card.hidden = true;
+    return;
+  }
+
+  const z = zipData[zip];
+  const recs = buildRecommendations(z, contribs);
+
+  const toolkitLabels = {
+    'toolkit-escalation':        'Escalation clause →',
+    'toolkit-appraisal-gap':     'Appraisal gap coverage →',
+    'toolkit-full-underwriting': 'Full underwriting pre-approval →',
+    'toolkit-dpa':               'Down payment assistance →',
+    'toolkit-counselor':         'Free HUD counselors →',
+  };
+
+  listEl.innerHTML = recs.map((rec, i) => {
+    const links = rec.toolkitIds.map(id =>
+      `<a class="rec-link" href="#toolkitCard"
+          onclick="event.preventDefault();scrollToToolkit('${id}')"
+        >${toolkitLabels[id] || 'Learn more →'}</a>`
+    ).join('');
+    return `<div class="rec-item">
+      <div class="rec-headline">${i + 1}. ${rec.headline}</div>
+      <div class="rec-why">${rec.why}</div>
+      <div class="rec-links">${links}</div>
+    </div>`;
+  }).join('');
+
+  card.hidden = false;
 }
 
 function selectZip(zip) {
@@ -2354,6 +2673,7 @@ function selectZip(zip) {
   `;
 
   renderAssistanceCard(zip);
+  renderRecommendationsCard(zip, contribs);
 }
 
 function searchZip() {
@@ -2443,6 +2763,29 @@ document.addEventListener('DOMContentLoaded', () => {
   if (exitBtn) {
     exitBtn.addEventListener('click', exitCompareMode);
   }
+
+  // Before print: open cited toolkit items, hide uncited ones
+  window.addEventListener('beforeprint', () => {
+    const citedIds = new Set();
+    document.querySelectorAll('.rec-link').forEach(a => {
+      const m = a.getAttribute('onclick')?.match(/scrollToToolkit\('([^']+)'\)/);
+      if (m) citedIds.add(m[1]);
+    });
+    document.querySelectorAll('.toolkit-item').forEach(details => {
+      if (citedIds.has(details.id)) {
+        details.open = true;
+        details.classList.remove('print-hide');
+      } else {
+        details.classList.add('print-hide');
+      }
+    });
+  });
+
+  window.addEventListener('afterprint', () => {
+    document.querySelectorAll('.toolkit-item').forEach(details => {
+      details.classList.remove('print-hide');
+    });
+  });
 });
 
 loadData();
