@@ -421,7 +421,82 @@ input.num-weight:focus {
   color: var(--text);
 }
 
+/* ── Tab bar ─────────────────────────────────────────────── */
+
+.tab-bar {
+  background: var(--surface);
+  border-bottom: 2px solid var(--border);
+  position: sticky;
+  top: 64px;
+  z-index: 900;
+}
+
+.tab-bar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  gap: 0;
+}
+
+.tab-btn {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  padding: 14px 20px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.tab-btn:hover { color: var(--text); }
+
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
 /* ── Main layout ─────────────────────────────────────────── */
+
+/* ── Tab visibility via body[data-tab] ───────────────────── */
+
+/* Default (risk tab): hide calc card, toolkit, assistance */
+body[data-tab="risk"] #calcCard,
+body[data-tab="risk"] #toolkitCard,
+body[data-tab="risk"] #assistanceCard { display: none; }
+
+/* Resources tab: hide map + risk-specific cards; sidebar goes full-width two-column */
+body[data-tab="resources"] .preset-bar    { display: none; }
+body[data-tab="resources"] .map-wrapper   { display: none; }
+body[data-tab="resources"] .main          { grid-template-columns: 1fr; }
+body[data-tab="resources"] .sidebar       {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  width: auto;
+}
+body[data-tab="resources"] #calcCard,
+body[data-tab="resources"] #info,
+body[data-tab="resources"] #comparePanel,
+body[data-tab="resources"] #recommendationsCard,
+body[data-tab="resources"] .explainer-card { display: none !important; }
+
+/* Affordability tab: hide risk-specific cards; show calc card only */
+body[data-tab="affordability"] .preset-bar          { display: none; }
+body[data-tab="affordability"] #compareInputsContainer { display: none !important; }
+body[data-tab="affordability"] #info,
+body[data-tab="affordability"] #comparePanel,
+body[data-tab="affordability"] #recommendationsCard,
+body[data-tab="affordability"] #toolkitCard,
+body[data-tab="affordability"] #assistanceCard,
+body[data-tab="affordability"] .explainer-card      { display: none !important; }
+/* Calc card always expanded in its own tab */
+body[data-tab="affordability"] .calc-collapse > summary { display: none; }
 
 .main {
   max-width: 1200px;
@@ -1302,8 +1377,10 @@ body[data-mode="compare"] #recommendationsCard {
 
 @media (max-width: 900px) {
   .main { grid-template-columns: 1fr; }
+  body[data-tab="resources"] .sidebar { grid-template-columns: 1fr; }
   #map { height: 400px; }
   .nav-tagline { display: none; }
+  .tab-btn { font-size: 13px; padding: 12px 14px; }
   .preset-row {
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -1314,15 +1391,8 @@ body[data-mode="compare"] #recommendationsCard {
   .preset-row > * { scroll-snap-align: start; flex-shrink: 0; }
   .btn-customize { margin-left: 0; }
   .weight-panel-grid { grid-template-columns: 110px 1fr 50px; }
-
-  .compare-inputs-inner {
-    flex-direction: column;
-  }
-
-  .compare-zip-input {
-    width: 100%;
-  }
-
+  .compare-inputs-inner { flex-direction: column; }
+  .compare-zip-input { width: 100%; }
 }
 
 /* ── View toggle ─────────────────────────────────────────── */
@@ -1666,7 +1736,7 @@ body[data-mode="compare"] #recommendationsCard {
 </style>
 </head>
 
-<body>
+<body data-tab="risk">
 
 <nav>
   <a class="nav-brand" href="#">
@@ -1686,6 +1756,15 @@ body[data-mode="compare"] #recommendationsCard {
       <button class="btn-primary" onclick="searchZip()">Check ZIP</button>
     </div>
     <div class="search-error" id="searchError">No data found for that ZIP code. Try a Cuyahoga County ZIP.</div>
+  </div>
+</div>
+
+<!-- ── Tab bar ───────────────────────────────────────────── -->
+<div class="tab-bar" role="tablist" aria-label="App sections">
+  <div class="tab-bar-inner">
+    <button class="tab-btn active" role="tab" aria-selected="true"  data-tab="risk"          id="tab-btn-risk"         onclick="switchTab('risk')">Map &amp; Risk</button>
+    <button class="tab-btn"        role="tab" aria-selected="false" data-tab="resources"     id="tab-btn-resources"    onclick="switchTab('resources')">Toolkit &amp; Programs</button>
+    <button class="tab-btn"        role="tab" aria-selected="false" data-tab="affordability" id="tab-btn-affordability" onclick="switchTab('affordability')">Affordability</button>
   </div>
 </div>
 
@@ -2072,7 +2151,7 @@ body[data-mode="compare"] #recommendationsCard {
       </div>
     </div>
 
-    <div class="card">
+    <div class="card explainer-card">
       <div class="card-label">How the risk score works</div>
       <div class="explainer-row">
         <div class="explainer-dot"></div>
@@ -2404,6 +2483,34 @@ function updateLegend(viewMode) {
       <div class="legend-item"><div class="legend-swatch" style="background:#3288bd;height:4px;border-radius:2px;margin-top:5px"></div>Low</div>
       <div class="legend-item"><div class="legend-swatch" style="background:#d53e4f;height:4px;border-radius:2px"></div>Extreme</div>`;
   }
+}
+
+// ── Tab switching ──
+
+function switchTab(tab) {
+  document.body.dataset.tab = tab;
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    const isActive = btn.dataset.tab === tab;
+    btn.classList.toggle('active', isActive);
+    btn.setAttribute('aria-selected', String(isActive));
+  });
+
+  if (tab === 'affordability') {
+    if (affordabilityState.hasResults) {
+      setMapView('both');
+    } else {
+      setMapView('risk');
+    }
+    const cc = document.getElementById('calcCollapse');
+    if (cc) cc.open = true;
+    setTimeout(() => { try { map.invalidateSize(); } catch (_) {} }, 50);
+  } else if (tab === 'risk') {
+    setMapView('risk');
+    setTimeout(() => { try { map.invalidateSize(); } catch (_) {} }, 50);
+  }
+  // resources — map hidden, no map action needed
+
+  try { gtag('event', 'tab_switch', { tab }); } catch (_) {}
 }
 
 function setMapView(view) {
@@ -3015,11 +3122,13 @@ function runCalculator() {
 
   const toggle = document.getElementById('viewToggle');
   if (toggle) toggle.classList.remove('view-toggle--hidden');
-  setMapView('both');
 
   document.getElementById('calcFormView').hidden    = true;
   document.getElementById('calcResultsView').hidden = false;
   renderCalcResults(inputs);
+
+  // Switch to affordability tab and apply overlay
+  switchTab('affordability');
 
   if (compareState.mode) renderComparePanel();
   try { gtag('event', 'calc_run', { income_band: Math.round(inputs.annual_income / 10000) * 10000 }); } catch (_) {}
@@ -3144,13 +3253,15 @@ function clearCalculator() {
   affordabilityState.conv       = null;
   const toggle = document.getElementById('viewToggle');
   if (toggle) toggle.classList.add('view-toggle--hidden');
-  setMapView('risk');
   showCalcForm(false);
   document.getElementById('calcResultsView').hidden = true;
   if (compareState.mode) renderComparePanel();
+  // Stay on affordability tab but reset to risk view since no data
+  setMapView('risk');
 }
 
 function fitBoundsAffordable() {
+  if (document.body.dataset.tab !== 'affordability') switchTab('affordability');
   setMapView('affordability');
   const affZips = [...affordabilityState.buckets.entries()]
     .filter(([, b]) => b === 'affordable')
@@ -3387,14 +3498,17 @@ function buildRecommendations(z, contribs) {
 }
 
 function scrollToToolkit(id) {
+  if (document.body.dataset.tab !== 'resources') switchTab('resources');
   const el = document.getElementById(id);
   if (!el) return;
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   el.open = true;
-  document.getElementById('toolkitCard').scrollIntoView({
-    behavior: reduced ? 'instant' : 'smooth',
-    block: 'start',
-  });
+  setTimeout(() => {
+    document.getElementById('toolkitCard').scrollIntoView({
+      behavior: reduced ? 'instant' : 'smooth',
+      block: 'start',
+    });
+  }, 50);
 }
 
 function renderRecommendationsCard(zip, contribs) {
