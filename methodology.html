@@ -430,6 +430,49 @@ footer a:hover { color: rgba(255,255,255,0.9); text-decoration: underline; }
   </section>
 
   <!-- DATA SOURCES -->
+  <section id="assistance-programs">
+    <h2>Help you can apply for</h2>
+    <p>
+      The <em>Help you can apply for</em> sidebar card shows programs that may help cover your down payment or
+      improve your loan terms. Programs are drawn from
+      <code>data/cuyahoga_assistance_programs.json</code>, which was populated from publicly available
+      program guides and annual reports.
+    </p>
+    <h3>FHA numbers (ZIP-specific)</h3>
+    <p>
+      The FHA Originations and FHA Denial Rate rows display data sourced from the
+      <strong>FFIEC Home Mortgage Disclosure Act (HMDA)</strong> LAR file (2023 vintage). These figures
+      reflect actual lending activity for the selected ZIP code, so they vary by ZIP.
+    </p>
+    <ul>
+      <li><strong>FHA originations</strong> — count of FHA purchase loans originated in the ZIP in 2023.</li>
+      <li><strong>FHA denial rate</strong> — share of completed FHA purchase applications denied. A high denial rate
+          signals that lender criteria or property conditions may be a barrier in this market.</li>
+    </ul>
+    <h3>Other programs (county-wide or statewide)</h3>
+    <p>
+      All other programs — VA, OHFA, FHLB Welcome Home, Cuyahoga DPA, Cleveland HOME, Land Bank,
+      and Habitat for Humanity — are listed as eligibility catalogs. They do not show ZIP-level activity
+      because reliable address-level records were not publicly available at collection time.
+    </p>
+    <ul>
+      <li>
+        <strong>OHFA (Ohio Housing Finance Agency)</strong> — county-level data from the
+        OHFA FY2024 Annual Report (Appendix B). Cuyahoga County: 460 loans totaling $80.3M
+        (avg $174,510) in FY2024. Statewide: 4,488 loans.
+      </li>
+      <li>
+        <strong>Cleveland HOME DPA</strong> — activity from the City of Cleveland CAPER FY2023–2024.
+        21 households received direct financial assistance; $440,615 HOME funds disbursed.
+        This program is shown only for ZIPs in the city of Cleveland (44102–44120, 44127–44128).
+      </li>
+      <li>
+        <strong>FHLB Welcome Home</strong> — program guide only; no ZIP-level activity data available.
+        2023 available funds: $2.8M statewide. Grant maximum: $20,000 ($25,000 for veterans).
+      </li>
+    </ul>
+  </section>
+
   <section>
     <h2>Data sources</h2>
     <table>
