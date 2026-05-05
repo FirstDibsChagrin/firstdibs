@@ -473,7 +473,6 @@ body[data-tab="affordability"] .preset-bar             { display: none; }
 body[data-tab="affordability"] #compareInputsContainer { display: none !important; }
 body[data-tab="affordability"] #info,
 body[data-tab="affordability"] #comparePanel,
-body[data-tab="affordability"] #assistanceCard,
 body[data-tab="affordability"] .explainer-card         { display: none !important; }
 /* Calc card always expanded in its own tab */
 body[data-tab="affordability"] .calc-collapse > summary { display: none; }
@@ -818,112 +817,6 @@ footer {
 footer strong { color: rgba(255,255,255,0.8); }
 footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
 footer a:hover { color: rgba(255,255,255,0.9); text-decoration: underline; }
-
-/* ── Assistance Card (sidebar) ────────────────────────────────── */
-
-.assistance-subtitle {
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-bottom: 14px;
-  line-height: 1.5;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border);
-}
-
-.assistance-program {
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-}
-.assistance-program:last-child  { border-bottom: none; padding-bottom: 0; }
-.assistance-program:first-child { padding-top: 0; }
-
-.program-name {
-  font-weight: 600;
-  font-size: 13px;
-  color: var(--text);
-  margin-bottom: 4px;
-}
-
-.program-fha-stat {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text);
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 5px 8px;
-  margin-bottom: 6px;
-}
-
-.program-description {
-  font-size: 12px;
-  color: var(--text-muted);
-  line-height: 1.5;
-  margin-bottom: 8px;
-}
-
-.btn-toggle-section {
-  background: none;
-  border: none;
-  color: var(--accent);
-  font-size: 11px;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 0;
-  text-decoration: underline;
-  font-family: inherit;
-  text-align: left;
-}
-.btn-toggle-section:hover { color: var(--primary); }
-
-.program-eligibility {
-  font-size: 11px;
-  color: var(--text-muted);
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  padding: 6px 8px;
-  margin-top: 4px;
-}
-
-.eligibility-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.eligibility-list li {
-  line-height: 1.5;
-  margin-bottom: 3px;
-}
-.eligibility-list li:last-child { margin-bottom: 0; }
-.eligibility-list li::before {
-  content: '• ';
-  color: var(--accent);
-  font-weight: 600;
-}
-
-.program-apply {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--accent);
-  text-decoration: none;
-  margin-top: 6px;
-  align-self: flex-start;
-}
-.program-apply:hover { text-decoration: underline; }
-
-.assistance-empty {
-  text-align: center;
-  padding: 24px 0;
-}
-.assistance-empty p {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin: 0;
-}
 
 /* ── Compare Mode ────────────────────────────────────────────── */
 
@@ -1817,17 +1710,6 @@ body[data-mode="compare"] #info {
     </div>
 
 
-    <!-- ── Help you can apply for (assistance catalog) ─────────── -->
-    <div class="card" id="assistanceCard">
-      <div class="card-label">Help you can apply for</div>
-      <p class="assistance-subtitle">FHA numbers are for this ZIP. Other programs are statewide or county-wide — eligibility may vary.</p>
-      <div id="assistanceProgramsList">
-        <div class="assistance-empty">
-          <p>Select a ZIP to see available programs.</p>
-        </div>
-      </div>
-    </div>
-
     <div class="card explainer-card">
       <div class="card-label">How the risk score works</div>
       <div class="explainer-row">
@@ -1952,7 +1834,6 @@ const compareState = {
   order: [],
 };
 
-let assistanceData = null;
 
 let currentMapView = 'risk';
 const affordabilityState = {
@@ -2249,11 +2130,9 @@ function loadData() {
   Promise.all([
     fetch('data/cuyahoga_zip_boundaries.json').then(r => r.json()),
     fetch('data/cuyahoga_zip_metrics.json').then(r => r.json()),
-    loadAssistanceData()
   ])
-  .then(([boundaries, metrics, assistance]) => {
+  .then(([boundaries, metrics]) => {
     zipMetadataVintage = metrics.vintage;
-    assistanceData = assistance;
 
     boundaries.features.forEach(f => {
       const zip = f.properties.zip;
@@ -2656,14 +2535,6 @@ function restoreCompareFromHash() {
   hashes.forEach(zip => addZipToCompare(zip));
 }
 
-// ── Assistance Programs ──
-
-function loadAssistanceData() {
-  return fetch('data/cuyahoga_assistance_programs.json')
-    .then(r => r.json())
-    .catch(() => null);
-}
-
 // ── Affordability calculator ──────────────────────────────
 
 function maxAffordablePrice(input, path) {
@@ -2948,100 +2819,6 @@ function restoreCalcFromStorage() {
   runCalculator();
 }
 
-function renderAssistanceCard(zip) {
-  const listEl = document.getElementById('assistanceProgramsList');
-  if (!listEl) return;
-
-  if (!zip || !assistanceData) {
-    listEl.innerHTML = `<div class="assistance-empty"><p>Select a ZIP to see available programs.</p></div>`;
-    return;
-  }
-
-  const programs = assistanceData.programs || [];
-  const zipActivity = (assistanceData.zip_activity || {})[zip] || {};
-
-  // Fixed sort order per plan
-  const sortKey = {
-    fha_originations:      0,
-    hmda_denial_rate:      0,
-    va_originations:       1,
-    ohfa_loans:            2,
-    fhlb_welcome_home:     3,
-    cuyahoga_dpa:          4,
-    cleveland_home_dpa:    5,
-    land_bank_dispositions: 6,
-    habitat_activity:      7,
-  };
-
-  const relevant = programs
-    .filter(p => {
-      // Cleveland-specific programs only for Cleveland ZIPs (44102–44120 + 44127–44128)
-      if (p.id === 'cleveland_home_dpa') {
-        return (zip >= '44102' && zip <= '44120') || zip === '44127' || zip === '44128';
-      }
-      return true;
-    })
-    .sort((a, b) => (sortKey[a.id] ?? 99) - (sortKey[b.id] ?? 99));
-
-  if (relevant.length === 0) {
-    listEl.innerHTML = `<div class="assistance-empty"><p>No programs for this ZIP. <a href="methodology.html#assistance-programs">See statewide programs →</a></p></div>`;
-    return;
-  }
-
-  const html = relevant.map(p => {
-    const isFHA = p.id === 'fha_originations' || p.id === 'hmda_denial_rate';
-    const activity = zipActivity[p.id];
-
-    // FHA hero stat row (denial rate if available)
-    let fhaStat = '';
-    if (p.id === 'hmda_denial_rate') {
-      if (activity != null) {
-        fhaStat = `<div class="program-fha-stat">FHA denial rate this ZIP: ${(activity * 100).toFixed(1)}%</div>`;
-      } else {
-        fhaStat = `<div class="program-fha-stat" style="color:var(--text-muted)">FHA denial rate this ZIP: — (data unavailable)</div>`;
-      }
-    }
-    if (p.id === 'fha_originations' && activity != null) {
-      fhaStat = `<div class="program-fha-stat">${activity} FHA purchase loans originated in this ZIP (2023)</div>`;
-    }
-
-    const meta = p.metadata || {};
-    const eligibilityItems = [];
-    if (meta.income_limit_pct_ami) eligibilityItems.push(`Income limit: ${meta.income_limit_pct_ami}% AMI`);
-    if (meta.income_limit_pct_mrb) eligibilityItems.push(`Income limit: ${meta.income_limit_pct_mrb}% of MRB limit`);
-    if (meta.dpa_options) eligibilityItems.push(`Assistance: ${meta.dpa_options.join(', ')}`);
-    if (meta.grant_max_2024_usd) eligibilityItems.push(`Max grant (2024): $${meta.grant_max_2024_usd.toLocaleString()}`);
-    if (meta.grant_max_veterans_2024_usd) eligibilityItems.push(`Veterans max: $${meta.grant_max_veterans_2024_usd.toLocaleString()}`);
-    if (meta.max_dpa_usd) eligibilityItems.push(`Max assistance: $${meta.max_dpa_usd.toLocaleString()}`);
-    if (meta.loan_type) eligibilityItems.push(`Loan type: ${meta.loan_type}`);
-    if (meta.requirements) meta.requirements.forEach(r => eligibilityItems.push(r));
-
-    const eligHtml = eligibilityItems.length > 0
-      ? `<ul class="eligibility-list">${eligibilityItems.map(i => `<li>${i}</li>`).join('')}</ul>`
-      : `<p style="font-size:11px;color:var(--text-muted);margin:0">Contact the program for eligibility details.</p>`;
-
-    return `<div class="assistance-program" data-program-id="${p.id}">
-      <div class="program-name">${p.label}</div>
-      ${fhaStat}
-      <div class="program-description">${p.description}</div>
-      <button class="btn-toggle-section" aria-expanded="false">Eligibility ▾</button>
-      <div class="program-eligibility" hidden>${eligHtml}</div>
-      <a href="${p.how_to_apply_link || '#'}" target="_blank" rel="noopener" class="program-apply">How to apply →</a>
-    </div>`;
-  }).join('');
-
-  listEl.innerHTML = html;
-
-  listEl.querySelectorAll('.btn-toggle-section').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const expanded = btn.getAttribute('aria-expanded') === 'true';
-      btn.setAttribute('aria-expanded', String(!expanded));
-      btn.nextElementSibling.hidden = expanded;
-      btn.textContent = expanded ? 'Eligibility ▾' : 'Eligibility ▴';
-    });
-  });
-}
-
 // ── Sidebar rendering ──
 
 function fmtVal(factor, rawVal) {
@@ -3148,7 +2925,6 @@ function selectZip(zip) {
     </div>
   `;
 
-  renderAssistanceCard(zip);
 }
 
 function searchZip() {
