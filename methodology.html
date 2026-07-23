@@ -193,6 +193,19 @@ code {
   border: 1px solid #fde68a;
 }
 
+.tag-est {
+  display: inline-block;
+  background: #fff7ed;
+  color: #9a3412;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid #fdba74;
+}
+
 ul, ol {
   padding-left: 20px;
   font-size: 14px;
@@ -243,9 +256,9 @@ footer a:hover { color: rgba(255,255,255,0.9); text-decoration: underline; }
     <h2>The six factors</h2>
 
     <h3>Factor 1 — Corporate / LLC Ownership %</h3>
-    <p><span class="tag-proxy">Fiscal Officer data</span> &nbsp; Weight: <strong>22%</strong></p>
-    <p>Share of residential parcels (single-family, 2–4 family, condo) whose deeded owner name matches a corporate/LLC regex: <code>LLC, INC, CORP, HOLDINGS, REALTY, PROPERTIES, VENTURES, INVESTMENTS, CAPITAL, EQUITY, FUND, PARTNERS, LP, LLP, REIT</code>. Government and land-bank owners are excluded from both numerator and denominator.</p>
-    <p><strong>Source:</strong> Values carried from the prior published dataset, which used Cuyahoga County Fiscal Officer parcel data via ArcGIS. For methodology and recomputation instructions, see <code>data/cuyahoga_methodology.md</code>.</p>
+    <p><span class="tag-est">Estimated</span> &nbsp; Weight: <strong>22%</strong></p>
+    <p><strong>What it represents:</strong> The estimated share of residential parcels in each ZIP held by corporate or institutional owners — LLCs, holding companies, REITs, and similar — rather than resident homeowners. A higher share indicates more competition from investor buyers.</p>
+    <p><strong>This factor is an estimate, not a measured value.</strong> The intended source is the Cuyahoga County Fiscal Officer parcel database, matching deeded owner names against a corporate/LLC regex (<code>LLC, INC, CORP, HOLDINGS, REALTY, PROPERTIES, VENTURES, INVESTMENTS, CAPITAL, EQUITY, FUND, PARTNERS, LP, LLP, REIT</code>, excluding government and land-bank owners). That parcel service was not reachable from the build environment, so per-ZIP values were instead estimated from published investor-concentration research — Reinvestment Fund reports, Cleveland Neighborhood Progress housing data, and CWRU Center on Urban Poverty studies — calibrated so the east-side urban core reads roughly 28–36% and affluent east suburbs roughly 6–9%. The values are directionally reasonable for ranking ZIPs but should not be read as exact county figures. Recomputation instructions (runnable in about 15 minutes from an unrestricted network) are in <code>data/cuyahoga_methodology.md</code>.</p>
     <p><strong>Normalization:</strong> 5% → risk = 0; 40% → risk = 1.</p>
 
     <h3>Factor 2 — Median Days on Market</h3>
@@ -296,7 +309,7 @@ footer a:hover { color: rgba(255,255,255,0.9); text-decoration: underline; }
           <td>22%</td>
           <td>≤ 5%</td>
           <td>≥ 40%</td>
-          <td><span class="tag-proxy">Fiscal Officer</span></td>
+          <td><span class="tag-est">Estimated</span></td>
         </tr>
         <tr>
           <td>Median days on market</td>
@@ -424,7 +437,7 @@ footer a:hover { color: rgba(255,255,255,0.9); text-decoration: underline; }
       <li><strong>Income data vintage:</strong> The price-to-income ratio uses 2016 ACS income data paired with 2026 home prices. This inflates PTI values by approximately 20–30% across all ZIPs and produces extreme outliers for ZIPs with small residential populations in commercially-dominated areas (44114, 44115). Use PTI for relative ZIP ranking, not absolute affordability comparisons.</li>
       <li><strong>Months of supply derived:</strong> Computed from inventory and homes-sold counts rather than Redfin's published months-of-supply field (which is null at ZIP level). More volatile for low-volume ZIPs.</li>
       <li><strong>Redfin sample size:</strong> Four ZIPs (44040, 44114, 44115, 44127) have fewer than 10 homes sold in the latest 90-day window and use a trailing 3-month median instead.</li>
-      <li><strong>Corporate ownership vintage:</strong> Carried from prior dataset. An independent recomputation from the Cuyahoga County ArcGIS parcel service is documented in <code>data/cuyahoga_methodology.md</code> and can be run in under 10 minutes from a normal network environment.</li>
+      <li><strong>Corporate ownership is estimated, not measured:</strong> Factor 1 is the one input not computed from a primary source. The Cuyahoga County Fiscal Officer parcel service was unreachable during the build, so per-ZIP values were estimated from published investor-concentration research and are directionally reasonable but not exact county figures. Treat them as a ranking signal, not a precise measurement. A recomputation from the ArcGIS parcel service is documented in <code>data/cuyahoga_methodology.md</code> and can be run in about 15 minutes from a normal network environment.</li>
       <li><strong>Score is relative, not predictive:</strong> The risk score measures observable market conditions; it does not predict whether a specific offer will succeed. Use it to prioritize neighborhoods for research and to calibrate offer strategy.</li>
     </ul>
   </section>
@@ -486,8 +499,8 @@ footer a:hover { color: rgba(255,255,255,0.9); text-decoration: underline; }
       <tbody>
         <tr>
           <td>Corporate ownership %</td>
-          <td>Cuyahoga County Fiscal Officer parcel data (ArcGIS)</td>
-          <td>Prior published dataset</td>
+          <td>Estimated from investor-concentration research (intended source: Cuyahoga County Fiscal Officer parcel data, ArcGIS — not yet computed)</td>
+          <td>Estimate</td>
         </tr>
         <tr>
           <td>DOM, sale-to-list, % above ask, months of supply</td>

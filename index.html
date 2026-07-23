@@ -1840,7 +1840,7 @@ body[data-mode="compare"] #info {
       </div>
       <div class="explainer-row">
         <div class="explainer-dot"></div>
-        <p><strong>Data vintage:</strong> Redfin rolling 90-day window ending March 2026. Corporate ownership from Cuyahoga County Fiscal Officer parcel data. <a href="methodology.html">Full methodology →</a></p>
+        <p><strong>Data vintage:</strong> Redfin rolling 90-day window ending March 2026. Five of the six factors are real Redfin/ACS data; <strong>investor ownership is an estimate</strong> (the county parcel source wasn't reachable at build time) — use it for ranking, not exact figures. <a href="methodology.html">Full methodology →</a></p>
       </div>
     </div>
 
@@ -2006,7 +2006,7 @@ body[data-mode="compare"] #info {
 // ── Factor definitions (anchors + display only; weights live in PRESETS) ──
 
 const FACTORS = [
-  { key: 'corporate_pct',       label: 'Investor Ownership',   short: 'Corp. Ownership', unit: '%',   decimals: 1, lo: 5,    hi: 40,   display: v => v },
+  { key: 'corporate_pct',       label: 'Investor Ownership (est.)',   short: 'Corp. Ownership', unit: '%',   decimals: 1, lo: 5,    hi: 40,   display: v => v },
   { key: 'median_dom',          label: 'How quickly homes are selling',   short: 'Median DOM', unit: 'd',   decimals: 0, lo: 60,   hi: 5,    display: v => v },
   { key: 'sale_to_list',        label: 'How often homes go for over asking',   short: 'Sale-to-List', unit: '%',   decimals: 1, lo: 0.95, hi: 1.05, display: v => v * 100 },
   { key: 'pct_sold_above_list', label: '% Sold Above Asking',   short: '% Above Ask', unit: '%',   decimals: 1, lo: 0,    hi: 60,   display: v => v },
