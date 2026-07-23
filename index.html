@@ -465,17 +465,29 @@ input.num-weight:focus {
 
 /* ── Tab visibility via body[data-tab] ───────────────────── */
 
-/* Default (risk tab): hide calc card */
-body[data-tab="risk"] #calcCard { display: none; }
+/* Default (risk tab): hide calc card + toolkit */
+body[data-tab="risk"] #calcCard,
+body[data-tab="risk"] #toolkitCard { display: none; }
 
 /* Affordability tab: hide risk-specific cards; show calc card only */
 body[data-tab="affordability"] .preset-bar             { display: none; }
 body[data-tab="affordability"] #compareInputsContainer { display: none !important; }
 body[data-tab="affordability"] #info,
 body[data-tab="affordability"] #comparePanel,
+body[data-tab="affordability"] #toolkitCard,
 body[data-tab="affordability"] .explainer-card         { display: none !important; }
 /* Calc card always expanded in its own tab */
 body[data-tab="affordability"] .calc-collapse > summary { display: none; }
+
+/* Beat the Bid tab: hide map + risk/calc cards; toolkit goes full-width */
+body[data-tab="toolkit"] .preset-bar    { display: none; }
+body[data-tab="toolkit"] .map-wrapper   { display: none; }
+body[data-tab="toolkit"] .main          { grid-template-columns: 1fr; }
+body[data-tab="toolkit"] .sidebar       { width: auto; max-width: 720px; margin: 0 auto; }
+body[data-tab="toolkit"] #calcCard,
+body[data-tab="toolkit"] #info,
+body[data-tab="toolkit"] #comparePanel,
+body[data-tab="toolkit"] .explainer-card { display: none !important; }
 
 .main {
   max-width: 1200px;
@@ -817,6 +829,111 @@ footer {
 footer strong { color: rgba(255,255,255,0.8); }
 footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
 footer a:hover { color: rgba(255,255,255,0.9); text-decoration: underline; }
+
+/* ── Beat the Bid Toolkit Card ────────────────────────────────── */
+
+.toolkit-intro {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin: 0 0 6px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.toolkit-item {
+  border-bottom: 1px solid var(--border);
+}
+.toolkit-item:last-child { border-bottom: none; }
+
+.toolkit-item summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 12px 0;
+  gap: 8px;
+  user-select: none;
+}
+.toolkit-item summary::-webkit-details-marker { display: none; }
+
+.toolkit-item summary::after {
+  content: '▾';
+  font-size: 11px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  margin-top: 3px;
+  transition: transform 0.18s;
+}
+.toolkit-item[open] summary::after { transform: rotate(-180deg); }
+
+.toolkit-item summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.toolkit-summary-inner { flex: 1; min-width: 0; }
+
+.toolkit-summary-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.toolkit-summary-tagline {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-top: 1px;
+  line-height: 1.4;
+}
+
+.toolkit-body {
+  padding: 0 0 14px 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+.toolkit-section { margin-bottom: 9px; }
+.toolkit-section:last-child { margin-bottom: 0; }
+
+.toolkit-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 3px;
+}
+
+.toolkit-section p { margin: 0; }
+
+.toolkit-note {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 10px;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+.toolkit-links {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+.toolkit-links a {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+}
+.toolkit-links a:hover { text-decoration: underline; }
 
 /* ── Compare Mode ────────────────────────────────────────────── */
 
@@ -1486,6 +1603,7 @@ body[data-mode="compare"] #info {
   <div class="tab-bar-inner">
     <button class="tab-btn active" role="tab" aria-selected="true"  data-tab="risk"          id="tab-btn-risk"          onclick="switchTab('risk')">Map &amp; Risk</button>
     <button class="tab-btn"        role="tab" aria-selected="false" data-tab="affordability" id="tab-btn-affordability" onclick="switchTab('affordability')">Affordability</button>
+    <button class="tab-btn"        role="tab" aria-selected="false" data-tab="toolkit"       id="tab-btn-toolkit"       onclick="switchTab('toolkit')">Beat the Bid</button>
   </div>
 </div>
 
@@ -1725,6 +1843,153 @@ body[data-mode="compare"] #info {
         <p><strong>Data vintage:</strong> Redfin rolling 90-day window ending March 2026. Corporate ownership from Cuyahoga County Fiscal Officer parcel data. <a href="methodology.html">Full methodology →</a></p>
       </div>
     </div>
+
+    <!-- ── Beat the Bid toolkit card ─────────────────────────── -->
+    <div class="card" id="toolkitCard">
+      <div class="card-label">Beat the bid toolkit</div>
+      <p class="toolkit-intro">Competing against cash and investor buyers doesn't mean overpaying. These are the tools a financed, first-time buyer can use to make an offer that wins — and when each one makes sense.</p>
+
+      <details class="toolkit-item" id="toolkit-escalation">
+        <summary>
+          <div class="toolkit-summary-inner">
+            <div class="toolkit-summary-label">Escalation Clause</div>
+            <div class="toolkit-summary-tagline">An add-on to your offer that automatically beats competing bids, up to a cap you set.</div>
+          </div>
+        </summary>
+        <div class="toolkit-body">
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">What it is</div>
+            <p>If another buyer submits a higher offer, your bid automatically increases by a set amount — say $1,000 — until you hit your ceiling. Then it stops. You stay competitive without going over your limit.</p>
+          </div>
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">When to use it</div>
+            <p>High-competition ZIPs with short median days on market and many homes selling over asking. Good when you want to stay in the running but still have a firm spending ceiling.</p>
+          </div>
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">When NOT to use it</div>
+            <p>When the market is slow (median DOM over 30 days) or when your financing is tight — if the escalated price pushes past the appraised value, your lender may not cover the gap.</p>
+          </div>
+          <div class="toolkit-note">
+            <strong>Ask your agent:</strong> "Can we add an escalation clause that beats any competing offer by $1,000, up to a maximum of $[X]?"
+          </div>
+        </div>
+      </details>
+
+      <details class="toolkit-item" id="toolkit-appraisal-gap">
+        <summary>
+          <div class="toolkit-summary-inner">
+            <div class="toolkit-summary-label">Appraisal Gap Coverage</div>
+            <div class="toolkit-summary-tagline">Promise to cover the difference if the home appraises for less than your offer.</div>
+          </div>
+        </summary>
+        <div class="toolkit-body">
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">What it is</div>
+            <p>Lenders only finance up to the appraised value. If you offer more than that, you cover the difference in cash. Writing this into your offer tells the seller you won't walk away if the appraisal comes in low.</p>
+          </div>
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">When to use it</div>
+            <p>When homes regularly sell over list — sale-to-list ratio above 1.05 or more than 40% of homes selling above asking. Common in Very High and Extreme competition ZIPs.</p>
+          </div>
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">When NOT to use it</div>
+            <p>If you don't have extra cash available after your down payment and closing costs, don't commit to a gap you can't cover.</p>
+          </div>
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">Example</div>
+            <p>Home listed at $250,000. You offer $275,000. Appraisal comes in at $260,000. With $15,000 gap coverage written in, your offer holds. Without it, your lender only finances against $260,000 and the deal can fall apart.</p>
+          </div>
+          <div class="toolkit-note">
+            <strong>Ask your agent:</strong> "What's a reasonable gap-coverage amount for offers in this market right now?"
+          </div>
+        </div>
+      </details>
+
+      <details class="toolkit-item" id="toolkit-full-underwriting">
+        <summary>
+          <div class="toolkit-summary-inner">
+            <div class="toolkit-summary-label">Full Underwriting Pre-Approval</div>
+            <div class="toolkit-summary-tagline">Pre-approval where the lender has fully checked your finances, not just a soft credit pull.</div>
+          </div>
+        </summary>
+        <div class="toolkit-body">
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">What it is</div>
+            <p>A standard pre-approval letter is a lender's estimate. A fully underwritten pre-approval means an underwriter has actually reviewed your income documents, bank statements, and employment — and conditionally approved your loan. Sellers know the difference.</p>
+          </div>
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">When to use it</div>
+            <p>Always, in any market. Especially important when few FHA buyers are winning offers — a fully underwritten letter signals you're as close to a cash offer as a financed buyer can get.</p>
+          </div>
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">Note</div>
+            <p>Takes longer than a standard letter — sometimes 1–2 weeks. Plan ahead before you start making offers.</p>
+          </div>
+          <div class="toolkit-note">
+            <strong>Ask your lender:</strong> "Can you do a fully underwritten pre-approval — sometimes called a TBD approval or upfront underwrite?"
+          </div>
+        </div>
+      </details>
+
+      <details class="toolkit-item" id="toolkit-dpa">
+        <summary>
+          <div class="toolkit-summary-inner">
+            <div class="toolkit-summary-label">Down Payment Assistance</div>
+            <div class="toolkit-summary-tagline">Money to help cover your down payment, sometimes forgivable after a few years.</div>
+          </div>
+        </summary>
+        <div class="toolkit-body">
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">What it is</div>
+            <p>Federal, state, and local programs that provide money for your down payment and/or closing costs. Many don't have to be repaid if you stay in the home for a set number of years.</p>
+          </div>
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">When to use it</div>
+            <p>Any first-time buyer stretching to reach a down payment. Income limits often apply but are higher than people expect — typically 80% of area median income, which in Cuyahoga County is roughly $75,000–$86,000 depending on household size.</p>
+          </div>
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">Programs to explore</div>
+            <div class="toolkit-links">
+              <a href="https://ohiohome.org/homebuyers.aspx" target="_blank" rel="noopener">OHFA Your Choice! — 2.5% or 5% DPA, statewide →</a>
+              <a href="https://www.hud.gov/states/ohio/homeownership" target="_blank" rel="noopener">HUD Ohio homebuyer resources →</a>
+              <a href="https://www.fhlbcin.com/community-investment/welcome-home/" target="_blank" rel="noopener">FHLB Welcome Home — up to $20,000 grant →</a>
+              <a href="https://chnhousingpartners.org/" target="_blank" rel="noopener">CHN Housing Partners — counseling + DPA intake →</a>
+            </div>
+          </div>
+          <div class="toolkit-note">Full program details, grant amounts, and eligibility are in the <a href="methodology.html#assistance-programs">methodology &amp; sources</a>.</div>
+        </div>
+      </details>
+
+      <details class="toolkit-item" id="toolkit-counselor">
+        <summary>
+          <div class="toolkit-summary-inner">
+            <div class="toolkit-summary-label">Find a Free HUD-Approved Counselor</div>
+            <div class="toolkit-summary-tagline">Government-certified homebuyer counseling agencies — free to you.</div>
+          </div>
+        </summary>
+        <div class="toolkit-body">
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">What it is</div>
+            <p>HUD-approved housing counseling agencies must meet federal standards and charge nothing for basic homebuyer counseling. A counselor will review your budget, explain your loan options, identify programs you qualify for, and help you build a plan.</p>
+          </div>
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">Why it matters</div>
+            <p>Most people don't know this service is free. Counselors can help you figure out DPA eligibility and what offers you can realistically make — before you fall in love with a home.</p>
+          </div>
+          <div class="toolkit-section">
+            <div class="toolkit-section-label">Find a counselor</div>
+            <div class="toolkit-links">
+              <a href="https://www.hud.gov/i_want_to/talk_to_a_housing_counselor" target="_blank" rel="noopener">HUD housing counselor finder →</a>
+              <a href="https://apps.hud.gov/offices/hsg/sfh/hcc/hcs.cfm?webListAction=search&searchstate=OH" target="_blank" rel="noopener">Search Ohio HUD-approved agencies →</a>
+              <a href="https://chnhousingpartners.org/" target="_blank" rel="noopener">CHN Housing Partners (Cleveland area) →</a>
+              <a href="https://esop-cleveland.org/" target="_blank" rel="noopener">ESOP — Empowering and Strengthening Ohio's People →</a>
+              <a href="https://famicos.org/" target="_blank" rel="noopener">Famicos Foundation (Cleveland) →</a>
+            </div>
+          </div>
+        </div>
+      </details>
+
+    </div><!-- end #toolkitCard -->
 
   </div>
 
@@ -2066,7 +2331,7 @@ function switchTab(tab) {
     setMapView('risk');
     setTimeout(() => { try { map.invalidateSize(); } catch (_) {} }, 50);
   }
-  // resources — map hidden, no map action needed
+  // toolkit — map hidden, no map action needed
 
   try { gtag('event', 'tab_switch', { tab }); } catch (_) {}
 }
