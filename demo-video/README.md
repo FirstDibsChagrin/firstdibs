@@ -1,5 +1,7 @@
 # First Dibs demo video
 
+The rendered video is [`first-dibs-demo.mp4`](first-dibs-demo.mp4) (1920×1080, 30 fps, 81 s).
+
 A ~80-second product walkthrough of First Dibs, built with [Remotion](https://www.remotion.dev/).
 Every app screen in the video is a real screenshot of the site, captured with Playwright.
 
